@@ -1,0 +1,26 @@
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: "jdbc:mysql://localhost:3306/react_board?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&tinyInt1isBit=false"
+        username: root
+        password: 1234
+
+        hikari:
+            auto-commit: false
+            connection-test-query: SELECT 1
+            minimum-idle: 10
+            maximum-pool-size: 50
+            pool-name: pool-reactboard_db
+
+    jpa:
+        database-platform: org.hibernate.dialect.MySQL8Dialect
+        properties:
+            hibernate:
+                format_sql: true
+                hbm2ddl.auto: create-drop
+                implicit_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        open-in-view: false
+        show-sql: true
+jwt:
+    secret:
+        key: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK

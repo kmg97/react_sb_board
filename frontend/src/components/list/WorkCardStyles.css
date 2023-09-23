@@ -1,0 +1,70 @@
+.project-heading {
+  text-align: center;
+  padding: 4rem 0 2rem 0;
+}
+
+.project-container {
+  max-width: 1140px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 40px;
+  padding-bottom: 5rem;
+}
+
+.project-card {
+  background: #1a1919;
+  padding: 1.2rem 1rem;
+  border-radius: 15px;
+  animation: fadein 3s ease-in-out;
+}
+.project-card img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.project-title{
+    color: #fff;
+    padding:1rem 0;
+}
+
+.pro-details h3{
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.pro-datails p {
+    padding-bottom: 1rem ;
+    font-size: 1.1rem;
+    text-align: justify;
+}
+
+.pro-btns{
+    display: flex;
+    justify-content: space-between;
+    padding :0.5rem 0;
+}
+.pro-btns .btn{
+    padding:0.5rem 1rem;
+}
+@media screen and (max-width: 1125px){
+  .project-container {
+    max-width: 90%;
+    grid-template-columns: repeat(2,2fr);
+  }
+}
+@media screen and (max-width: 795px) {
+  .project-container {
+    max-width: 90%;
+    margin: auto;
+    grid-template-columns: 1fr;
+    overflow-x: hidden;
+  }
+  
+  .project-card:nth-child(2n+1){
+    animation: rightfadein 1s ease-in-out;
+  }
+  .project-card:nth-child(2n){
+    animation: leftfadein 1s ease-in-out;
+  }
+}
