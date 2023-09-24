@@ -47,6 +47,11 @@ ul {
   cursor: pointer;
 }
 
+.two-btn {
+  display: flex;
+  justify-content: space-between;
+}
+
 .btn-light {
   /* background: rgba(255, 255, 255, 0.2); */
   background: transparent;

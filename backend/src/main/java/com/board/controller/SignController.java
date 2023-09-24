@@ -29,8 +29,8 @@ public class SignController {
     }
 
     @GetMapping("/user/get")
-    public ResponseEntity<SignResponse> getUser(@RequestParam String account) throws Exception {
-        return new ResponseEntity<>( memberService.getMember(account), HttpStatus.OK);
+    public ResponseEntity<SignResponse> getUser(@RequestParam String username) throws Exception {
+        return new ResponseEntity<>( memberService.getMember(username), HttpStatus.OK);
     }
 
     @GetMapping("/admin/get")

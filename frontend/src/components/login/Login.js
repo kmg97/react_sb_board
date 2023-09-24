@@ -22,7 +22,10 @@ function Login() {
 
             if (response.ok) { // 로그인 성공
                 const userData = await response.json();
-                login(userData); // Context를 사용하여 로그인 정보 저장
+
+                const setUserData = { username:userData.username, token:userData.token, roles:userData.roles[0].name};
+
+                login(setUserData); // Context를 사용하여 로그인 정보 저장
                 alert("로그인 성공"); //client한테 로그인 인지
                 navigate("/"); // 홈화면으로 페이지 이동
             } else {

@@ -14,9 +14,7 @@ function Signup() {
     const [phone, setPhone] = useState('');
     const [street, setStreet] = useState('');
     const [city, setCity] = useState('');
-    // const [state, setState] = useState('');
     const [email, setEmail] = useState('');
-    // const [zip, setZip] = useState('');
 
     const singupHandler = async () => {
         try {
@@ -26,13 +24,13 @@ function Signup() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password, fullname, street, city, /*state, zip,*/ phone, email }),
+                body: JSON.stringify({ username, password, fullname, street, city, phone, email }),
             });
 
             if (response.ok) {
                 alert("회원가입이 완료 되었습니다. 로그인 해주세요.");
                 navigate("/login");
-            } else if (response.status === 409) {
+            } else if (response.status === 401) {
                 const message= '중복된 아이디 입니다.';
                 // 로그인 실패 처리
                 alert(message);
@@ -81,24 +79,12 @@ function Signup() {
                 value={street}
                 onChange={(e) => setStreet(e.target.value)}
             />
-            {/*<input*/}
-            {/*    type="text"*/}
-            {/*    placeholder="우편번호"*/}
-            {/*    value={zip}*/}
-            {/*    onChange={(e) => setZip(e.target.value)}*/}
-            {/*/>*/}
             <input
                 type="text"
                 placeholder="이메일"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
-            {/*<input*/}
-            {/*    type="text"*/}
-            {/*    placeholder="주소"*/}
-            {/*    value={state}*/}
-            {/*    onChange={(e) => setState(e.target.value)}*/}
-            {/*/>*/}
 
             <div className="pro-btns">
                 <button onClick={singupHandler} className="btn">회원가입</button>

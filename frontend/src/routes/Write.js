@@ -5,17 +5,17 @@ import Footer from "../components/common/Footer";
 import Form from "../components/Form";
 import { useTitle } from "../util/UpdateTitle";
 
-const Contact = (props) => {
-  useTitle('Contact');
+const Write = (props) => {
+  useTitle('Board Write');
   
   return (
     <div>
       <Header />
-      <HeroImg2 heading="Contact" text="ContactPage"/>
+      <HeroImg2 heading="글쓰기" text="ContactPage"/>
       <Form onAddContact={props.onAddContact}/>
       <Footer />
     </div>
   );
 };
 
-export default Contact;
+export default Write;

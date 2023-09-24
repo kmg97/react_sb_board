@@ -4,6 +4,7 @@ import Footer from "../components/common/Footer";
 import React from "react";
 import LoginPage from "../components/UserPage/LoginPage";
 import useLoginCheck from "../util/useLoginCheck";
+import HeroImg2 from "../components/HeroImg2";
 
 const LoginRoute = () => {
     useTitle("LoginRoute");

@@ -35,7 +35,6 @@ public class SecurityConfig {
 
   private final JwtProvider jwtProvider;
 
-
   // HttpSecurity, WebSecurity를 원래는 WebSecurityConfigurerAdapter 상속받아 Override 하였지만,
   // Security 6 이후로 Bean을 직접 등록하여 설정하게 바뀌었다.
 
@@ -56,7 +55,7 @@ public class SecurityConfig {
                                 // /admin으로 시작하는 요청은 ADMIN 권한이 있는 유저에게만 허용
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 // /user 로 시작하는 요청은 USER 권한이 있는 유저에게만 허용
-                                .requestMatchers("/user/**").hasRole("USER")
+                                .requestMatchers("/user/**","/board/**").hasRole("USER")
                                 .anyRequest().denyAll();
                                 // JWT 인증 필터 적용
                     })

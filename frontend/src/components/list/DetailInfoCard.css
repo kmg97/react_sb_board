@@ -1,0 +1,28 @@
+.detail-info-card {
+    background-color: #000; /* 검은색 배경 */
+    color: #fff; /* 흰색 글자색 */
+    padding: 16px;
+    margin: 16px;
+    height: 700px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    transition: box-shadow 0.2s;
+    text-align: center;
+}
+
+.detail-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.detail-time
+{
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.detail-text {
+
+}

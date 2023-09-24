@@ -17,7 +17,7 @@ spring:
         properties:
             hibernate:
                 format_sql: true
-                hbm2ddl.auto: create-drop
+                hbm2ddl.auto: update
                 implicit_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
         open-in-view: false
         show-sql: true

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, {createContext, useContext, useState} from 'react';
 
 const AuthContext = createContext();
 
@@ -11,19 +11,20 @@ export function useAuth() {
 export function AuthProvider({ children }) {
     // 새로 고침시 Context가 초기화 되므로 유저 정보를 sessionStorage에 저장
     // 초기값으로 sessionStorage 조회 후 초기화
-    const initialToken = sessionStorage.getItem('token');
+    const initialToken = JSON.parse(sessionStorage.getItem('token'))
     const [user, setUser] = useState(initialToken);
+
 
     // 로그인 함수
     const login = (userData) => {
         setUser(userData);
-        sessionStorage.setItem("token", userData);
+        sessionStorage.setItem("token", JSON.stringify(userData));
     };
 
     // 로그아웃 함수
     const logout = () => {
         setUser(null);
-        sessionStorage.clear();
+        sessionStorage.removeItem("token");
         // 새로고침 (아직 미정)
         // window.location.reload();
     };

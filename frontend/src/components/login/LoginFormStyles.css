@@ -4,7 +4,7 @@
     margin-bottom: 0.5rem;
 }
 
-.loginform{
+.loginform {
     display: flex;
     flex-direction: column;
     padding: 4rem 1rem;
