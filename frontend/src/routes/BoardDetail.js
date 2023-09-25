@@ -5,13 +5,13 @@ import {useTitle} from "../util/UpdateTitle";
 import Detail from "../components/list/Detail";
 
 const BoardDetail = (props) => {
-    useTitle('Board Write');
+    useTitle('Board Detail');
 
     return (
         <div>
             <Header />
             <HeroImg2 heading="게시글 조회" text="Detail Page"/>
-            <Detail />
+            <Detail userInfo={props.userInfo}/>
             <Footer />
         </div>
     );

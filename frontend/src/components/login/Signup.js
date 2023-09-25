@@ -3,10 +3,10 @@ import "./LoginFormStyles.css";
 import {NavLink} from "react-router-dom";
 import useLoginCheck from "../../util/useLoginCheck";
 
-function Signup() {
+function Signup(props) {
     // useLoginCheck = Context 내부에 user가 null인지 체크해서 있다면 홈으로 이동
     // 또한 useNavigate() 반환
-    const navigate = useLoginCheck();
+    useLoginCheck();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -16,25 +16,11 @@ function Signup() {
     const [city, setCity] = useState('');
     const [email, setEmail] = useState('');
 
-    const singupHandler = async () => {
+    const singupHandler = ()=>{
+        const user = {username, password, fullname, phone, street, city, email};
         try {
             // 서버에서 로그인 API 호출
-            const response = await fetch('http://localhost:8080/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password, fullname, street, city, phone, email }),
-            });
-
-            if (response.ok) {
-                alert("회원가입이 완료 되었습니다. 로그인 해주세요.");
-                navigate("/login");
-            } else if (response.status === 401) {
-                const message= '중복된 아이디 입니다.';
-                // 로그인 실패 처리
-                alert(message);
-            }
+            props.onSignup(user)
         } catch (error) {
             console.error('회원가입 오류:', error);
         }

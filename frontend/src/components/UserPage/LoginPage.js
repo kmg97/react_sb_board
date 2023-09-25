@@ -1,9 +1,9 @@
 import Login from "../login/Login";
 
-function LoginPage () {
+function LoginPage (props) {
     return (
         <div>
-            <Login />
+            <Login onLogin={props.onLogin}/>
         </div>
     );
 }

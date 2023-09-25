@@ -1,5 +1,3 @@
-import React, {useEffect, useState} from "react";
-
 import Header from "../components/common/Header";
 import HeroImg2 from "../components/HeroImg2";
 import Footer from "../components/common/Footer";

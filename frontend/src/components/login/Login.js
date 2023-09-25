@@ -1,39 +1,14 @@
 import React, { useState} from 'react';
-import { useAuth } from '../context/AuthProvider';
 import "./LoginFormStyles.css";
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
-function Login() {
+function Login(props) {
     const [username, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { login } = useAuth();
-
-    const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('http://localhost:8080/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-            });
-
-            if (response.ok) { // 로그인 성공
-                const userData = await response.json();
-
-                const setUserData = { username:userData.username, token:userData.token, roles:userData.roles[0].name};
-
-                login(setUserData); // Context를 사용하여 로그인 정보 저장
-                alert("로그인 성공"); //client한테 로그인 인지
-                navigate("/"); // 홈화면으로 페이지 이동
-            } else {
-                // 로그인 실패 처리
-                alert("일치하는 회원 정보가 없습니다.");
-                setEmail('');
-                setPassword('');
-            }
+            props.onLogin({ username, password });
         } catch (error) {
             console.error('로그인 오류:', error);
         }

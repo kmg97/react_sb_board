@@ -1,7 +1,7 @@
 import "./FormStyles.css";
 
 import React, { useRef } from "react";
-import {NavLink, useNavigate, useNavigation} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useAuth} from "./context/AuthProvider";
 
 const Form = (props) => {

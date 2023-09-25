@@ -4,9 +4,8 @@ import Footer from "../components/common/Footer";
 import React from "react";
 import LoginPage from "../components/UserPage/LoginPage";
 import useLoginCheck from "../util/useLoginCheck";
-import HeroImg2 from "../components/HeroImg2";
 
-const LoginRoute = () => {
+const LoginRoute = (props) => {
     useTitle("LoginRoute");
 
     // useLoginCheck = Context 내부에 user가 null인지 체크해서 있다면 홈으로 이동
@@ -16,7 +15,7 @@ const LoginRoute = () => {
     return (
         <div>
             <Header />
-            <LoginPage />
+            <LoginPage onLogin={props.onLogin}/>
             <Footer />
         </div>
     );

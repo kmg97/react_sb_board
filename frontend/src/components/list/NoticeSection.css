@@ -1,0 +1,113 @@
+/* 추가한 CSS 스타일 */
+.notice {
+    padding: 20px;
+    width: 70%;
+    margin: auto;
+    color: white;
+    border: 1px solid white;
+    border-radius: 15px;
+    font-size: 20px;
+
+}
+
+.container{
+    width: 100%;
+}
+
+#board-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-window {
+    border-left: 1px solid white;
+    border-top: 1px solid white;
+    border-right: 1px solid white;
+
+    border-radius: 5px 5px 0px 0px; /* 모서리를 둥글게 만듭니다. */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+    padding: 20px;
+    text-align: center;
+    width: 100%; /* 검색 창의 너비를 조절하세요. */
+}
+
+label {
+    margin-bottom: 10px;
+    margin-right: 5%;
+    font-weight: bold;
+    color: white; /* 라벨 텍스트 색상 변경 */
+}
+
+input[type="search"] {
+    width: 60%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 3%;
+}
+
+
+#board-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#board-list {
+    border-top: 1px solid white;
+}
+
+.board-header {
+    display: flex;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    align-items: center;
+    height: 55px;
+}
+
+.board-idx, .board-writer, .board-title, .board-date {
+    flex: 1;
+    text-align: center;
+}
+
+.board-idx {
+    flex-basis: 10%;
+}
+
+.board-writer {
+    flex-basis: 10%;
+}
+
+.board-title {
+    flex-basis: 50%;
+}
+
+.board-date {
+    flex-basis: 30%;
+}
+
+.board-item {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.board-item a {
+    color: white;
+    text-decoration: none;
+}
+
+.board-item a:hover {
+    text-decoration: underline;
+}
+
+.button-container {
+    text-align: right;
+    margin-top: 20px;
+}
+.board-div p {
+    text-align: center;
+}

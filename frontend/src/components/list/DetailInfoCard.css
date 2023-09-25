@@ -1,28 +1,30 @@
 .detail-info-card {
-    background-color: #000; /* 검은색 배경 */
-    color: #fff; /* 흰색 글자색 */
-    padding: 16px;
-    margin: 16px;
-    height: 700px;
-    border-radius: 4px;
+    width: 50%; /* 가로 길이를 화면의 절반 정도로 설정합니다. */
+    height: 60%;
+    padding: 20px;
+    margin: 20px auto; /* 가운데 정렬을 위해 margin을 수정합니다. */
+    border-radius: 8px;
+    background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    transition: box-shadow 0.2s;
-    text-align: center;
+    overflow: auto; /* 내용이 넘칠 경우 스크롤이 표시되도록 설정합니다. */
+    text-align: left; /* 텍스트를 왼쪽 정렬합니다. */
 }
 
 .detail-name {
-    font-size: 24px;
+    font-size: 24px; /* 더 큰 제목 폰트 크기로 수정합니다. */
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 10px; /* 아래 여백을 늘립니다. */
+    color: #333;
 }
 
-.detail-time
-{
-    font-size: 16px;
-    margin-bottom: 4px;
+.detail-time {
+    font-size: 14px;
+    color: #777;
 }
 
 .detail-text {
-
+    font-size: 18px; /* 본문 텍스트 폰트 크기를 크게 조정합니다. */
+    color: #555;
+    margin-top: 10px;
+    line-height: 1.6; /* 텍스트 줄 간격을 늘립니다. */
 }

@@ -5,7 +5,7 @@ import React from "react";
 import SignUpPage from "../components/UserPage/SignUpPage";
 import useLoginCheck from "../util/useLoginCheck";
 
-const SignUpRoute = () => {
+const SignUpRoute = (props) => {
     useTitle("SignUp");
 
     // useLoginCheck = Context 내부에 user가 null인지 체크해서 있다면 홈으로 이동
@@ -15,7 +15,7 @@ const SignUpRoute = () => {
     return (
         <div>
             <Header />
-            <SignUpPage />
+            <SignUpPage onSignup={props.onSignup}/>
             <Footer />
         </div>
     );

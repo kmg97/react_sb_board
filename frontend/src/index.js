@@ -9,13 +9,12 @@ import {AuthProvider} from "./components/context/AuthProvider";
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode >
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <ScrollToTop />
         <AuthProvider>
-
-      <App />
+            <App />
         </AuthProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

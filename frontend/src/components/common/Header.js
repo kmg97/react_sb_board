@@ -30,7 +30,6 @@ const Header = () => {
   const user = useAuth();
   const {logout} = useAuth();
 
-  // const {logout} = useAuth();
   const handleLogout = () => {
     // 로그아웃 로직 실행
     const check = window.confirm("로그아웃 하시겠습니까?");
@@ -52,14 +51,11 @@ const Header = () => {
           <NavLink to="/home" className={({ isActive }) => (isActive ? "clicked" : "")}>Home</NavLink>
         </li>
         <li>
-          <NavLink to="/about" className={({ isActive }) => (isActive ? "clicked" : "")}>About</NavLink>
-        </li>
-        <li>
           <NavLink to="/board" className={({ isActive }) => (isActive ? "clicked" : "")}>List</NavLink>
         </li>
-        <li>
-          <NavLink to="/contact" className={({ isActive }) => (isActive ? "clicked" : "")}>Contact</NavLink>
-        </li>
+        {/*<li>*/}
+        {/*  <NavLink to="/contact" className={({ isActive }) => (isActive ? "clicked" : "")}>Contact</NavLink>*/}
+        {/*</li>*/}
         <li>
           {user.user!=null ?
               <NavLink onClick={handleLogout} to="">Logout</NavLink>

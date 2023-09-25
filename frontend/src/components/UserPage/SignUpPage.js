@@ -1,9 +1,9 @@
 import Signup from "../login/Signup";
 
-function LoginPage() {
+function LoginPage(props) {
     return (
         <div>
-            <Signup />
+            <Signup onSignup={props.onSignup}/>
         </div>
     );
 }
