@@ -1,9 +1,9 @@
-import {useTitle} from "../util/UpdateTitle";
-import Header from "../components/common/Header";
-import Footer from "../components/common/Footer";
 import React from "react";
-import LoginPage from "../components/UserPage/LoginPage";
+import {useTitle} from "../util/UpdateTitle";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import useLoginCheck from "../util/useLoginCheck";
+import Login from "../pages/user/Login";
 
 const LoginRoute = (props) => {
     useTitle("LoginRoute");
@@ -15,7 +15,7 @@ const LoginRoute = (props) => {
     return (
         <div>
             <Header />
-            <LoginPage onLogin={props.onLogin}/>
+            <Login onLogin={props.onLogin}/>
             <Footer />
         </div>
     );

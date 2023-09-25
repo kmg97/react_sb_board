@@ -7,7 +7,7 @@ import NotFound from "./routes/NotFound";
 import LoadingSpinner from "./ui/LoadingSpinner";
 import LoginRoute from "./routes/LoginRoute";
 import SignUpRoute from "./routes/SignUpRoute";
-import {useAuth} from "./components/context/AuthProvider";
+import {useAuth} from "./context/AuthProvider";
 import BoardDetail from "./routes/BoardDetail";
 import BoardEdit from "./routes/BoardEdit";
 

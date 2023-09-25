@@ -1,8 +1,8 @@
-import Header from "../components/common/Header";
+import Header from "../components/Header";
 import HeroImg2 from "../components/HeroImg2";
-import Footer from "../components/common/Footer";
+import Footer from "../components/Footer";
 import {useTitle} from "../util/UpdateTitle";
-import Detail from "../components/list/Detail";
+import Detail from "../pages/board/Detail";
 
 const BoardDetail = (props) => {
     useTitle('Board Detail');

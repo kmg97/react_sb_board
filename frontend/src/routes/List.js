@@ -1,7 +1,9 @@
-import Header from "../components/common/Header";
+import React from "react";
+
+import Header from "../components/Header";
 import HeroImg2 from "../components/HeroImg2";
-import Footer from "../components/common/Footer";
-import BoardList from "../components/list/BoardList";
+import Footer from "../components/Footer";
+import BoardList from "../pages/board/BoardList";
 import { useTitle } from "../util/UpdateTitle";
 
 const List = (props) => {

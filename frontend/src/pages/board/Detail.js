@@ -2,7 +2,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Board from "./Board";
 import LoadingSpinner from "../../ui/LoadingSpinner";
-import DetailEdit from "./DetailEdit";
 
 /* username이 게시글의 username과 같으면 수정, 삭제 버튼을 내놔야 되지 않을까? */
 /* 변수 idx 를 useParams로 여기서 조회하는게 아니라 Route에서 props로 전달해도 되지 않을까? */
@@ -33,7 +32,7 @@ const Detail = (props) => {
                     location('/');
                 }
             );
-    },[])
+    },[idx, location, props.userInfo.token])
 
     return (
         <div className="centered">
@@ -47,13 +46,6 @@ const Detail = (props) => {
                     time={board.time}
                     text={board.text}
                 />
-                // <DetailEdit
-                //         id={board.id}
-                //         title={board.title}
-                //         username={board.username}
-                //         time={board.time}
-                //         text={board.text}
-                // />
             )}
         </div>
     );

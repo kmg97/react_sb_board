@@ -1,9 +1,9 @@
-import {useTitle} from "../util/UpdateTitle";
-import Header from "../components/common/Header";
-import Footer from "../components/common/Footer";
 import React from "react";
-import SignUpPage from "../components/UserPage/SignUpPage";
+import {useTitle} from "../util/UpdateTitle";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import useLoginCheck from "../util/useLoginCheck";
+import Signup from "../pages/user/Signup";
 
 const SignUpRoute = (props) => {
     useTitle("SignUp");
@@ -15,7 +15,7 @@ const SignUpRoute = (props) => {
     return (
         <div>
             <Header />
-            <SignUpPage onSignup={props.onSignup}/>
+            <Signup onSignup={props.onSignup}/>
             <Footer />
         </div>
     );

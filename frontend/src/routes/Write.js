@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "../components/common/Header";
+import Header from "../components/Header";
 import HeroImg2 from "../components/HeroImg2";
-import Footer from "../components/common/Footer";
-import Form from "../components/Form";
+import Footer from "../components/Footer";
+import BoardWrite from "../pages/board/BoardWrite";
 import { useTitle } from "../util/UpdateTitle";
 
 const Write = (props) => {
@@ -12,7 +12,7 @@ const Write = (props) => {
     <div>
       <Header />
       <HeroImg2 heading="글쓰기" text="ContactPage"/>
-      <Form onAddContact={props.onAddContact}/>
+      <BoardWrite onAddContact={props.onAddContact}/>
       <Footer />
     </div>
   );

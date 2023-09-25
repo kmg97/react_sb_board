@@ -44,21 +44,21 @@ const DetailEdit = (props) => {
           <label>제목</label>
           <input
               type="text"
-              value={location.state.props.title}
+              value={state.props.title}
               placeholder="제목을 작성해주세요"
               onChange={submitHandler}
           ></input>
           <label>연락처</label>
           <input
               type="text"
-              value={location.state.props.username}
+              value={state.props.username}
               placeholder="이메일 또는 전화번호를 작성해주세요"
               onChange={submitHandler}
           ></input>
           <label>남기실 말씀</label>
           <textarea
               row="6"
-              value={location.state.props.text}
+              value={state.props.text}
               placeholder="남기실 말씀을 작성해주세요"
               onChange={submitHandler}
 

@@ -1,10 +1,10 @@
-import "./FormStyles.css";
+import "./BoardWrite.css";
 
 import React, { useRef } from "react";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "./context/AuthProvider";
+import {useAuth} from "../../context/AuthProvider";
 
-const Form = (props) => {
+const BoardWrite = (props) => {
 
   const user = useAuth().user;
   const navigateFunction = useNavigate();
@@ -89,4 +89,4 @@ const Form = (props) => {
   );
 };
 
-export default Form;
+export default BoardWrite;

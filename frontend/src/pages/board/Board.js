@@ -1,7 +1,7 @@
 import React from 'react';
 import "./DetailInfoCard.css";
-import {useAuth} from "../context/AuthProvider";
-import {NavLink, useNavigate} from "react-router-dom"; // 스타일링을 위한 CSS 파일을 가져옵니다.
+import {useAuth} from "../../context/AuthProvider";
+import {NavLink, useNavigate} from "react-router-dom";
 
 const Board = (props) => {
     const user = useAuth().user;
