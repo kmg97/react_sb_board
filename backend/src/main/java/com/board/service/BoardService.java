@@ -1,9 +1,13 @@
 package com.board.service;
 
 import com.board.domain.Board;
+import com.board.dto.BoardPageResponse;
 import com.board.dto.BoardRequest;
 import com.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,12 +17,17 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public List<Board> findAll() {
-        return boardRepository.findAll();
+    public BoardPageResponse findByTitle(String title, int startIdx, int size) {
+        PageRequest pageable = PageRequest.of(startIdx, size);
+        Page<Board> result = boardRepository.findByTitleContaining(title, pageable);
+        List<Board> boards = result.getContent(); // 현재 페이지의 게시물 리스트
+        long totalSize = result.getTotalElements();
+        return new BoardPageResponse(boards, totalSize);
     }
 
     public Optional<Board> findById(Long id) {
@@ -30,7 +39,7 @@ public class BoardService {
             Board board = Board.builder()
                     .username(request.getUsername())
                     .title(request.getTitle())
-                    .time(request.getTime())
+                    .createAt(request.getCreateAt())
                     .text(request.getText())
                     .build();
 
@@ -40,4 +49,15 @@ public class BoardService {
         }
         return true;
     }
+
+//    public boolean updatePost(BoardRequest request) throws Exception {
+//        try {
+//
+//            Board.builder()
+//        } catch (Exception e) {
+//
+//        }
+//
+//        return true;
+//    }
 }

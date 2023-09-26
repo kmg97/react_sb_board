@@ -9,5 +9,5 @@ public class BoardRequest {
     private String username;
     private String title;
     private String text;
-    private Date time;
+    private Date createAt;
 }
