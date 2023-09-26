@@ -5,7 +5,7 @@ import {useTitle} from "../util/UpdateTitle";
 import DetailEdit from "../pages/board/DetailEdit";
 
 const BoardEdit = (props) => {
-    useTitle('Board Detail Edit');
+    useTitle('BoardDetail Detail Edit');
 
     return (
         <div>

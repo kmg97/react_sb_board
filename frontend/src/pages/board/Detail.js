@@ -1,6 +1,6 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import Board from "./Board";
+import BoardDetail from "./BoardDetail";
 import LoadingSpinner from "../../ui/LoadingSpinner";
 
 /* username이 게시글의 username과 같으면 수정, 삭제 버튼을 내놔야 되지 않을까? */
@@ -13,7 +13,7 @@ const Detail = (props) => {
     const [board, setBoard] = useState({});
 
     useEffect(()=>{
-        fetch(`http://localhost:8080/board/list/${idx}`, {
+        fetch(`http://localhost:8080/api/board/list/${idx}`, {
             method: "GET",
             headers: {
                 // jwt 전달
@@ -39,11 +39,11 @@ const Detail = (props) => {
             {loading ? (
                 <LoadingSpinner />
             ) : (
-                <Board
+                <BoardDetail
                     id={board.id}
                     title={board.title}
                     username={board.username}
-                    time={board.time}
+                    createAt={board.createAt}
                     text={board.text}
                 />
             )}

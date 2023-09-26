@@ -6,63 +6,77 @@ import NoticeSection from "./NoticeSection";
 
 const BoardList = (props) => {
     const [posts, setPosts] = useState([]);
-    const {logout} = useAuth();
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [title, setTitle] = useState(""); // 검색어 상태
+    const { logout } = useAuth();
     const location = useNavigate();
 
-    useEffect(() => {
+    // 데이터를 불러오는 함수
+    const fetchData = () => {
         if (props.userInfo && props.userInfo.token != null) {
-            fetch('http://localhost:8080/board/list', {
+            fetch(`http://localhost:8080/api/board/list?title=${title}&page=${currentPage}&pageSize=10`, {
                 method: "GET",
                 headers: {
-                    // jwt 전달
                     "Authorization": "Bearer " + props.userInfo.token,
                     "Content-Type": "application/json",
                 }
             })
                 .then(response => {
                     if (response.status === 401) {
-                        // 상태 코드가 401인 경우 알림을 표시
                         alert("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
-
-                        location("../login")
+                        location("../login");
                         logout();
-                        // 필요한 다른 작업 수행
-                        return null; // 또는 다른 작업을 수행하고 return
+                        return null;
                     } else {
                         return response.json();
                     }
                 })
                 .then(data => {
-                    setPosts(data);
-                    console.log(data);
+                    setPosts(data.boards);
+                    setTotalPages(data.totalSize);
                 })
                 .catch(error => {
-                        console.error('API 호출 오류:', error);
-                    }
-                );
+                    console.error('API 호출 오류:', error);
+                });
         } else {
             alert("로그인 후 이용해주세요");
-            location("/login")
+            location("/login");
         }
-    }, [location, logout, props.userInfo]);
+    };
+
+    // // 컴포넌트가 처음 로드될 때 데이터를 불러옴
+    // useEffect(() => {
+    //     fetchData();
+    // }, []);
+
+    // 검색어 변경 시 호출되는 함수
+    const onSearchHandler = (event) => {
+        const newTitle = event.toString();
+        setTitle(newTitle);
+        setCurrentPage(0); // 검색 시 페이지 초기화
+    };
+
+    // 페이지 변경 시 호출되는 함수
+    const onPageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
+
+    // 검색어나 페이지 변경 시 데이터 다시 불러오기
+    useEffect(() => {
+        fetchData();
+    }, [currentPage, title]);
 
     return (
-        // <div className="work-container">
-        //   <h1 className="project-heading">게시글</h1>
-        //   <div className="project-container">
-        //     {posts.map((val,idx)=>{
-        //       return (
-        //         <BoardListCard
-        //           key={idx}
-        //           id={val.id}
-        //           title={val.title}
-        //           text={val.text}
-        //         />
-        //       )
-        //     })}
-        //   </div>
-        // </div>
-        <NoticeSection notice={posts}/>
+        <>
+            <NoticeSection
+                notice={posts}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setCurrentPage={onPageChange}
+                onSearchHandler={onSearchHandler}
+            />
+        </>
     );
 };
 

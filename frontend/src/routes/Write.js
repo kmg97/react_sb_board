@@ -6,7 +6,7 @@ import BoardWrite from "../pages/board/BoardWrite";
 import { useTitle } from "../util/UpdateTitle";
 
 const Write = (props) => {
-  useTitle('Board Write');
+  useTitle('BoardDetail Write');
   
   return (
     <div>

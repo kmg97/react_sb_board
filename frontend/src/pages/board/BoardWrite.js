@@ -33,7 +33,7 @@ const BoardWrite = (props) => {
       username : user.username,
       title : titleRef.current.value,
       text : TextRef.current.value,
-      time : new Date()
+      createAt : new Date()
     };
 
     console.log(user);

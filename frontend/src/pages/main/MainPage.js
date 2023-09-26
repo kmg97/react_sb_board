@@ -14,7 +14,7 @@ const MainPage = () => {
         <p>Demo BOARD.</p>
         <h1>Demo BOARD</h1>
         <div>
-          <Link to="/board" className="btn">
+          <Link to="/board/list" className="btn">
             전체글
           </Link>
           <Link to="/contact" className="btn btn-light">
