@@ -1,12 +1,12 @@
 .detail-info-card {
     width: 50%; /* 가로 길이를 화면의 절반 정도로 설정합니다. */
-    height: 60%;
+    height: 100%;
     padding: 20px;
     margin: 20px auto; /* 가운데 정렬을 위해 margin을 수정합니다. */
     border-radius: 8px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: auto; /* 내용이 넘칠 경우 스크롤이 표시되도록 설정합니다. */
+    /*overflow: auto; !* 내용이 넘칠 경우 스크롤이 표시되도록 설정합니다. *!*/
     text-align: left; /* 텍스트를 왼쪽 정렬합니다. */
 }
 
@@ -23,6 +23,9 @@
 }
 
 .detail-text {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    min-height: 30vh;
     font-size: 18px; /* 본문 텍스트 폰트 크기를 크게 조정합니다. */
     color: #555;
     margin-top: 10px;

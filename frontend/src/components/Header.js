@@ -1,4 +1,4 @@
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import "./Header.css";
 
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -29,6 +29,7 @@ const Header = () => {
 
   const user = useAuth();
   const {logout} = useAuth();
+  const navigateFunction = useNavigate();
 
   const handleLogout = () => {
     // 로그아웃 로직 실행
@@ -36,9 +37,11 @@ const Header = () => {
     if(check) {
       logout();
       alert("로그아웃 성공");
+      setTimeout(()=>{
+        navigateFunction("/");
+      }, 0)
     }
-    // 원하는 작업을 수행한 후 페이지 이동을 원치 않을 경우 다음 라인 주석 처리
-    // history.push('/'); // 로그아웃 후 홈 페이지로 이동
+
   };
 
   return (

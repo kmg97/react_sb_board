@@ -112,39 +112,57 @@ input[type="search"] {
     text-align: center;
 }
 
-/* Pagination Container */
-.pagination {
+/* styles.css */
+/* 폼 컨테이너 스타일링 */
+.form-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    margin-bottom: 20px; /* 폼과 select 요소 사이의 간격 조절 */
 }
 
-/* Pagination Button Style */
-.pagination button {
-    background-color: #F8D90FFF;
-    color: white;
-    border: none;
+/* 폼 스타일링 */
+.form {
+    flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
+    padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    margin: 4px;
-    padding: 8px 12px;
+    font-size: 16px;
+}
+
+/* Select 스타일링 */
+.custom-select {
+    width: 50px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    color: black;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    appearance: none;
+    outline: none;
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
-.pagination button:hover {
-    background: rgba(255, 255, 255, 0.2);
+/* 활성화된 Select 스타일링 */
+.custom-select:focus {
+    border-color: #00a8e8;
+    box-shadow: 0 0 5px rgba(0, 168, 232, 0.7);
 }
 
-/* Active Page Button Style */
-.pagination button.active {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    transition: 0.3s;
+/* Hover 시 스타일링 */
+.custom-select:hover {
+    background-color: #E0E0E0;
 }
 
-/* Optional: Add Styling for Disabled Buttons (if needed) */
-.pagination button[disabled] {
-    background-color: #ccc;
-    cursor: not-allowed;
+/* 화살표 아이콘 스타일링 */
+.custom-select::after {
+    content: '\f107'; /* 화살표 아이콘 유니코드 */
+    font-family: FontAwesome; /* 아이콘 폰트 사용 (FontAwesome 등록 필요) */
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    pointer-events: none;
 }

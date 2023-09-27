@@ -1,6 +1,6 @@
 import "./BoardList.css";
 import {useEffect, useState} from "react";
-import {useAuth} from "../../context/AuthProvider";
+import {useAuth} from "../../../context/AuthProvider";
 import {useNavigate} from "react-router-dom";
 import NoticeSection from "./NoticeSection";
 
@@ -9,13 +9,15 @@ const BoardList = (props) => {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [title, setTitle] = useState(""); // 검색어 상태
+    const [pageSize, setPageSize] = useState(10);
+
     const { logout } = useAuth();
     const location = useNavigate();
 
     // 데이터를 불러오는 함수
     const fetchData = () => {
         if (props.userInfo && props.userInfo.token != null) {
-            fetch(`http://localhost:8080/api/board/list?title=${title}&page=${currentPage}&pageSize=10`, {
+            fetch(`http://localhost:8080/api/board/list?title=${title}&page=${currentPage}&pageSize=${pageSize}`, {
                 method: "GET",
                 headers: {
                     "Authorization": "Bearer " + props.userInfo.token,
@@ -45,10 +47,9 @@ const BoardList = (props) => {
         }
     };
 
-    // // 컴포넌트가 처음 로드될 때 데이터를 불러옴
-    // useEffect(() => {
-    //     fetchData();
-    // }, []);
+    if(posts.length!==0){
+        console.log(posts)
+    }
 
     // 검색어 변경 시 호출되는 함수
     const onSearchHandler = (event) => {
@@ -63,18 +64,27 @@ const BoardList = (props) => {
     };
 
     // 검색어나 페이지 변경 시 데이터 다시 불러오기
+    // 현재 페이지 변경시 기존 페이지로 데이터 불러오고
+    // 바뀐 페이지로 데이터 불러오는 문제 발생
     useEffect(() => {
         fetchData();
-    }, [currentPage, title]);
+    }, [currentPage, title, pageSize]);
 
+    const onPageSizeChange = (newPageSize) => {
+        // 페이지 크기를 업데이트하고 첫 번째 페이지로 이동
+        setPageSize(newPageSize);
+        setCurrentPage(0);
+    };
     return (
         <>
             <NoticeSection
                 notice={posts}
                 currentPage={currentPage}
+                pageSize={pageSize}
                 totalPages={totalPages}
                 setCurrentPage={onPageChange}
                 onSearchHandler={onSearchHandler}
+                onPageSizeChange={onPageSizeChange}
             />
         </>
     );

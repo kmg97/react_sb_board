@@ -2,6 +2,8 @@
   width: 100%;
   padding: 2rem 0;
   background-color: rgba(19, 19, 19, 0.8);
+  position: relative; /* 푸터를 상대 위치로 설정합니다. */
+  top: 100%; /* 컨텐츠 아래로 이동시키기 위해 top 값을 100%로 설정합니다. */
 }
 
 .footer-container {

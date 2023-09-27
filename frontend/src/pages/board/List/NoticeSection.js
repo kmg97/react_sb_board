@@ -1,22 +1,7 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import "./NoticeSection.css";
-import { NavLink } from "react-router-dom";
-
-function Pagination({ currentPage, totalPages, setCurrentPage }) {
-    return (
-        <div className="pagination">
-            {Array.from({ length: Math.ceil(totalPages / 10) }, (_, index) => (
-                <button
-                    key={index}
-                    onClick={() => setCurrentPage(index )}
-                    className={currentPage === index ? 'active' : ''}
-                >
-                    {index + 1}
-                </button>
-            ))}
-        </div>
-    );
-}
+import {NavLink} from "react-router-dom";
+import Pagination from "./Pagination";
 
 function NoticeSection(props) {
     const notice = props.notice;
@@ -25,11 +10,10 @@ function NoticeSection(props) {
     function submitHandler(event) {
         event.preventDefault();
         const title = titleRef.current.value;
-        // console.log(title);
         props.onSearchHandler(title);
     }
 
-    function textLengthOverCut(txt, len, lastTxt) {
+        function textLengthOverCut(txt, len, lastTxt) {
         if (len === "" || len == null) { // 기본값
             len = 20;
         }
@@ -42,18 +26,35 @@ function NoticeSection(props) {
         return txt;
     }
 
+    function formatDateTime(dateTimeString) {
+        const date = new Date(dateTimeString);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+    }
+
     return (
         <section className="notice">
             <div id="board-search">
                 <div className="container">
                     <div className="search-window">
-                        <form onSubmit={submitHandler}>
-                            <div className="search-wrap">
-                                <label htmlFor="search" className="blind">검색</label>
-                                <input id="search" type="text" placeholder="검색어를 입력해주세요." ref={titleRef} />
-                                <button type="submit" className="btn">검색</button>
-                            </div>
-                        </form>
+                        <div className="form-container">
+                            <form onSubmit={submitHandler} className="form">
+                                <div className="search-wrap">
+                                    <label htmlFor="search" className="blind">검색</label>
+                                    <input id="search" type="text" placeholder="검색어를 입력해주세요." ref={titleRef} />
+                                    <button type="submit" className="btn">검색</button>
+                                </div>
+                            </form>
+                            <select value={props.pageSize} className="custom-select" onChange={(e) => props.onPageSizeChange(Number(e.target.value))}>
+                                <option value={10}>10</option>
+                                <option value={20}>20</option>
+                                <option value={30}>30</option>
+                                <option value={40}>40</option>
+                                <option value={50}>50</option>
+                            </select>
+                            <label>개씩 보기</label>
+
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,7 +81,6 @@ function NoticeSection(props) {
                                 <p>조회된 게시글이 없습니다.</p>
                             </div>
                         </div>
-
                     ) : (
                         <div className="board-div">
                             <div className="board-header">
@@ -98,27 +98,23 @@ function NoticeSection(props) {
                                 </div>
                             </div>
                             {notice.map((noticeItem, index) => {
-                                // ISO 8601 형식의 날짜 및 시간 문자열을 Date 객체로 파싱
-                                const date = new Date(noticeItem.createAt);
-
-                                // 날짜 및 시간을 원하는 형식으로 포맷
-                                const formattedDateTime = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-
                                 return (
                                     <div className="board-item" key={noticeItem.id}>
                                         <div className="board-idx">
-                                            <span>{(props.currentPage*10)+ index+1}</span>
+                                            <span>{(props.currentPage * props.pageSize) + index + 1}</span>
                                         </div>
                                         <div className="board-writer">
                                             <span>{noticeItem.username}</span>
                                         </div>
                                         <div className="board-title">
-                                          <span>
-                                            <a href={"/board/item/" + noticeItem.id}>{textLengthOverCut(noticeItem.title, 14, "...")}</a>
-                                          </span>
+                                            <span>
+                                                <a href={"/board/item/" + noticeItem.id}>
+                                                    {textLengthOverCut(noticeItem.title, 14, "...")}
+                                                </a>
+                                            </span>
                                         </div>
                                         <div className="board-date">
-                                            <span>{formattedDateTime}</span>
+                                            <span>{formatDateTime(noticeItem.createAt)}</span>
                                         </div>
                                     </div>
                                 );
@@ -131,21 +127,16 @@ function NoticeSection(props) {
                             currentPage={props.currentPage}
                             totalPages={props.totalPages}
                             setCurrentPage={props.setCurrentPage}
+                            pageSize={props.pageSize}
                         />
                         <NavLink to="/Contact">
                             <button className="btn">글쓰기</button>
                         </NavLink>
-
                     </div>
                 </div>
             </div>
-
-
         </section>
     );
 }
 
 export default NoticeSection;
-
-
-

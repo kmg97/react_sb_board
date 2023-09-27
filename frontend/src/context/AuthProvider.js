@@ -1,4 +1,5 @@
 import React, {createContext, useContext, useState} from 'react';
+import {useNavigate} from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -13,6 +14,7 @@ export function AuthProvider({ children }) {
     // 초기값으로 sessionStorage 조회 후 초기화
     const initialToken = JSON.parse(sessionStorage.getItem('token'))
     const [user, setUser] = useState(initialToken);
+    const location = useNavigate();
 
 
     // 로그인 함수
@@ -25,8 +27,6 @@ export function AuthProvider({ children }) {
     const logout = () => {
         setUser(null);
         sessionStorage.removeItem("token");
-        // 새로고침 (아직 미정)
-        // window.location.reload();
     };
 
     return (

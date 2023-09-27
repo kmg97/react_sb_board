@@ -29,7 +29,7 @@ function Login(props) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <div className="pro-btns">
+            <div className="two-btn">
                 <button onClick={handleLogin} className="btn">로그인</button>
                 <NavLink to={"/signup"} className="btn">
                         회원가입

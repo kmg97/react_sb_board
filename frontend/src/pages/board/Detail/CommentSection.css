@@ -1,0 +1,57 @@
+
+/* 댓글 섹션 스타일 */
+.comment-section {
+    margin-top: 20px;
+
+}
+
+.comment-section h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.comment-section textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
+}
+
+.comment-section button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-size: 16px;
+    background: rgb(248, 217, 15);
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+/* 댓글 목록 스타일 */
+.comments {
+    margin-top: 20px;
+}
+
+.comment {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.comments p {
+    color: rgb(0, 0, 0);
+
+    font-size: 16px;
+    margin: 0;
+}
+
+.comment .comment-time {
+    font-size: 14px;
+    color: #555;
+}
