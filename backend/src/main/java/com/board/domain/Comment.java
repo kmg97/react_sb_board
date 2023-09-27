@@ -1,6 +1,8 @@
 package com.board.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Date;
 
@@ -14,18 +16,28 @@ import java.util.Date;
 	- 수정일시
 
 	보드 하나 조회 하면 -> 댓글 불러옴
-* */
+	댓글 작성시 작성자 id 로 user 조회후
+	세터로 넣어주자.
+ */
 @Entity
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Comment {
+    // 댓글 작성자 id
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 게시글
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
     private String comments;
-    private String time;
-    private String createAt;
-    private Date modifiedAt;
+    private Date createAt;
 }

@@ -55,7 +55,7 @@ public class SecurityConfig {
                                 // /admin으로 시작하는 요청은 ADMIN 권한이 있는 유저에게만 허용
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 // /user 로 시작하는 요청은 USER 권한이 있는 유저에게만 허용
-                                .requestMatchers("/user/**","/api/board/**").hasRole("USER")
+                                .requestMatchers("/user/**","/api/board/**", "/api/comment").hasRole("USER")
                                 .anyRequest().denyAll();
                                 // JWT 인증 필터 적용
                     })

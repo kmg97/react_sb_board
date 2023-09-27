@@ -32,6 +32,7 @@ public class SignService {
         }
 
         return SignResponse.builder()
+                .userId(user.getId())
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .email(user.getEmail())

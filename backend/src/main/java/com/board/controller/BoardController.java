@@ -3,6 +3,7 @@ package com.board.controller;
 import com.board.domain.Board;
 import com.board.dto.BoardPageResponse;
 import com.board.dto.BoardRequest;
+import com.board.dto.BoardResponseDTO;
 import com.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,17 +37,11 @@ public class BoardController {
         return new ResponseEntity<>(boardPageResponse, HttpStatus.OK);
     }
 
-//    @GetMapping("/list")
-//    public ResponseEntity<BoardPageResponse> getBoard(@RequestParam ("page") int startIdx, @RequestParam ("pageSize") int size) {
-//        BoardPageResponse pageResult = boardService.findAll(startIdx, size);
-//        return new ResponseEntity<>(pageResult, HttpStatus.OK);
-//    }
-
     @GetMapping("/list/{id}")
-    public ResponseEntity<Board> getDetail(@PathVariable Long id) {
-        Optional<Board> board = boardService.findById(id);
-        return board.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
-
+    public ResponseEntity<BoardResponseDTO> getDetail(@PathVariable Long id) {
+        Optional<BoardResponseDTO> boardDTO = boardService.findDTOById(id);
+        return boardDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
 }

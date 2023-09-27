@@ -20,10 +20,16 @@ public class Board {
     @Column(name="BOARD_ID")
     public Long id;
 
-    @Column(unique = true)
+    // 작성자 명 말고 user와 조인?
     private String username;
     private String title;
-    // CLOB, BLOB 택 1
+
+    /*
+    @Lob
+    매핑하는 필드 타입이 문자면 CLOB을 매핑하고 나머지는 BLOB을 매핑한다.
+    CLOB : String, char[]
+    BLOB : byte[]*/
+    @Lob
     private String text;
     private Date createAt;
 
