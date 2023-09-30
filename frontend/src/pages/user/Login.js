@@ -5,7 +5,6 @@ import {NavLink} from "react-router-dom";
 function Login(props) {
     const [username, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const handleLogin = async () => {
         try {
             props.onLogin({ username, password });

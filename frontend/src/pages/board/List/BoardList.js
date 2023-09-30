@@ -26,20 +26,21 @@ const BoardList = (props) => {
             })
                 .then(response => {
                     if (response.status === 401) {
-                        alert("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
-                        location("../login");
-                        logout();
-                        return null;
-                    } else {
-                        return response.json();
+                        throw new Error("로그인 세션이 만료되었습니다. 다시 로그인해주세요.")
                     }
+                    if (response.status === 403) {
+                        throw new Error("권한이 없습니다.")
+                    }
+                    return response.json();
                 })
                 .then(data => {
                     setPosts(data.boards);
                     setTotalPages(data.totalSize);
                 })
                 .catch(error => {
-                    console.error('API 호출 오류:', error);
+                    alert(error.message);
+                    logout();
+                    location("../login");
                 });
         } else {
             alert("로그인 후 이용해주세요");
@@ -64,8 +65,6 @@ const BoardList = (props) => {
     };
 
     // 검색어나 페이지 변경 시 데이터 다시 불러오기
-    // 현재 페이지 변경시 기존 페이지로 데이터 불러오고
-    // 바뀐 페이지로 데이터 불러오는 문제 발생
     useEffect(() => {
         fetchData();
     }, [currentPage, title, pageSize]);

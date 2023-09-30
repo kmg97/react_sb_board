@@ -31,8 +31,18 @@ function App() {
                     "Content-Type": "application/json",
                 },
             }
-        );
-        const data = await response.json();
+        )
+                .then(response=>{
+                    if(response.status===401){
+                        throw new Error("로그인 세션이 만료되었습니다. 다시 로그인해주세요.")
+                    }
+                    if(response.status===403){
+                        throw new Error("권한이 없습니다.")
+                    }
+                })
+                .catch(error=>{
+                    alert(error.message);
+                })
     }
 
     // Login API
@@ -78,6 +88,8 @@ function App() {
         }
     }
 
+
+
     return (
         <>
             <Suspense
@@ -98,7 +110,7 @@ function App() {
                     <Route path="/login" element={<LoginRoute onLogin={loginHandler}/>}/>
                     <Route path="/signup" element={<SignUpRoute onSignup={onSignupHandler}/>}/>
                     <Route path="/board/item/:idx" element={<BoardDetail userInfo={user}/>}/>
-                    <Route path="/board/edit/:id" element={<BoardEdit userInfo={user}/>}/>
+                    <Route path="/board/edit/:idx" element={<BoardEdit userInfo={user}/>}/>
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>
             </Suspense>

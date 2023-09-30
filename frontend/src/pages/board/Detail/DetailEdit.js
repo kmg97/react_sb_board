@@ -1,13 +1,17 @@
 import "./DetailEdit.css";
 
-import React from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import React, { useState } from "react";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 const DetailEdit = (props) => {
   const location = useLocation();
+  const { idx } = useParams();
 
   // location의 state 값을 확인
   const state = location.state;
+  const [title,setTitle] = useState(state.props.title);
+  const [username,setUsername] = useState(state.props.username);
+  const [text,setText] = useState(state.props.text);
   const navigate = useNavigate();
 
   /*navigate 함수가 동작하지 않는 이유는, 함수가 비동기적으로 동작하기 때문입니다.
@@ -30,11 +34,37 @@ const DetailEdit = (props) => {
 
   function submitHandler(event) {
     event.preventDefault();
-    // submitHandler의 로직 추가
+
+    const updateData= {
+      title : title,
+      username: username,
+      text: text
+    }
+
+    if (props.userInfo && props.userInfo.token != null) {
+
+      fetch(`http://localhost:8080/api/board/edit/${idx}`, {
+        method: "PUT",
+        body: JSON.stringify(updateData),
+        headers: {
+          "Authorization": "Bearer " + props.userInfo.token,
+          "Content-Type": "application/json",
+        }
+      })
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error=>{
+            alert("API 호출 오류");
+          })
+    } else {
+      alert("로그인 후 이용해주세요");
+      navigate("/login");
+    }
   }
 
   function cancelHandler() {
-    // cancelHandler의 로직 추가
+    navigate(-1);
   }
 
   // props 값을 사용하여 폼을 구성하고 작업을 수행합니다.
@@ -44,24 +74,23 @@ const DetailEdit = (props) => {
           <label>제목</label>
           <input
               type="text"
-              value={state.props.title}
+              value={title}
               placeholder="제목을 작성해주세요"
-              onChange={submitHandler}
+              onChange={(e)=>setTitle(e.target.value)}
           ></input>
           <label>연락처</label>
           <input
               type="text"
-              value={state.props.username}
+              value={username}
               placeholder="이메일 또는 전화번호를 작성해주세요"
-              onChange={submitHandler}
+              onChange={(e)=>setUsername(e.target.value)}
           ></input>
           <label>남기실 말씀</label>
           <textarea
               row="6"
-              value={state.props.text}
+              value={text}
               placeholder="남기실 말씀을 작성해주세요"
-              onChange={submitHandler}
-
+              onChange={(e)=>setText(e.target.value)}
           />
           <div className="two-btn">
             <button className="btn smbtn">저장</button>

@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import './BoardDetail.css';
-import { useAuth } from '../../../context/AuthProvider';
 import { NavLink, useNavigate } from 'react-router-dom';
 import CommentSection from './CommentSection';
 
 const BoardDetail = (props) => {
     const navigate = useNavigate();
     const [comments, setComments] = useState(props.comments || []);
+
+    function formatDateTime(dateTimeString) {
+        const date = new Date(dateTimeString);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+    }
 
     // useLoginCheck();
     const handleCommentSubmit = (newComment) => {
@@ -22,17 +26,17 @@ const BoardDetail = (props) => {
             })
                 .then(response => {
                     if (response.status === 401) {
-                        return null;
-                    } else {
-                        return response.json();
+                        throw new Error("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
                     }
-                })
-                .then(data => {
+                    if (response.status === 403) {
+                        throw new Error("접근 권한이 없습니다.");
+                    }
+                    console.log(response);
                     window.location.reload();
                 })
-                .catch(error => {
-                    console.error('API 호출 오류:', error);
-                });
+                .catch(error=>{
+                    alert(error.message);
+                })
         } else {
             alert("로그인 후 이용해주세요");
             navigate("/login");
@@ -45,7 +49,7 @@ const BoardDetail = (props) => {
             <hr />
             <p className="detail-name">작성자 : {props.username}</p>
             <hr />
-            <p className="detail-time">작성시간 : {props.createAt}</p>
+            <p className="detail-time">작성시간 : {formatDateTime(props.createAt)}</p>
             <p className="detail-text">글 본문 : {props.text}</p>
 
             {/* 댓글 입력 폼 */}

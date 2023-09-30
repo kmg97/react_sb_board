@@ -14,6 +14,8 @@ const CommentSection = ({ user, boardId, onCommentSubmit, comments }) => {
 
             onCommentSubmit(newComment);
             setComment('');
+        } else {
+            alert("댓글 내용을 작성해주세요");
         }
     };
 
