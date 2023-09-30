@@ -33,7 +33,8 @@ public class User {
   private  String phoneNumber;
   private  String email;
 
-  @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  /* FetchType fetch() default FetchType.LAZY; */
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   @Builder.Default
   private List<Authority> roles = new ArrayList<>();
 

@@ -3,12 +3,15 @@ package com.board.dto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
-public class CommentDTO {
+public class BoardResponse {
     private Long id;
     private String username;
-    private String comments;
+    private String title;
+    private String text;
     private Date createAt;
-    // 생성자, 게터, 세터 등 필요한 메서드를 추가할 수 있습니다.
+    private List<CommentResponse> comments;
+
 }

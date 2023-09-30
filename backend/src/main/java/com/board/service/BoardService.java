@@ -3,8 +3,8 @@ package com.board.service;
 import com.board.domain.Board;
 import com.board.dto.BoardPageResponse;
 import com.board.dto.BoardRequest;
-import com.board.dto.BoardResponseDTO;
-import com.board.dto.CommentDTO;
+import com.board.dto.BoardResponse;
+import com.board.dto.CommentResponse;
 import com.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+
+
     
     // 게시글 등록
     public boolean register(BoardRequest request) throws Exception {
@@ -42,8 +44,29 @@ public class BoardService {
         return true;
     }
 
+    // 게시글 업데이트
+    public boolean update(Long id, BoardRequest request) throws Exception {
+        try {
+            Optional<Board> optionalBoard = boardRepository.findById(id);
+            if (optionalBoard.isPresent()) {
+                Board board = optionalBoard.get();
+                board.setUsername(request.getUsername());
+                board.setTitle(request.getTitle());
+                board.setText(request.getText());
+
+                boardRepository.save(board); // 엔터티를 저장하여 업데이트 반영
+            } else {
+                throw new Exception("게시글을 찾을 수 없습니다.");
+            }
+        } catch (Exception e) {
+            throw new Exception("잘못된 요청입니다.");
+        }
+        return true;
+    }
+
 
     // 제목으로 검색
+    @Transactional(readOnly = true)
     public BoardPageResponse findByTitle(String title, int startIdx, int size) {
         PageRequest pageable = PageRequest.of(startIdx, size);
         Page<Board> result = boardRepository.findByTitleContaining(title, pageable);
@@ -58,13 +81,14 @@ public class BoardService {
     }
 
     // 게시글 상세 조회시 게시글과 댓글 함께 조회
-    public Optional<BoardResponseDTO> findDTOById(Long id) {
+    @Transactional(readOnly = true)
+    public Optional<BoardResponse> getBoardDetail(Long id) {
         Optional<Board> boardOptional = boardRepository.findWithCommentById(id);
-        return boardOptional.map(this::mapBoardToDTO);
+        return boardOptional.map(this::getBoardDetailDto);
     }
 
-    private BoardResponseDTO mapBoardToDTO(Board board) {
-        BoardResponseDTO dto = new BoardResponseDTO();
+    private BoardResponse getBoardDetailDto(Board board) {
+        BoardResponse dto = new BoardResponse();
         dto.setId(board.getId());
         dto.setUsername(board.getUsername());
         dto.setTitle(board.getTitle());
@@ -72,9 +96,9 @@ public class BoardService {
         dto.setCreateAt(board.getCreateAt());
 
         // 댓글 정보를 매핑
-        List<CommentDTO> commentDTOList = board.getComments().stream()
+        List<CommentResponse> commentDTOList = board.getComments().stream()
                 .map(comment -> {
-                    CommentDTO commentDTO = new CommentDTO();
+                    CommentResponse commentDTO = new CommentResponse();
                     commentDTO.setId(comment.getId());
                     commentDTO.setUsername(comment.getUser().getUsername());
                     commentDTO.setComments(comment.getComments());

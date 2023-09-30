@@ -19,7 +19,6 @@ public class SignController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<SignResponse> signin(@RequestBody SignRequest request) throws Exception {
-        System.out.println("ID : " + request.getUsername() + " PASSWORD : " + request.getPassword());
         return new ResponseEntity<>(memberService.login(request), HttpStatus.OK);
     }
 

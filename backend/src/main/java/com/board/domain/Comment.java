@@ -30,11 +30,12 @@ public class Comment {
     private Long id;
 
     // 게시글
+    /*FetchType fetch() default FetchType.EAGER;*/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
