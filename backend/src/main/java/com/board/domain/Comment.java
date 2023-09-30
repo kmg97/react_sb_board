@@ -24,7 +24,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class Comment extends BaseTimeEntity {
     // 댓글 작성자 id
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,5 +40,4 @@ public class Comment {
     private User user;
 
     private String comments;
-    private Date createAt;
 }

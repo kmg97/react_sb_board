@@ -7,10 +7,10 @@ import java.util.List;
 
 @Getter
 public class BoardPageResponse {
-    private List<Board> boards;
+    private List<BoardResponse> boards;
     private long totalSize;
 
-    public BoardPageResponse(List<Board> boards, long totalSize) {
+    public BoardPageResponse(List<BoardResponse> boards, long totalSize) {
         this.boards = boards;
         this.totalSize = totalSize;
     }

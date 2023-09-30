@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Board {
+public class Board extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="BOARD_ID")
     public Long id;
@@ -31,8 +31,6 @@ public class Board {
     BLOB : byte[]*/
     @Lob
     private String text;
-
-    private Date createAt;
 
     /*  "orphanRemoval"이 활성화된 경우, 부모 엔티티(One 쪽)에서 자식 엔티티(Many 쪽)를 삭제할 때
         자동으로 데이터베이스에서 해당 자식 엔티티도 삭제됩니다.

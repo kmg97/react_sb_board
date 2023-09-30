@@ -33,7 +33,6 @@ public class BoardService {
             Board board = Board.builder()
                     .username(request.getUsername())
                     .title(request.getTitle())
-                    .createAt(request.getCreateAt())
                     .text(request.getText())
                     .build();
 
@@ -70,7 +69,19 @@ public class BoardService {
     public BoardPageResponse findByTitle(String title, int startIdx, int size) {
         PageRequest pageable = PageRequest.of(startIdx, size);
         Page<Board> result = boardRepository.findByTitleContaining(title, pageable);
-        List<Board> boards = result.getContent(); // 현재 페이지의 게시물 리스트
+        List<BoardResponse> boards = result.getContent()
+                .stream()
+                .map(board->{
+                    BoardResponse boardResponse =  BoardResponse.builder()
+                             .id(board.getId())
+                             .username(board.getUsername())
+                             .title(board.getTitle())
+                             .text(board.getText())
+                             .createdAt(board.getCreatedAt())
+                             .modifiedAt(board.getModifiedAt()).build();
+                    return boardResponse;
+                })
+                .collect(Collectors.toList()); // 현재 페이지의 게시물 리스트
         long totalSize = result.getTotalElements();
         return new BoardPageResponse(boards, totalSize);
     }
@@ -93,7 +104,8 @@ public class BoardService {
         dto.setUsername(board.getUsername());
         dto.setTitle(board.getTitle());
         dto.setText(board.getText());
-        dto.setCreateAt(board.getCreateAt());
+        dto.setCreatedAt(board.getCreatedAt());
+        dto.setModifiedAt(board.getModifiedAt());
 
         // 댓글 정보를 매핑
         List<CommentResponse> commentDTOList = board.getComments().stream()
@@ -102,7 +114,8 @@ public class BoardService {
                     commentDTO.setId(comment.getId());
                     commentDTO.setUsername(comment.getUser().getUsername());
                     commentDTO.setComments(comment.getComments());
-                    commentDTO.setCreateAt(comment.getCreateAt());
+                    commentDTO.setCreatedAt(comment.getCreatedAt());
+                    commentDTO.setModifiedAt(comment.getModifiedAt());
                     return commentDTO;
                 })
                 .collect(Collectors.toList());

@@ -32,7 +32,6 @@ public class CommentService {
                         .user(user)
                         .board(board)
                         .comments(commentRequest.getComments())
-                        .createAt(commentRequest.getCreateAt())
                         .build();
             commentRepository.save(comment);
         } catch (Exception e){
@@ -40,8 +39,4 @@ public class CommentService {
         }
         return true;
     }
-
-
-    
-    
 }
