@@ -30,7 +30,7 @@ function NoticeSection(props) {
         const date = new Date(dateTimeString);
         return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
     }
-
+    console.log(props.totalPages)
     return (
         <section className="notice">
             <div id="board-search">
@@ -45,11 +45,41 @@ function NoticeSection(props) {
                                 </div>
                             </form>
                             <select value={props.pageSize} className="custom-select" onChange={(e) => props.onPageSizeChange(Number(e.target.value))}>
-                                <option value={10}>10</option>
-                                <option value={20}>20</option>
-                                <option value={30}>30</option>
-                                <option value={40}>40</option>
-                                <option value={50}>50</option>
+                                {props.totalPages <= 10 && (
+                                    <>
+                                        <option value={10}>10</option>
+                                    </>
+                                )}
+                                {props.totalPages > 10 && props.totalPages <= 20 && (
+                                    <>
+                                        <option value={10}>10</option>
+                                        <option value={20}>20</option>
+                                    </>
+                                )}
+                                {props.totalPages > 20 && props.totalPages <= 30 && (
+                                    <>
+                                        <option value={10}>10</option>
+                                        <option value={20}>20</option>
+                                        <option value={30}>30</option>
+                                    </>
+                                )}
+                                {props.totalPages > 30 && props.totalPages <= 40 && (
+                                    <>
+                                        <option value={10}>10</option>
+                                        <option value={20}>20</option>
+                                        <option value={30}>30</option>
+                                        <option value={40}>40</option>
+                                    </>
+                                )}
+                                {props.totalPages > 40 && (
+                                    <>
+                                        <option value={10}>10</option>
+                                        <option value={20}>20</option>
+                                        <option value={30}>30</option>
+                                        <option value={40}>40</option>
+                                        <option value={50}>50</option>
+                                    </>
+                                )}
                             </select>
                             <label>개씩 보기</label>
 
