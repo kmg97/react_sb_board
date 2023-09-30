@@ -49,7 +49,8 @@ const BoardDetail = (props) => {
             <hr />
             <p className="detail-name">작성자 : {props.username}</p>
             <hr />
-            <p className="detail-time">작성시간 : {formatDateTime(props.createAt)}</p>
+            <p className="detail-time">작성시간 : {formatDateTime(props.createdAt)}</p>
+            <p className="detail-time">수정 : {formatDateTime(props.modifiedAt)}</p>
             <p className="detail-text">글 본문 : {props.text}</p>
 
             {/* 댓글 입력 폼 */}

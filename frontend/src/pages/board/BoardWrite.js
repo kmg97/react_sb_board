@@ -32,8 +32,7 @@ const BoardWrite = (props) => {
     const contact = {
       username : user.username,
       title : titleRef.current.value,
-      text : TextRef.current.value,
-      createAt : new Date()
+      text : TextRef.current.value
     };
 
     console.log(user);

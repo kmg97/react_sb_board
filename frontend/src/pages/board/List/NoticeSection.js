@@ -96,6 +96,9 @@ function NoticeSection(props) {
                                 <div className="board-date">
                                     <span>등록일</span>
                                 </div>
+                                <div className="board-date">
+                                    <span>최종수정일</span>
+                                </div>
                             </div>
                             {notice.map((noticeItem, index) => {
                                 return (
@@ -114,7 +117,10 @@ function NoticeSection(props) {
                                             </span>
                                         </div>
                                         <div className="board-date">
-                                            <span>{formatDateTime(noticeItem.createAt)}</span>
+                                            <span>{formatDateTime(noticeItem.createdAt)}</span>
+                                        </div>
+                                        <div className="board-date">
+                                            <span>{formatDateTime(noticeItem.modifiedAt)}</span>
                                         </div>
                                     </div>
                                 );

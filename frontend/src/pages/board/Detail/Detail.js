@@ -62,7 +62,9 @@ const Detail = (props) => {
                     id={board.id}
                     title={board.title}
                     username={board.username}
-                    createAt={board.createAt}
+                    createdAt={board.createdAt}
+                    modifiedAt={board.modifiedAt}
+
                     text={board.text}
                     comments={board.comments}
                 />

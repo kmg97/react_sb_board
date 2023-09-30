@@ -9,7 +9,6 @@ const CommentSection = ({ user, boardId, onCommentSubmit, comments }) => {
                 boardId,
                 userId: user.userid,
                 comments: comment,
-                createAt: new Date().toISOString(),
             };
 
             onCommentSubmit(newComment);
@@ -50,7 +49,7 @@ const CommentSection = ({ user, boardId, onCommentSubmit, comments }) => {
                         <div key={comment.id} className="comment">
                             <p>작성자: {comment.username}</p>
                             <p>{comment.comments}</p>
-                            <p className="comment-time">작성 시간: {formatDateTime(comment.createAt)}</p>
+                            <p className="comment-time">작성 시간: {formatDateTime(comment.createdAt)}</p>
                         </div>
                     ))
                 )}
