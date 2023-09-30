@@ -1,17 +1,11 @@
 package com.board.controller;
 
-import com.board.domain.Board;
 import com.board.dto.CommentRequest;
-import com.board.repository.BoardRepository;
 import com.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

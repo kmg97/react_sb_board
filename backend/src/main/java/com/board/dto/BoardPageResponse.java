@@ -1,6 +1,5 @@
 package com.board.dto;
 
-import com.board.domain.Board;
 import lombok.Getter;
 
 import java.util.List;

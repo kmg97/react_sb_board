@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -17,7 +17,7 @@ public class BoardResponse {
     private String username;
     private String title;
     private String text;
-    private Date createdAt;
-    private Date modifiedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
     private List<CommentResponse> comments;
 }
