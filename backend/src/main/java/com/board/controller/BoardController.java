@@ -1,20 +1,21 @@
 package com.board.controller;
 
 import com.board.domain.Board;
-import com.board.dto.BoardPageResponse;
-import com.board.dto.BoardRequest;
-import com.board.dto.BoardResponse;
-import com.board.dto.FileRequest;
+import com.board.dto.*;
 import com.board.service.BoardService;
 import com.board.service.FileService;
 import com.board.service.FileUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -94,6 +95,24 @@ public class BoardController {
         }
 
         return new ResponseEntity<>( HttpStatus.CREATED);
+    }
+
+    // 첨부파일 다운로드
+    @GetMapping("/{boardId}/files/{fileId}/download")
+    public ResponseEntity<Resource> downloadFile(@PathVariable Long boardId, @PathVariable Long fileId) {
+        FileResponse file = fileService.findFileById(fileId);
+        Resource resource = fileUtils.readFileAsResource(file);
+        try {
+            String filename = URLEncoder.encode(file.getOriginalName(), "UTF-8");
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + filename + "\";")
+                    .header(HttpHeaders.CONTENT_LENGTH, file.getSize() + "")
+                    .body(resource);
+
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("filename encoding failed : " + file.getOriginalName());
+        }
     }
 
 }

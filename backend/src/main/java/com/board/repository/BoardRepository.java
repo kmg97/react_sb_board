@@ -18,4 +18,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     // @EntityGraph(attributePaths = {"comments"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT b FROM Board b LEFT JOIN FETCH b.comments c LEFT JOIN FETCH c.user WHERE b.id = :boardId")
     Optional<Board> findWithCommentById(@Param("boardId") Long boardId);
+
+    @Query("SELECT b FROM Board b LEFT JOIN FETCH b.fileEntity WHERE b.id = :boardId")
+    Optional<Board> findWithFileEntityById(@Param("boardId") Long boardId);
 }

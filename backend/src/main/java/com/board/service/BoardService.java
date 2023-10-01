@@ -2,10 +2,7 @@ package com.board.service;
 
 import com.board.domain.Board;
 import com.board.domain.FileEntity;
-import com.board.dto.BoardPageResponse;
-import com.board.dto.BoardRequest;
-import com.board.dto.BoardResponse;
-import com.board.dto.CommentResponse;
+import com.board.dto.*;
 import com.board.repository.BoardRepository;
 import com.board.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
@@ -100,6 +97,12 @@ public class BoardService {
         return boardOptional.map(this::getBoardDetailDto);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<BoardResponse> getBoardDetailWithFiles(Long id) {
+        Optional<Board> boardOptional = boardRepository.findWithFileEntityById(id);
+        return boardOptional.map(this::getBoardDetailDto);
+    }
+
     private BoardResponse getBoardDetailDto(Board board) {
         BoardResponse dto = new BoardResponse();
         dto.setId(board.getId());
@@ -122,6 +125,22 @@ public class BoardService {
                 })
                 .collect(Collectors.toList());
         dto.setComments(commentDTOList);
+
+        // 파일 정보를 매핑
+        List<FileResponse> fileDTOList = board.getFileEntity().stream()
+                .map(file -> {
+                    FileResponse fileDTO = new FileResponse();
+                    fileDTO.setId(file.getId());
+                    fileDTO.setBoardId(file.getBoard().getId());
+                    fileDTO.setOriginalName(file.getOriginalName());
+                    fileDTO.setSaveName(file.getSaveName());
+                    fileDTO.setSize(file.getSize());
+                    fileDTO.setCreatedDate(file.getCreatedAt());
+                    fileDTO.setDeletedDate(file.getModifiedAt());
+                    return fileDTO;
+                })
+                .collect(Collectors.toList());
+        dto.setFiles(fileDTOList);
 
         return dto;
     }

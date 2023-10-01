@@ -3,6 +3,7 @@ package com.board.service;
 import com.board.domain.Board;
 import com.board.domain.FileEntity;
 import com.board.dto.FileRequest;
+import com.board.dto.FileResponse;
 import com.board.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +37,25 @@ public class FileService {
                 .collect(Collectors.toList());
 
         fileRepository.saveAll(fileEntities);
+    }
+
+    public FileResponse findFileById(Long id) {
+        Optional<FileEntity> fileOptional = fileRepository.findById(id);
+
+        if (fileOptional.isPresent()) {
+            FileEntity fileEntity = fileOptional.get();
+            FileResponse fileResponse = new FileResponse();
+            fileResponse.setId(fileEntity.getId());
+            fileResponse.setBoardId(fileEntity.getBoard().getId());
+            fileResponse.setOriginalName(fileEntity.getOriginalName());
+            fileResponse.setSaveName(fileEntity.getSaveName());
+            fileResponse.setSize(fileEntity.getSize());
+            fileResponse.setCreatedDate(fileEntity.getCreatedAt());
+            fileResponse.setDeletedDate(fileEntity.getModifiedAt());
+            return fileResponse;
+        } else {
+            return null;
+        }
     }
 
 
