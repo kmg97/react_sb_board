@@ -1,11 +1,13 @@
 package com.board.service;
 
 import com.board.domain.Board;
+import com.board.domain.FileEntity;
 import com.board.dto.BoardPageResponse;
 import com.board.dto.BoardRequest;
 import com.board.dto.BoardResponse;
 import com.board.dto.CommentResponse;
 import com.board.repository.BoardRepository;
+import com.board.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,23 +26,23 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final FileRepository fileRepository;
 
-
-    
     // 게시글 등록
-    public boolean register(BoardRequest request) throws Exception {
+    public Board register(BoardRequest request) throws Exception {
+        Board board = null;
         try {
-            Board board = Board.builder()
+            board = Board.builder()
                     .username(request.getUsername())
                     .title(request.getTitle())
                     .text(request.getText())
                     .build();
 
-            boardRepository.save(board);
+            board = boardRepository.save(board);
         } catch (Exception e) {
             throw new Exception("잘못된 요청입니다.");
         }
-        return true;
+        return board;
     }
 
     // 게시글 업데이트

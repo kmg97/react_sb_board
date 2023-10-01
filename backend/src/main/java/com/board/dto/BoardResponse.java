@@ -20,4 +20,5 @@ public class BoardResponse {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private List<CommentResponse> comments;
+    private List<FileResponse> files;
 }

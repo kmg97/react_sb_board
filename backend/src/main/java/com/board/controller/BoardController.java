@@ -1,14 +1,22 @@
 package com.board.controller;
 
+import com.board.domain.Board;
 import com.board.dto.BoardPageResponse;
 import com.board.dto.BoardRequest;
 import com.board.dto.BoardResponse;
+import com.board.dto.FileRequest;
 import com.board.service.BoardService;
+import com.board.service.FileService;
+import com.board.service.FileUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /*
@@ -23,6 +31,8 @@ import java.util.Optional;
 public class BoardController {
 
     private final BoardService boardService;
+    private final FileService fileService;
+    private final FileUtils fileUtils;
 
     /* 게시물 전체 조회
     검색 조건 현재 Like 사용. 변경 필요. */
@@ -36,14 +46,24 @@ public class BoardController {
     @GetMapping("/list/{id}")
     public ResponseEntity<BoardResponse> getDetail(@PathVariable Long id) {
         Optional<BoardResponse> boardDTO = boardService.getBoardDetail(id);
+        System.out.println(boardDTO.get());
         return boardDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     /* 게시물 등록 */
     @PostMapping
-    public ResponseEntity<Boolean> board(@RequestBody BoardRequest boardRequest) throws Exception {
-        return new ResponseEntity<>(boardService.register(boardRequest), HttpStatus.OK);
+    public ResponseEntity<BoardResponse> board(@RequestBody BoardRequest boardRequest) throws Exception {
+        Board board = boardService.register(boardRequest);
+        BoardResponse boardResponse = BoardResponse.builder()
+                .id(board.getId())
+                .username(board.getUsername())
+                .title(board.getTitle())
+                .text(board.getText())
+                .modifiedAt(board.getModifiedAt())
+                .createdAt(board.getCreatedAt())
+                .build();
+        return new ResponseEntity<>(boardResponse, HttpStatus.OK);
     }
 
     // 게시글 업데이트 엔드포인트 추가
@@ -55,6 +75,25 @@ public class BoardController {
         } else {
             return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping(value="/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<BoardResponse> createPost(@RequestPart(required = false) MultipartFile[] files,
+                                                    @RequestParam("username") String username,
+                                                    @RequestParam("title") String title,
+                                                    @RequestParam("text") String text) throws Exception {
+        BoardRequest boardRequest = new BoardRequest();
+        boardRequest.setTitle(title);
+        boardRequest.setUsername(username);
+        boardRequest.setText(text);
+        Board register = boardService.register(boardRequest);
+        if(files !=null){
+            List<MultipartFile> fileList = Arrays.stream(files).toList();
+            List<FileRequest> file = fileUtils.uploadFiles(fileList);
+            fileService.saveFiles(register, file);
+        }
+
+        return new ResponseEntity<>( HttpStatus.CREATED);
     }
 
 }

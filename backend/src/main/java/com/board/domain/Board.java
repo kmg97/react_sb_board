@@ -40,4 +40,8 @@ public class Board extends BaseTimeEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<Comment> comments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "board", orphanRemoval = true)
+    private List<FileEntity> fileEntity;
 }
