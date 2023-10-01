@@ -22,13 +22,12 @@ function App() {
     // 게시글 작성 API
     async function addContactHandler(event) {
         const response = await fetch(
-            "http://localhost:8080/api/board",
+            "http://localhost:8080/api/board/files",
             {
                 method: "POST",
-                body: JSON.stringify(event),
+                body: event,
                 headers: {
                     "Authorization": "Bearer " + user.token,
-                    "Content-Type": "application/json",
                 },
             }
         )
