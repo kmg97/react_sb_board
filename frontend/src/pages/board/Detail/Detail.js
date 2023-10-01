@@ -67,6 +67,7 @@ const Detail = (props) => {
 
                     text={board.text}
                     comments={board.comments}
+                    files={board.files}
                 />
             )}
         </div>

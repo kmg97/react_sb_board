@@ -14,6 +14,7 @@ const BoardDetail = (props) => {
 
     // useLoginCheck();
     const handleCommentSubmit = (newComment) => {
+        console.log("댓글 작성 요청");
         if (props.userInfo && props.userInfo.token != null) {
 
             fetch(`http://localhost:8080/api/comment`, {
@@ -43,6 +44,35 @@ const BoardDetail = (props) => {
         }
     };
 
+    const downloadFile = (boardId, fileId, originalName) => {
+        console.log("파일 다운로드 요청")
+        const url = `http://localhost:8080/api/board/${boardId}/files/${fileId}/download`; // API 엔드포인트의 절대 경로
+
+        fetch(url, {
+            method: 'GET', // GET 요청
+            headers: {
+                "Authorization": "Bearer " + props.userInfo.token, // 토큰을 헤더에 추가
+            },
+        })
+            .then((response) => {
+                // 파일 다운로드 로직
+                return response.blob(); // 응답 데이터를 Blob 형태로 변환
+            })
+            .then((blob) => {
+                // Blob을 사용하여 파일 다운로드
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = originalName; // 다운로드될 파일명 설정
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+                // 오류 처리
+                console.error('파일 다운로드 실패:', error);
+            });
+    };
     return (
         <div className="detail-info-card">
             <h2 className="detail-name">제목 : {props.title}</h2>
@@ -51,6 +81,27 @@ const BoardDetail = (props) => {
             <hr />
             <p className="detail-time">작성시간 : {formatDateTime(props.createdAt)}</p>
             <p className="detail-time">수정 : {formatDateTime(props.modifiedAt)}</p>
+            {/* 첨부 파일 목록 */}
+            <div className="file-list">
+                <p style={{ fontSize: '18px', fontWeight: 'bold', color:'black' }}>첨부 파일:</p>
+                <ul style={{ listStyleType: 'none', padding: '0' }}>
+                    {props.files.map((file) => (
+                        <li key={file.id} style={{ marginBottom: '5px' }}>
+                            <a
+                                style={{
+                                    fontSize: '16px',
+                                    fontWeight: 'bold',
+                                    textDecoration: 'underline',
+                                    cursor: 'pointer', color:'black'
+                                }}
+                                onClick={() => downloadFile(props.id, file.id, file.originalName)}
+                            >
+                                {file.originalName}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
             <p className="detail-text">글 본문 : {props.text}</p>
 
             {/* 댓글 입력 폼 */}
