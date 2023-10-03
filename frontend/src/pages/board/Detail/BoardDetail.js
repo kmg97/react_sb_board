@@ -14,28 +14,29 @@ const BoardDetail = (props) => {
 
     // useLoginCheck();
     const deleteHandler = (boardId) => {
-        console.log("댓글 작성 요청");
         if (props.userInfo && props.userInfo.token != null) {
-
-            fetch(`http://localhost:8080/api/board/delete/${boardId}`, {
-                method: "DELETE",
-                headers: {
-                    "Authorization": "Bearer " + props.userInfo.token
-                }
-            })
-                .then(response => {
-                    if (response.status === 401) {
-                        throw new Error("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
+            const confirm = window.confirm("삭제하시겠습니까?");
+            if (confirm) {
+                fetch(`http://localhost:8080/api/board/delete/${boardId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": "Bearer " + props.userInfo.token
                     }
-                    if (response.status === 403) {
-                        throw new Error("접근 권한이 없습니다.");
-                    }
-                    console.log(response);
-                    navigate(-1)
                 })
-                .catch(error=>{
-                    alert(error.message);
-                })
+                    .then(response => {
+                        if (response.status === 401) {
+                            throw new Error("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
+                        }
+                        if (response.status === 403) {
+                            throw new Error("접근 권한이 없습니다.");
+                        }
+                        alert("삭제되었습니다.")
+                        navigate(-1)
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    })
+            }
         } else {
             alert("로그인 후 이용해주세요");
             navigate("/login");
