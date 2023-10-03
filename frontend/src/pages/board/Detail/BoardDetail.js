@@ -13,6 +13,35 @@ const BoardDetail = (props) => {
     }
 
     // useLoginCheck();
+    const deleteHandler = (boardId) => {
+        console.log("댓글 작성 요청");
+        if (props.userInfo && props.userInfo.token != null) {
+
+            fetch(`http://localhost:8080/api/board/delete/${boardId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": "Bearer " + props.userInfo.token
+                }
+            })
+                .then(response => {
+                    if (response.status === 401) {
+                        throw new Error("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
+                    }
+                    if (response.status === 403) {
+                        throw new Error("접근 권한이 없습니다.");
+                    }
+                    console.log(response);
+                    navigate(-1)
+                })
+                .catch(error=>{
+                    alert(error.message);
+                })
+        } else {
+            alert("로그인 후 이용해주세요");
+            navigate("/login");
+        }
+    };
+
     const handleCommentSubmit = (newComment) => {
         console.log("댓글 작성 요청");
         if (props.userInfo && props.userInfo.token != null) {
@@ -43,6 +72,7 @@ const BoardDetail = (props) => {
             navigate("/login");
         }
     };
+
 
     const downloadFile = (boardId, fileId, originalName) => {
         console.log("파일 다운로드 요청")
@@ -102,7 +132,7 @@ const BoardDetail = (props) => {
                     ))}
                 </ul>
             </div>
-            <p className="detail-text">글 본문 : {props.text}</p>
+            <p className="detail-text">글 본문 : {props.content}</p>
 
             {/* 댓글 입력 폼 */}
             <CommentSection
@@ -114,12 +144,15 @@ const BoardDetail = (props) => {
 
             <div className="two-btn">
                 {props.userInfo !== null && props.userInfo.username === props.username && (
+                    <div>
                     <button
                         className="btn"
                         onClick={() => navigate(`/board/edit/${props.id}`, { state: { props } })}
                     >
                         수정
                     </button>
+                    <button className="btn" onClick={()=>deleteHandler(props.id)}>삭제</button>
+                    </div>
                 )}
                 <NavLink to="/board/list">
                     <button className="btn">목록</button>

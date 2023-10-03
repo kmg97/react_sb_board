@@ -38,6 +38,7 @@ function App() {
                     if(response.status===403){
                         throw new Error("권한이 없습니다.")
                     }
+                    navigate(-1);
                 })
                 .catch(error=>{
                     alert(error.message);

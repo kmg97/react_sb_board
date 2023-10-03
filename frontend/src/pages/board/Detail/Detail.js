@@ -65,7 +65,7 @@ const Detail = (props) => {
                     createdAt={board.createdAt}
                     modifiedAt={board.modifiedAt}
 
-                    text={board.text}
+                    content={board.content}
                     comments={board.comments}
                     files={board.files}
                 />

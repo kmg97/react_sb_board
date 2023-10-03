@@ -11,7 +11,7 @@ const DetailEdit = (props) => {
   const state = location.state;
   const [title,setTitle] = useState(state.props.title);
   const [username,setUsername] = useState(state.props.username);
-  const [text,setText] = useState(state.props.text);
+  const [content,setContent] = useState(state.props.content);
   const navigate = useNavigate();
 
   /*navigate 함수가 동작하지 않는 이유는, 함수가 비동기적으로 동작하기 때문입니다.
@@ -38,7 +38,7 @@ const DetailEdit = (props) => {
     const updateData= {
       title : title,
       username: username,
-      text: text
+      content: content
     }
 
     if (props.userInfo && props.userInfo.token != null) {
@@ -88,9 +88,9 @@ const DetailEdit = (props) => {
           <label>남기실 말씀</label>
           <textarea
               row="6"
-              value={text}
+              value={content}
               placeholder="남기실 말씀을 작성해주세요"
-              onChange={(e)=>setText(e.target.value)}
+              onChange={(e)=>setContent(e.target.value)}
           />
           <div className="two-btn">
             <button className="btn smbtn">저장</button>

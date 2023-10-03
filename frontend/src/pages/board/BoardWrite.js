@@ -11,7 +11,7 @@ const BoardWrite = (props) => {
 
   const titleRef = useRef("");
   const EmailRef = useRef("");
-  const TextRef = useRef("");
+  const ContentRef = useRef("");
 
   const [fileList, setFileList] = useState([]);
 
@@ -34,7 +34,7 @@ const BoardWrite = (props) => {
     const formData = new FormData();
     formData.append("username", user ? user.username : "");
     formData.append("title", titleRef.current.value);
-    formData.append("text", TextRef.current.value);
+    formData.append("content", ContentRef.current.value);
     fileList.forEach((file) => {
       if (file) {
         console.log(file.element.files[0])
@@ -47,7 +47,7 @@ const BoardWrite = (props) => {
     alert("제출 되었습니다!");
 
     titleRef.current.disabled = true;
-    TextRef.current.disabled = true;
+    ContentRef.current.disabled = true;
 
     document.querySelector(".smbtn").classList.add("btn-light");
     document.querySelector(".smbtn").disabled = true;
@@ -66,7 +66,7 @@ const BoardWrite = (props) => {
     }
 
     const fileSize = Math.floor(file.size / 1024 / 1024);
-    if (fileSize > 10) {
+    if (fileSize > 255) {
       alert('10MB 이하의 파일로 업로드해 주세요.');
       event.target.value = '';
       return;
@@ -122,7 +122,7 @@ const BoardWrite = (props) => {
         <textarea
           row="6"
           placeholder="남기실 말씀을 작성해주세요"
-          ref={TextRef}
+          ref={ContentRef}
         />
         <div className="file_list">
           {fileList.map((file, index) => (
