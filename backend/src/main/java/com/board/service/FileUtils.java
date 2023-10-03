@@ -1,7 +1,7 @@
 package com.board.service;
 
-import com.board.dto.FileRequest;
-import com.board.dto.FileResponse;
+import com.board.dto.file.FileRequest;
+import com.board.dto.file.FileResponse;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;

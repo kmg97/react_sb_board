@@ -3,8 +3,6 @@ package com.board.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
-
 /*
      댓글 클래스 (다)
 	- id
@@ -20,10 +18,10 @@ import java.util.Date;
  */
 @Entity
 @Builder
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment extends BaseTimeEntity {
+public class Comment extends BaseTime {
     // 댓글 작성자 id
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,6 +35,11 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    public void setBoard(Board board) {
+        this.board = board;
+        board.getComments().add(this);
+    }
 
     private String comments;
 }

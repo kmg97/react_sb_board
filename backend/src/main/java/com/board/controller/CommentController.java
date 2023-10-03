@@ -1,6 +1,6 @@
 package com.board.controller;
 
-import com.board.dto.CommentRequest;
+import com.board.dto.comment.CommentRequest;
 import com.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,5 +19,9 @@ public class CommentController {
         System.out.println(commentRequest.toString());
         return new ResponseEntity<>(commentService.register(commentRequest), HttpStatus.OK);
     }
+    
+    // 댓글 삭제
+    
+    // 댓글 수정
 
 }

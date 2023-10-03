@@ -3,15 +3,13 @@ package com.board.service;
 import com.board.domain.Board;
 import com.board.domain.Comment;
 import com.board.domain.User;
-import com.board.dto.CommentRequest;
+import com.board.dto.comment.CommentRequest;
 import com.board.repository.BoardRepository;
 import com.board.repository.CommentRepository;
 import com.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional

@@ -5,14 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "FILE")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileEntity extends BaseTimeEntity {
+public class FileEntity extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +26,9 @@ public class FileEntity extends BaseTimeEntity {
     @Column(name = "size", nullable = false)
     private Long size;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOARD_ID")
     private Board board;
+
+
 }

@@ -1,4 +1,4 @@
-package com.board.dto;
+package com.board.dto.board;
 
 import lombok.Data;
 
@@ -6,5 +6,5 @@ import lombok.Data;
 public class BoardRequest {
     private String username;
     private String title;
-    private String text;
+    private String content;
 }

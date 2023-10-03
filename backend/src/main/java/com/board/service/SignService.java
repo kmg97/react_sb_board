@@ -2,8 +2,8 @@ package com.board.service;
 
 import com.board.domain.Authority;
 import com.board.domain.User;
-import com.board.dto.SignRequest;
-import com.board.dto.SignResponse;
+import com.board.dto.sign.SignRequest;
+import com.board.dto.sign.SignResponse;
 import com.board.repository.UserRepository;
 import com.board.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +35,6 @@ public class SignService {
                 .userId(user.getId())
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .email(user.getEmail())
-                .fullname(user.getFullname())
                 .roles(user.getRoles())
                 .token(jwtProvider.createToken(user.getUsername(), user.getRoles()))
                 .build();

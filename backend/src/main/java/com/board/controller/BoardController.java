@@ -1,7 +1,11 @@
 package com.board.controller;
 
 import com.board.domain.Board;
-import com.board.dto.*;
+import com.board.dto.board.BoardPageResponse;
+import com.board.dto.board.BoardRequest;
+import com.board.dto.board.BoardResponse;
+import com.board.dto.file.FileRequest;
+import com.board.dto.file.FileResponse;
 import com.board.service.BoardService;
 import com.board.service.FileService;
 import com.board.service.FileUtils;
@@ -47,7 +51,6 @@ public class BoardController {
     @GetMapping("/list/{id}")
     public ResponseEntity<BoardResponse> getDetail(@PathVariable Long id) {
         Optional<BoardResponse> boardDTO = boardService.getBoardDetail(id);
-        System.out.println(boardDTO.get());
         return boardDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
@@ -60,14 +63,14 @@ public class BoardController {
                 .id(board.getId())
                 .username(board.getUsername())
                 .title(board.getTitle())
-                .text(board.getText())
+                .content(board.getContent())
                 .modifiedAt(board.getModifiedAt())
                 .createdAt(board.getCreatedAt())
                 .build();
         return new ResponseEntity<>(boardResponse, HttpStatus.OK);
     }
 
-    // 게시글 업데이트 엔드포인트 추가
+    /* 게시물 업데이트 */
     @PutMapping("/edit/{id}")
     public ResponseEntity<Boolean> updateBoard(@PathVariable Long id, @RequestBody BoardRequest boardRequest) throws Exception {
         boolean isUpdated = boardService.update(id, boardRequest);
@@ -78,15 +81,25 @@ public class BoardController {
         }
     }
 
+    /* 게시물 삭제 */
+    @DeleteMapping("/delete/{boardId}")
+    public ResponseEntity<Long> delete(@PathVariable Long boardId) {
+        boardService.delete(boardId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    /* 게시물 등록 파일첨부 때문에 MultipartFile을 쓰는걸로 
+    *  게시물 등록시 파일첨부는 선택사항이기에 (required = false) 옵션 줌
+    * */
     @PostMapping(value="/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BoardResponse> createPost(@RequestPart(required = false) MultipartFile[] files,
                                                     @RequestParam("username") String username,
                                                     @RequestParam("title") String title,
-                                                    @RequestParam("text") String text) throws Exception {
+                                                    @RequestParam("content") String content) throws Exception {
         BoardRequest boardRequest = new BoardRequest();
         boardRequest.setTitle(title);
         boardRequest.setUsername(username);
-        boardRequest.setText(text);
+        boardRequest.setContent(content);
         Board register = boardService.register(boardRequest);
         if(files !=null){
             List<MultipartFile> fileList = Arrays.stream(files).toList();
@@ -97,7 +110,7 @@ public class BoardController {
         return new ResponseEntity<>( HttpStatus.CREATED);
     }
 
-    // 첨부파일 다운로드
+    /* 게시물 첨부파일 다운로드 */
     @GetMapping("/{boardId}/files/{fileId}/download")
     public ResponseEntity<Resource> downloadFile(@PathVariable Long boardId, @PathVariable Long fileId) {
         FileResponse file = fileService.findFileById(fileId);
@@ -109,7 +122,6 @@ public class BoardController {
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + filename + "\";")
                     .header(HttpHeaders.CONTENT_LENGTH, file.getSize() + "")
                     .body(resource);
-
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("filename encoding failed : " + file.getOriginalName());
         }

@@ -1,4 +1,4 @@
-package com.board.dto;
+package com.board.dto.comment;
 
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +14,4 @@ public class CommentRequest {
     private Long boardId;
 
     private String comments;
-    private Date createAt;
 }

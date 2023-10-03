@@ -2,8 +2,8 @@ package com.board.service;
 
 import com.board.domain.Board;
 import com.board.domain.FileEntity;
-import com.board.dto.FileRequest;
-import com.board.dto.FileResponse;
+import com.board.dto.file.FileRequest;
+import com.board.dto.file.FileResponse;
 import com.board.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +39,7 @@ public class FileService {
         fileRepository.saveAll(fileEntities);
     }
 
+    @Transactional(readOnly = true)
     public FileResponse findFileById(Long id) {
         Optional<FileEntity> fileOptional = fileRepository.findById(id);
 

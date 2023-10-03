@@ -1,7 +1,7 @@
 package com.board.controller;
 
-import com.board.dto.SignRequest;
-import com.board.dto.SignResponse;
+import com.board.dto.sign.SignRequest;
+import com.board.dto.sign.SignResponse;
 import com.board.repository.UserRepository;
 import com.board.service.SignService;
 import lombok.RequiredArgsConstructor;

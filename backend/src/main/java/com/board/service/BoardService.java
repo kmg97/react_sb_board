@@ -1,8 +1,11 @@
 package com.board.service;
 
 import com.board.domain.Board;
-import com.board.domain.FileEntity;
-import com.board.dto.*;
+import com.board.dto.board.BoardPageResponse;
+import com.board.dto.board.BoardRequest;
+import com.board.dto.board.BoardResponse;
+import com.board.dto.comment.CommentResponse;
+import com.board.dto.file.FileResponse;
 import com.board.repository.BoardRepository;
 import com.board.repository.FileRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +35,7 @@ public class BoardService {
             board = Board.builder()
                     .username(request.getUsername())
                     .title(request.getTitle())
-                    .text(request.getText())
+                    .content(request.getContent())
                     .build();
 
             board = boardRepository.save(board);
@@ -50,7 +53,7 @@ public class BoardService {
                 Board board = optionalBoard.get();
                 board.setUsername(request.getUsername());
                 board.setTitle(request.getTitle());
-                board.setText(request.getText());
+                board.setContent(request.getContent());
 
                 boardRepository.save(board); // 엔터티를 저장하여 업데이트 반영
             } else {
@@ -62,6 +65,10 @@ public class BoardService {
         return true;
     }
 
+    // 게시물 삭제
+    public void delete(Long boardId){
+        boardRepository.deleteById(boardId);
+    }
 
     // 제목으로 검색
     @Transactional(readOnly = true)
@@ -75,7 +82,7 @@ public class BoardService {
                              .id(board.getId())
                              .username(board.getUsername())
                              .title(board.getTitle())
-                             .text(board.getText())
+                             .content(board.getContent())
                              .createdAt(board.getCreatedAt())
                              .modifiedAt(board.getModifiedAt()).build();
                     return boardResponse;
@@ -85,21 +92,10 @@ public class BoardService {
         return new BoardPageResponse(boards, totalSize);
     }
 
-    /* 사용 안함 */
-    public Optional<Board> findById(Long id) {
-        return boardRepository.findById(id);
-    }
-
     // 게시글 상세 조회시 게시글과 댓글 함께 조회
     @Transactional(readOnly = true)
     public Optional<BoardResponse> getBoardDetail(Long id) {
         Optional<Board> boardOptional = boardRepository.findWithCommentById(id);
-        return boardOptional.map(this::getBoardDetailDto);
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<BoardResponse> getBoardDetailWithFiles(Long id) {
-        Optional<Board> boardOptional = boardRepository.findWithFileEntityById(id);
         return boardOptional.map(this::getBoardDetailDto);
     }
 
@@ -108,7 +104,7 @@ public class BoardService {
         dto.setId(board.getId());
         dto.setUsername(board.getUsername());
         dto.setTitle(board.getTitle());
-        dto.setText(board.getText());
+        dto.setContent(board.getContent());
         dto.setCreatedAt(board.getCreatedAt());
         dto.setModifiedAt(board.getModifiedAt());
 

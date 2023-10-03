@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Board extends BaseTimeEntity {
+public class Board extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="BOARD_ID")
     public Long id;
@@ -29,7 +30,7 @@ public class Board extends BaseTimeEntity {
     CLOB : String, char[]
     BLOB : byte[]*/
     @Lob
-    private String text;
+    private String content;
 
     /*  "orphanRemoval"이 활성화된 경우, 부모 엔티티(One 쪽)에서 자식 엔티티(Many 쪽)를 삭제할 때
         자동으로 데이터베이스에서 해당 자식 엔티티도 삭제됩니다.
@@ -43,5 +44,6 @@ public class Board extends BaseTimeEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "board", orphanRemoval = true)
+    @BatchSize(size = 10)
     private List<FileEntity> fileEntity;
 }

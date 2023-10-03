@@ -1,15 +1,10 @@
 package com.board;
 
-import com.board.domain.Board;
-import com.board.dto.BoardRequest;
 import com.board.repository.BoardRepository;
 import com.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component

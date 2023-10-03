@@ -1,4 +1,4 @@
-package com.board.dto;
+package com.board.dto.sign;
 
 import com.board.domain.Authority;
 import com.board.domain.User;
@@ -18,11 +18,6 @@ public class SignResponse {
     private Long userId;
     private String username;
     private String password;
-    private String fullname;
-    private String street;
-    private String city;
-    private String phoneNumber;
-    private String email;
 
     private List<Authority> roles = new ArrayList<>();
 
@@ -31,11 +26,6 @@ public class SignResponse {
     public SignResponse(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.fullname = user.getFullname();
-        this.street = user.getStreet();
-        this.city = user.getCity();
-        this.phoneNumber = user.getPhoneNumber();
-        this.email = user.getEmail();
         this.roles = user.getRoles();
     }
 }
