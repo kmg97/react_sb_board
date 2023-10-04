@@ -27,6 +27,10 @@ public class User {
   private  String phoneNumber;
   private  String email;
 
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  private List<Board> boards; // 사용자가 작성한 게시글 목록
+
   /* FetchType fetch() default FetchType.LAZY; */
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   @Builder.Default

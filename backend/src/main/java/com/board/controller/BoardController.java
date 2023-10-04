@@ -1,6 +1,7 @@
 package com.board.controller;
 
 import com.board.domain.Board;
+import com.board.domain.User;
 import com.board.dto.board.BoardPageResponse;
 import com.board.dto.board.BoardRequest;
 import com.board.dto.board.BoardResponse;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,7 +63,7 @@ public class BoardController {
         Board board = boardService.register(boardRequest);
         BoardResponse boardResponse = BoardResponse.builder()
                 .id(board.getId())
-                .username(board.getUsername())
+                .username(board.getUser().getUsername())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .modifiedAt(board.getModifiedAt())
@@ -107,7 +109,7 @@ public class BoardController {
             fileService.saveFiles(register, file);
         }
 
-        return new ResponseEntity<>( HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /* 게시물 첨부파일 다운로드 */

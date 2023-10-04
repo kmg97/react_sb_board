@@ -1,6 +1,7 @@
 package com.board.service;
 
 import com.board.domain.Board;
+import com.board.domain.User;
 import com.board.dto.board.BoardPageResponse;
 import com.board.dto.board.BoardRequest;
 import com.board.dto.board.BoardResponse;
@@ -8,10 +9,12 @@ import com.board.dto.comment.CommentResponse;
 import com.board.dto.file.FileResponse;
 import com.board.repository.BoardRepository;
 import com.board.repository.FileRepository;
+import com.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,19 +29,20 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final FileRepository fileRepository;
+    private final UserRepository userRepository;
 
     // 게시글 등록
     public Board register(BoardRequest request) throws Exception {
         Board board = null;
+        User user = userRepository.findByUsername(request.getUsername()).get();
         try {
-            board = Board.builder()
-                    .username(request.getUsername())
-                    .title(request.getTitle())
-                    .content(request.getContent())
-                    .build();
+                board = Board.builder()
+                        .user(user)
+                        .title(request.getTitle())
+                        .content(request.getContent())
+                        .build();
 
-            board = boardRepository.save(board);
+                board = boardRepository.save(board);
         } catch (Exception e) {
             throw new Exception("잘못된 요청입니다.");
         }
@@ -49,9 +53,10 @@ public class BoardService {
     public boolean update(Long id, BoardRequest request) throws Exception {
         try {
             Optional<Board> optionalBoard = boardRepository.findById(id);
-            if (optionalBoard.isPresent()) {
+            Optional<User> user = userRepository.findByUsername(request.getUsername());
+            if (optionalBoard.isPresent()&&user.isPresent()) {
                 Board board = optionalBoard.get();
-                board.setUsername(request.getUsername());
+                board.setUser(user.get());
                 board.setTitle(request.getTitle());
                 board.setContent(request.getContent());
 
@@ -80,7 +85,7 @@ public class BoardService {
                 .map(board->{
                     BoardResponse boardResponse =  BoardResponse.builder()
                              .id(board.getId())
-                             .username(board.getUsername())
+                             .username(board.getUser().getUsername())
                              .title(board.getTitle())
                              .content(board.getContent())
                              .createdAt(board.getCreatedAt())
@@ -102,7 +107,7 @@ public class BoardService {
     private BoardResponse getBoardDetailDto(Board board) {
         BoardResponse dto = new BoardResponse();
         dto.setId(board.getId());
-        dto.setUsername(board.getUsername());
+        dto.setUsername(board.getUser().getUsername());
         dto.setTitle(board.getTitle());
         dto.setContent(board.getContent());
         dto.setCreatedAt(board.getCreatedAt());

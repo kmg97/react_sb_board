@@ -20,8 +20,10 @@ public class Board extends BaseTime {
     @Column(name="BOARD_ID")
     public Long id;
 
-    // 작성자 명 말고 user와 조인?
-    private String username;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="USER_ID")
+    private User user;
+
     private String title;
 
     /*
@@ -39,11 +41,10 @@ public class Board extends BaseTime {
         해당 자식 엔티티는 삭제되지 않습니다. 그러나 관계가 끊어지고 나면 해당 자식 엔티티의 부모 참조는
         null이 됩니다.*/
     @JsonIgnore
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
-    @BatchSize(size = 10)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<FileEntity> fileEntity;
 }
