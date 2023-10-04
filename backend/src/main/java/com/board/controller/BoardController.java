@@ -7,6 +7,7 @@ import com.board.dto.board.BoardRequest;
 import com.board.dto.board.BoardResponse;
 import com.board.dto.file.FileRequest;
 import com.board.dto.file.FileResponse;
+import com.board.repository.FileRepository;
 import com.board.service.BoardService;
 import com.board.service.FileService;
 import com.board.service.FileUtils;

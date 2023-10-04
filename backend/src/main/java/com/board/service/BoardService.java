@@ -137,7 +137,7 @@ public class BoardService {
                     fileDTO.setSaveName(file.getSaveName());
                     fileDTO.setSize(file.getSize());
                     fileDTO.setCreatedDate(file.getCreatedAt());
-                    fileDTO.setDeletedDate(file.getModifiedAt());
+                    fileDTO.setModifiedDate(file.getModifiedAt());
                     return fileDTO;
                 })
                 .collect(Collectors.toList());

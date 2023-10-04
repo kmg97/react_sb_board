@@ -52,7 +52,7 @@ public class FileService {
             fileResponse.setSaveName(fileEntity.getSaveName());
             fileResponse.setSize(fileEntity.getSize());
             fileResponse.setCreatedDate(fileEntity.getCreatedAt());
-            fileResponse.setDeletedDate(fileEntity.getModifiedAt());
+            fileResponse.setModifiedDate(fileEntity.getModifiedAt());
             return fileResponse;
         } else {
             return null;

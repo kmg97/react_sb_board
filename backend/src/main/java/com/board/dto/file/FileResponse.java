@@ -16,5 +16,5 @@ public class FileResponse {
     private String saveName;              // 저장 파일명
     private long size;                    // 파일 크기
     private LocalDateTime createdDate;    // 생성일시
-    private LocalDateTime deletedDate;    // 삭제일시
+    private LocalDateTime modifiedDate;   // 수정일시
 }
