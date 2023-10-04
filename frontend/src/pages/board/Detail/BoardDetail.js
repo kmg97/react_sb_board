@@ -114,24 +114,28 @@ const BoardDetail = (props) => {
             <p className="detail-time">수정 : {formatDateTime(props.modifiedAt)}</p>
             {/* 첨부 파일 목록 */}
             <div className="file-list">
-                <p style={{ fontSize: '18px', fontWeight: 'bold', color:'black' }}>첨부 파일:</p>
-                <ul style={{ listStyleType: 'none', padding: '0' }}>
-                    {props.files.map((file) => (
-                        <li key={file.id} style={{ marginBottom: '5px' }}>
-                            <a
-                                style={{
-                                    fontSize: '16px',
-                                    fontWeight: 'bold',
-                                    textDecoration: 'underline',
-                                    cursor: 'pointer', color:'black'
-                                }}
-                                onClick={() => downloadFile(props.id, file.id, file.originalName)}
-                            >
-                                {file.originalName}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
+                {props.files.length!==0&&
+                    <>
+                        <p style={{ fontSize: '18px', fontWeight: 'bold', color:'black' }}>첨부 파일:</p>
+                        <ul style={{ listStyleType: 'none', padding: '0' }}>
+                            {props.files.map((file) => (
+                                <li key={file.id} style={{ marginBottom: '5px' }}>
+                                    <a
+                                        style={{
+                                            fontSize: '16px',
+                                            fontWeight: 'bold',
+                                            textDecoration: 'underline',
+                                            cursor: 'pointer', color:'black'
+                                        }}
+                                        onClick={() => downloadFile(props.id, file.id, file.originalName)}
+                                    >
+                                        {file.originalName}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+            }
             </div>
             <p className="detail-text">글 본문 : {props.content}</p>
 
