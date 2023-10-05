@@ -8,8 +8,9 @@ const BoardList = (props) => {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-    const [title, setTitle] = useState(""); // 검색어 상태
+    const [keyword, setKeyword] = useState(""); // 검색어 상태
     const [pageSize, setPageSize] = useState(10);
+    const [type, setType] = useState("");
 
     const { logout } = useAuth();
     const location = useNavigate();
@@ -17,7 +18,7 @@ const BoardList = (props) => {
     // 데이터를 불러오는 함수
     const fetchData = () => {
         if (props.userInfo && props.userInfo.token != null) {
-            fetch(`http://localhost:8080/api/board/list?title=${title}&page=${currentPage}&pageSize=${pageSize}`, {
+            fetch(`http://localhost:8080/api/board/list?searchType=${type}&searchKeyword=${keyword}&page=${currentPage}&pageSize=${pageSize}`, {
                 method: "GET",
                 headers: {
                     "Authorization": "Bearer " + props.userInfo.token,
@@ -54,8 +55,11 @@ const BoardList = (props) => {
 
     // 검색어 변경 시 호출되는 함수
     const onSearchHandler = (event) => {
-        const newTitle = event.toString();
-        setTitle(newTitle);
+
+        const keyword = event.keyword;
+        const type=event.type;
+        setType(type)
+        setKeyword(keyword);
         setCurrentPage(0); // 검색 시 페이지 초기화
     };
 
@@ -67,7 +71,7 @@ const BoardList = (props) => {
     // 검색어나 페이지 변경 시 데이터 다시 불러오기
     useEffect(() => {
         fetchData();
-    }, [currentPage, title, pageSize]);
+    }, [currentPage, keyword, pageSize]);
 
     const onPageSizeChange = (newPageSize) => {
         // 페이지 크기를 업데이트하고 첫 번째 페이지로 이동

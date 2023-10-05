@@ -1,16 +1,16 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import "./ListSection.css";
 import {NavLink} from "react-router-dom";
 import Pagination from "./Pagination";
 
 function ListSection(props) {
     const notice = props.notice;
-    const titleRef = useRef("");
-
+    const keywordRef = useRef("");
+    const [type, setType] = useState("title");
     function submitHandler(event) {
         event.preventDefault();
-        const title = titleRef.current.value;
-        props.onSearchHandler(title);
+        const keyword = keywordRef.current.value;
+        props.onSearchHandler({type,keyword});
     }
 
         function textLengthOverCut(txt, len, lastTxt) {
@@ -37,10 +37,15 @@ function ListSection(props) {
                 <div className="container">
                     <div className="search-window">
                         <div className="form-container">
+                            <select value={type} onChange={(e) => setType(e.target.value)}>
+                                <option value="title">제목</option>
+                                <option value="content">본문</option>
+                                <option value="username">작성자</option>
+                            </select>
                             <form onSubmit={submitHandler} className="form">
                                 <div className="search-wrap">
                                     <label htmlFor="search" className="blind">검색</label>
-                                    <input id="search" type="text" placeholder="검색어를 입력해주세요." ref={titleRef} />
+                                    <input id="search" type="text" placeholder="검색어를 입력해주세요." ref={keywordRef} />
                                     <button type="submit" className="btn">검색</button>
                                 </div>
                             </form>
