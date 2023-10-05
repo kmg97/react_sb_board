@@ -77,4 +77,14 @@ public class FileService {
         fileResponse.setModifiedDate(fileEntity.getModifiedAt());
         return fileResponse;
     }
+
+    public List<FileResponse> findAllFileByBoardId(Long boardId){
+        List<FileEntity> allByBoardId = fileRepository.findAllByBoardId(boardId);
+        System.out.println(allByBoardId.isEmpty());
+        if(!allByBoardId.isEmpty()){
+            System.out.println("호출됨");
+            return allByBoardId.stream().map(this::FileEntityToResponse).toList();
+        }
+        return null;
+    }
 }

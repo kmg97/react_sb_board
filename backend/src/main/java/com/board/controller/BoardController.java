@@ -1,13 +1,11 @@
 package com.board.controller;
 
 import com.board.domain.Board;
-import com.board.domain.User;
 import com.board.dto.board.BoardPageResponse;
 import com.board.dto.board.BoardRequest;
 import com.board.dto.board.BoardResponse;
 import com.board.dto.file.FileRequest;
 import com.board.dto.file.FileResponse;
-import com.board.repository.FileRepository;
 import com.board.service.BoardService;
 import com.board.service.FileService;
 import com.board.service.FileUtils;
@@ -17,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -87,7 +84,14 @@ public class BoardController {
     /* 게시물 삭제 */
     @DeleteMapping("/delete/{boardId}")
     public ResponseEntity<Long> delete(@PathVariable Long boardId) {
+        // 삭제할 파일 조회
+        List<FileResponse> allFileByIds = fileService.findAllFileByBoardId(boardId);
+
+        //파일 삭제 (from disk)
+        fileUtils.deleteFiles(allFileByIds);
+        //파일 삭제 (from database)
         boardService.delete(boardId);
+
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -131,8 +135,8 @@ public class BoardController {
     }
 
     //파일 첨부 있는 게시물 업데이트////////////////////////////////////////////////////////////////////////////////
-    @PutMapping(value="/files/{boardId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<BoardResponse> updatePost(@PathVariable Long boardId,
+    @PutMapping(value="/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<BoardResponse> updatePost(@PathVariable Long id,
                                                     @RequestPart(required = false) MultipartFile[] changeFiles,
                                                     @RequestPart(required = false) MultipartFile[] newFiles,
                                                     @RequestParam(value = "removeItem", required = false) List<Long> removeItem,
@@ -143,7 +147,7 @@ public class BoardController {
         boardRequest.setTitle(title);
         boardRequest.setUsername(username);
         boardRequest.setContent(content);
-        Board register = boardService.update(boardId,boardRequest);
+        Board register = boardService.update(id, boardRequest);
         if(removeItem != null ){
             List<FileResponse> allFileByIds = fileService.findAllFileByIds(removeItem);
             //파일 삭제 (from disk)
