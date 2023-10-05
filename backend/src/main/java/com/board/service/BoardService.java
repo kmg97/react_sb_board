@@ -1,6 +1,7 @@
 package com.board.service;
 
 import com.board.domain.Board;
+import com.board.utils.BoardSpecifications;
 import com.board.domain.User;
 import com.board.dto.board.BoardPageResponse;
 import com.board.dto.board.BoardRequest;
@@ -8,13 +9,12 @@ import com.board.dto.board.BoardResponse;
 import com.board.dto.comment.CommentResponse;
 import com.board.dto.file.FileResponse;
 import com.board.repository.BoardRepository;
-import com.board.repository.FileRepository;
 import com.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,23 +77,47 @@ public class BoardService {
     }
 
     // 제목으로 검색
+//    @Transactional(readOnly = true)
+//    public BoardPageResponse findByTitle(String title, int startIdx, int size) {
+//        PageRequest pageable = PageRequest.of(startIdx, size);
+//        Page<Board> result = boardRepository.findByTitleContaining(title, pageable);
+//        List<BoardResponse> boards = result.getContent()
+//                .stream()
+//                .map(board->{
+//                    BoardResponse boardResponse =  BoardResponse.builder()
+//                             .id(board.getId())
+//                             .username(board.getUser().getUsername())
+//                             .title(board.getTitle())
+//                             .content(board.getContent())
+//                             .createdAt(board.getCreatedAt())
+//                             .modifiedAt(board.getModifiedAt()).build();
+//                    return boardResponse;
+//                })
+//                .collect(Collectors.toList()); // 현재 페이지의 게시물 리스트
+//        long totalSize = result.getTotalElements();
+//        return new BoardPageResponse(boards, totalSize);
+//    }
+    ///////////////////////////////////////////////////////////////////////////
     @Transactional(readOnly = true)
-    public BoardPageResponse findByTitle(String title, int startIdx, int size) {
+    public BoardPageResponse search(String searchType, String searchKeyword, int startIdx, int size) {
         PageRequest pageable = PageRequest.of(startIdx, size);
-        Page<Board> result = boardRepository.findByTitleContaining(title, pageable);
+        Specification<Board> spec = BoardSpecifications.createSpecification(searchType, searchKeyword);
+        Page<Board> result = boardRepository.findAll(spec, pageable);
+
         List<BoardResponse> boards = result.getContent()
                 .stream()
-                .map(board->{
-                    BoardResponse boardResponse =  BoardResponse.builder()
-                             .id(board.getId())
-                             .username(board.getUser().getUsername())
-                             .title(board.getTitle())
-                             .content(board.getContent())
-                             .createdAt(board.getCreatedAt())
-                             .modifiedAt(board.getModifiedAt()).build();
+                .map(board -> {
+                    BoardResponse boardResponse = BoardResponse.builder()
+                            .id(board.getId())
+                            .username(board.getUser().getUsername())
+                            .title(board.getTitle())
+                            .content(board.getContent())
+                            .createdAt(board.getCreatedAt())
+                            .modifiedAt(board.getModifiedAt()).build();
                     return boardResponse;
                 })
-                .collect(Collectors.toList()); // 현재 페이지의 게시물 리스트
+                .collect(Collectors.toList());
+
         long totalSize = result.getTotalElements();
         return new BoardPageResponse(boards, totalSize);
     }

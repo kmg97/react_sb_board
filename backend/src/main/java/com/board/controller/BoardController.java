@@ -41,9 +41,16 @@ public class BoardController {
 
     /* 게시물 전체 조회
     검색 조건 현재 Like 사용. 변경 필요. */
+//    @GetMapping("/list")
+//    public ResponseEntity<BoardPageResponse> titleSearch(@RequestParam(value = "title", defaultValue = "") String title, @RequestParam ("page") int startIdx, @RequestParam ("pageSize") int size){
+//        BoardPageResponse boardPageResponse = boardService.findByTitle(title, startIdx, size);
+//        return new ResponseEntity<>(boardPageResponse, HttpStatus.OK);
+//    }
     @GetMapping("/list")
-    public ResponseEntity<BoardPageResponse> titleSearch(@RequestParam(value = "title", defaultValue = "") String title, @RequestParam ("page") int startIdx, @RequestParam ("pageSize") int size){
-        BoardPageResponse boardPageResponse = boardService.findByTitle(title, startIdx, size);
+    public ResponseEntity<BoardPageResponse> titleSearch(@RequestParam(value = "searchType", defaultValue = "title") String searchType,
+                                                         @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
+                                                         @RequestParam("page") int startIdx, @RequestParam("pageSize") int size) {
+        BoardPageResponse boardPageResponse = boardService.search(searchType, searchKeyword, startIdx, size);
         return new ResponseEntity<>(boardPageResponse, HttpStatus.OK);
     }
 
