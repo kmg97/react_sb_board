@@ -10,7 +10,7 @@ const BoardDetail = (props) => {
     return (
         <div>
             <Header />
-            <HeroImg2 heading="게시글 조회" text="/api/board/list/${idx}"/>
+            <HeroImg2 heading="Detail" text="게시글 상세 조회"/>
             <Detail userInfo={props.userInfo}/>
             <Footer />
         </div>

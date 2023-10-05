@@ -2,7 +2,6 @@ label{
     color:#fff;
     margin-bottom: 0.5rem;
 }
-
 form{
     display: flex;
     flex-direction: column;
@@ -29,7 +28,7 @@ form textarea{
     form textarea{height: 150px;}
 }
 
-/* 파일 관련 스타일 */
+/* Add styles for the file list */
 .file_list {
     margin-top: 1rem;
 }
@@ -47,7 +46,7 @@ form textarea{
     background-color: rgba(255, 255, 255, 0.1);
     border: none;
     color: #f4f4f4;
-    flex-grow: 1; /* 자동으로 확장되도록 */
+    flex-grow: 1;
 }
 
 .file_input label {
@@ -64,18 +63,22 @@ form textarea{
     display: none;
 }
 
-/* 삭제 버튼과 첨부 파일 간격 조절 */
+/* Style the delete button */
 .del_btn {
-    margin-right: 1rem; /* 삭제 버튼과 첨부 파일 사이 간격 조절 */
+    margin-right: 1rem;
     background-color: #dc3545;
+    padding: 10px 18px;
 }
 
+/* Style the "파일 추가" button */
 .fn_add_btn {
     background-color: #28a745;
     padding: 10px 18px;
+    border-radius: 10px;
     margin-bottom: 1rem;
 }
 
+/* Style the text inside delete and "파일 추가" buttons */
 .del_btn span,
 .fn_add_btn span {
     color: #fff;

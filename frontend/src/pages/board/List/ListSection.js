@@ -1,9 +1,9 @@
 import React, {useRef} from 'react';
-import "./NoticeSection.css";
+import "./ListSection.css";
 import {NavLink} from "react-router-dom";
 import Pagination from "./Pagination";
 
-function NoticeSection(props) {
+function ListSection(props) {
     const notice = props.notice;
     const titleRef = useRef("");
 
@@ -175,4 +175,4 @@ function NoticeSection(props) {
     );
 }
 
-export default NoticeSection;
+export default ListSection;

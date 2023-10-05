@@ -11,7 +11,7 @@ const Write = (props) => {
   return (
     <div>
       <Header />
-      <HeroImg2 heading="글쓰기" text="ContactPage"/>
+      <HeroImg2 heading="Write" text="글쓰기"/>
       <BoardWrite onAddContact={props.onAddContact}/>
       <Footer />
     </div>

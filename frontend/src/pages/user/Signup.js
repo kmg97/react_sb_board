@@ -5,19 +5,18 @@ import useLoginCheck from "../../util/useLoginCheck";
 
 function Signup(props) {
     // useLoginCheck = Context 내부에 user가 null인지 체크해서 있다면 홈으로 이동
-    // 또한 useNavigate() 반환
     useLoginCheck();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [fullname, setName] = useState('');
-    const [phone, setPhone] = useState('');
+    const [phoneNumber, setPhone] = useState('');
     const [street, setStreet] = useState('');
     const [city, setCity] = useState('');
     const [email, setEmail] = useState('');
 
     const singupHandler = ()=>{
-        const user = {username, password, fullname, phone, street, city, email};
+        const user = {username, password, fullname, phoneNumber, street, city, email};
         try {
             // 서버에서 로그인 API 호출
             props.onSignup(user)
@@ -50,7 +49,7 @@ function Signup(props) {
             <input
                 type="text"
                 placeholder="전화번호"
-                value={phone}
+                value={phoneNumber}
                 onChange={(e) => setPhone(e.target.value)}
             />
             <input
@@ -78,7 +77,6 @@ function Signup(props) {
                         취소
                 </NavLink>
             </div>
-
         </div>
 
     );

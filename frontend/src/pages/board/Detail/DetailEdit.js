@@ -76,7 +76,7 @@ const DetailEdit = (props) => {
     if (!file) {
       // 파일 선택을 취소한 경우
       const updatedFileList = [...fileList];
-      updatedFileList[index] = null; // null로 설정하여 이전 파일 정보 삭제
+      updatedFileList[index] = null;
       setFileList(updatedFileList);
       return;
     }
@@ -146,8 +146,8 @@ const DetailEdit = (props) => {
     event.preventDefault();
 
     // 기존 파일과 새로 추가한 파일을 분리
-    const changeFiles = existingFiles.filter((file) => file && file.element); // 기존 파일은 id가 있는 것으로 가정
-    const newFiles = fileList.filter((file) => !file || !file.id); // 새로 추가한 파일은 id가 없는 것으로 가정
+    const changeFiles = existingFiles.filter((file) => file && file.element);
+    const newFiles = fileList.filter((file) => !file || !file.id);
 
     const formData = new FormData();
     formData.append("username", user ? user.username : "");
@@ -173,7 +173,7 @@ const DetailEdit = (props) => {
     // }
 
     if (props.userInfo && props.userInfo.token != null) {
-      fetch(`http://localhost:8080/api/board/files/${idx}`, {
+      fetch(`http://localhost:8080/api/board/edit/${idx}`, {
             method: "PUT",
             body: formData,
             headers: {

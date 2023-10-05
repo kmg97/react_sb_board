@@ -12,7 +12,7 @@ const List = (props) => {
   return (
     <div>
       <Header />
-      <HeroImg2 heading="List" text="api/board/list?title=${title}&page=${currentPage}&pageSize=10"/>
+      <HeroImg2 heading="List" text="전체글 조회"/>
       <BoardList userInfo={props.userInfo}/>
       <Footer />
     </div>

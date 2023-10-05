@@ -2,7 +2,7 @@ import "./BoardList.css";
 import {useEffect, useState} from "react";
 import {useAuth} from "../../../context/AuthProvider";
 import {useNavigate} from "react-router-dom";
-import NoticeSection from "./NoticeSection";
+import ListSection from "./ListSection";
 
 const BoardList = (props) => {
     const [posts, setPosts] = useState([]);
@@ -76,7 +76,7 @@ const BoardList = (props) => {
     };
     return (
         <>
-            <NoticeSection
+            <ListSection
                 notice={posts}
                 currentPage={currentPage}
                 pageSize={pageSize}

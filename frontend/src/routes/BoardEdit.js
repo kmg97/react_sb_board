@@ -10,7 +10,7 @@ const BoardEdit = (props) => {
     return (
         <div>
             <Header />
-            <HeroImg2 heading="게시글 수정" text="Edit Page"/>
+            <HeroImg2 heading="Edit" text="게시글 수정"/>
             <DetailEdit userInfo={props.userInfo}/>
             <Footer />
         </div>
