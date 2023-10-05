@@ -14,7 +14,7 @@ public class FileEntity extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "FILE_ID")
     private Long id;
 
     @Column(name = "original_name", nullable = false)
