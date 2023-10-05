@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class FileService {
+
     private final FileRepository fileRepository;
 
     @Transactional
@@ -45,19 +46,35 @@ public class FileService {
 
         if (fileOptional.isPresent()) {
             FileEntity fileEntity = fileOptional.get();
-            FileResponse fileResponse = new FileResponse();
-            fileResponse.setId(fileEntity.getId());
-            fileResponse.setBoardId(fileEntity.getBoard().getId());
-            fileResponse.setOriginalName(fileEntity.getOriginalName());
-            fileResponse.setSaveName(fileEntity.getSaveName());
-            fileResponse.setSize(fileEntity.getSize());
-            fileResponse.setCreatedDate(fileEntity.getCreatedAt());
-            fileResponse.setModifiedDate(fileEntity.getModifiedAt());
-            return fileResponse;
+            return FileEntityToResponse(fileEntity);
         } else {
             return null;
         }
     }
 
+    @Transactional
+    public void deleteIds(List<Long> ids) {
+        fileRepository.deleteAllById(ids);
+    }
 
+    @Transactional(readOnly = true)
+    public List<FileResponse> findAllFileByIds(List<Long> ids) {
+        List<FileEntity> findAllForDelete = fileRepository.findAllById(ids);
+        List<FileResponse> deleteFiles = findAllForDelete.stream()
+                .map(this::FileEntityToResponse).toList();
+        return deleteFiles;
+    }
+
+    // DTO 변환 유틸 메서드
+    public FileResponse FileEntityToResponse(FileEntity fileEntity) {
+        FileResponse fileResponse = new FileResponse();
+        fileResponse.setId(fileEntity.getId());
+        fileResponse.setBoardId(fileEntity.getBoard().getId());
+        fileResponse.setOriginalName(fileEntity.getOriginalName());
+        fileResponse.setSaveName(fileEntity.getSaveName());
+        fileResponse.setSize(fileEntity.getSize());
+        fileResponse.setCreatedDate(fileEntity.getCreatedAt());
+        fileResponse.setModifiedDate(fileEntity.getModifiedAt());
+        return fileResponse;
+    }
 }

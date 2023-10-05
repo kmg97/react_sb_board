@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    @Query("SELECT b FROM Board b JOIN FETCH b.user WHERE b.title LIKE %:title%")
+    @Query("SELECT b FROM Board b JOIN FETCH b.user WHERE b.title LIKE %:title% ORDER BY b.id ASC")
     Page<Board> findByTitleContaining(@Param("title") String title, Pageable pageable);
 
     // 엔티티들은 서로 연관되어 있는 관계가 보통이며 이 관계는 그래프로 표현이 가능하다.

@@ -74,15 +74,15 @@ public class BoardController {
     }
 
     /* 게시물 업데이트 */
-    @PutMapping("/edit/{id}")
-    public ResponseEntity<Boolean> updateBoard(@PathVariable Long id, @RequestBody BoardRequest boardRequest) throws Exception {
-        boolean isUpdated = boardService.update(id, boardRequest);
-        if (isUpdated) {
-            return new ResponseEntity<>(true, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
-        }
-    }
+//    @PutMapping("/edit/{id}")
+//    public ResponseEntity<Boolean> updateBoard(@PathVariable Long id, @RequestBody BoardRequest boardRequest) throws Exception {
+//        boolean isUpdated = boardService.update(id, boardRequest);
+//        if (isUpdated) {
+//            return new ResponseEntity<>(true, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+//        }
+//    }
 
     /* 게시물 삭제 */
     @DeleteMapping("/delete/{boardId}")
@@ -128,6 +128,43 @@ public class BoardController {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("filename encoding failed : " + file.getOriginalName());
         }
+    }
+
+    //파일 첨부 있는 게시물 업데이트////////////////////////////////////////////////////////////////////////////////
+    @PutMapping(value="/files/{boardId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<BoardResponse> updatePost(@PathVariable Long boardId,
+                                                    @RequestPart(required = false) MultipartFile[] changeFiles,
+                                                    @RequestPart(required = false) MultipartFile[] newFiles,
+                                                    @RequestParam(value = "removeItem", required = false) List<Long> removeItem,
+                                                    @RequestParam("username") String username,
+                                                    @RequestParam("title") String title,
+                                                    @RequestParam("content") String content) throws Exception {
+        BoardRequest boardRequest = new BoardRequest();
+        boardRequest.setTitle(title);
+        boardRequest.setUsername(username);
+        boardRequest.setContent(content);
+        Board register = boardService.update(boardId,boardRequest);
+        if(removeItem != null ){
+            List<FileResponse> allFileByIds = fileService.findAllFileByIds(removeItem);
+            //파일 삭제 (from disk)
+            fileUtils.deleteFiles(allFileByIds);
+            //파일 삭제 (from database)
+            fileService.deleteIds(removeItem);
+        }
+
+        if(changeFiles!=null) {
+            List<MultipartFile> fileList = Arrays.stream(changeFiles).toList();
+            List<FileRequest> file = fileUtils.uploadFiles(fileList);
+            fileService.saveFiles(register, file);
+        }
+
+        if(newFiles !=null){
+            List<MultipartFile> fileList = Arrays.stream(newFiles).toList();
+            List<FileRequest> file = fileUtils.uploadFiles(fileList);
+            fileService.saveFiles(register, file);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

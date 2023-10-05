@@ -50,7 +50,8 @@ public class BoardService {
     }
 
     // 게시글 업데이트
-    public boolean update(Long id, BoardRequest request) throws Exception {
+    public Board update(Long id, BoardRequest request) throws Exception {
+        Board saveBoard=null;
         try {
             Optional<Board> optionalBoard = boardRepository.findById(id);
             Optional<User> user = userRepository.findByUsername(request.getUsername());
@@ -60,14 +61,14 @@ public class BoardService {
                 board.setTitle(request.getTitle());
                 board.setContent(request.getContent());
 
-                boardRepository.save(board); // 엔터티를 저장하여 업데이트 반영
+                saveBoard = boardRepository.save(board);// 엔터티를 저장하여 업데이트 반영
             } else {
                 throw new Exception("게시글을 찾을 수 없습니다.");
             }
         } catch (Exception e) {
             throw new Exception("잘못된 요청입니다.");
         }
-        return true;
+        return saveBoard;
     }
 
     // 게시물 삭제
