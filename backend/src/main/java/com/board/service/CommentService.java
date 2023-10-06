@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -37,4 +39,23 @@ public class CommentService {
         }
         return true;
     }
+
+    public boolean commentUpdate(Long id,CommentRequest commentRequest) {
+
+        Optional<Comment> findComment = commentRepository.findById(id);
+        if(findComment.isPresent()) {
+            Comment comment = findComment.get();
+            comment.setComments(commentRequest.getComments());
+            commentRepository.save(comment);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean commentDelete(Long id){
+        commentRepository.deleteById(id);
+        return true;
+    }
+
 }

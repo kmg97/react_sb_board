@@ -19,6 +19,7 @@ import lombok.*;
 @Entity
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment extends BaseTime {
