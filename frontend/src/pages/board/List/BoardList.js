@@ -49,10 +49,6 @@ const BoardList = (props) => {
         }
     };
 
-    if(posts.length!==0){
-        console.log(posts)
-    }
-
     // 검색어 변경 시 호출되는 함수
     const onSearchHandler = (event) => {
 

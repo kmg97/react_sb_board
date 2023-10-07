@@ -132,7 +132,7 @@ input[type="search"] {
 
 /* Select 스타일링 */
 .custom-select {
-    width: 50px;
+    width: 70px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -165,4 +165,11 @@ input[type="search"] {
     right: 12px;
     transform: translateY(-50%);
     pointer-events: none;
+}
+
+/* Label 스타일링 */
+.search-label {
+    margin-right: 10px; /* 라벨과 선택 상자 사이의 간격 조절 */
+    font-weight: bold;
+    color: white;
 }

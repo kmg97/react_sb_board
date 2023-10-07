@@ -10,7 +10,6 @@ const BoardWrite = (props) => {
   const navigateFunction = useNavigate();
 
   const titleRef = useRef("");
-  const EmailRef = useRef("");
   const ContentRef = useRef("");
 
   const [fileList, setFileList] = useState([]);
@@ -27,11 +26,13 @@ const BoardWrite = (props) => {
       alert("제목을 입력해주세요.");
       titleRef.current.focus();
       return;
-    } else if (EmailRef.current.value.trim().length === 0) {
-      alert("연락처를 입력해주세요.");
-      EmailRef.current.focus();
+    }
+    if (ContentRef.current.value.trim().length === 0) {
+      alert("본문을 입력해주세요.");
+      titleRef.current.focus();
       return;
     }
+
     const formData = new FormData();
     formData.append("username", user ? user.username : "");
     formData.append("title", titleRef.current.value);
@@ -113,16 +114,10 @@ const BoardWrite = (props) => {
           ref={titleRef}
           placeholder="제목을 작성해주세요"
         ></input>
-        <label>연락처</label>
-        <input
-          type="text"
-          ref={EmailRef}
-          placeholder="이메일 또는 전화번호를 작성해주세요"
-        ></input>
-        <label>남기실 말씀</label>
+        <label>본문</label>
         <textarea
           row="6"
-          placeholder="남기실 말씀을 작성해주세요"
+          placeholder="본문을 작성해주세요"
           ref={ContentRef}
         />
         <div className="file_list">

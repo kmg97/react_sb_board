@@ -43,7 +43,6 @@ const DetailEdit = (props) => {
   // location의 state 값을 확인
   const state = location.state;
   const [title,setTitle] = useState(state.props.title);
-  const [username,setUsername] = useState(state.props.username);
   const [content,setContent] = useState(state.props.content);
 
   const navigate = useNavigate();
@@ -222,19 +221,12 @@ const DetailEdit = (props) => {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="제목을 작성해주세요"
           ></input>
-          <label>연락처</label>
-          <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="이메일 또는 전화번호를 작성해주세요"
-          ></input>
-          <label>남기실 말씀</label>
+          <label>본문</label>
           <textarea
               row="6"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="남기실 말씀을 작성해주세요"
+              placeholder="본문을 작성해주세요"
           />
           <div className="file_list">
             {/* 기존 파일 목록 렌더링 */}

@@ -44,7 +44,6 @@ const BoardDetail = (props) => {
     };
 
     const handleCommentSubmit = (newComment) => {
-        console.log("댓글 작성 요청");
         if (props.userInfo && props.userInfo.token != null) {
 
             fetch(`http://localhost:8080/api/comment`, {
@@ -62,7 +61,6 @@ const BoardDetail = (props) => {
                     if (response.status === 403) {
                         throw new Error("접근 권한이 없습니다.");
                     }
-                    console.log(response);
                     window.location.reload();
                 })
                 .catch(error=>{

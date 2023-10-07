@@ -35,7 +35,6 @@ const Detail = (props) => {
                 )
                 .then(data => {
                     setBoard(data);
-                    console.log(data);
                     setLoading(false);
                 })
                 .catch(error => {

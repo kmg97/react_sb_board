@@ -30,14 +30,15 @@ function ListSection(props) {
         const date = new Date(dateTimeString);
         return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
     }
-    console.log(props.totalPages)
+
     return (
         <section className="notice">
             <div id="board-search">
                 <div className="container">
                     <div className="search-window">
                         <div className="form-container">
-                            <select value={type} onChange={(e) => setType(e.target.value)}>
+                            <label htmlFor="search" className="search-label">검색조건</label>
+                            <select id="search" value={type} className="custom-select" onChange={(e) => setType(e.target.value)}>
                                 <option value="title">제목</option>
                                 <option value="content">본문</option>
                                 <option value="username">작성자</option>

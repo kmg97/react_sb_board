@@ -21,7 +21,7 @@
     color: #f4f4f4;
 }
 
-.loginform button {
+.btn  {
     padding: 12px 32px;
     width: 150px;
     border-radius: 15px;
@@ -32,6 +32,20 @@
     border: 1px solid #fff;
     font-weight: 600;
     cursor: pointer;
+    text-align: center;
+}
+
+.disabled {
+    padding: 12px 32px;
+    width: 150px;
+    border-radius: 15px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 1px solid #fff;
+    font-weight: 600;
+    cursor: not-allowed; /* 마우스 커서를 'not-allowed'로 변경하여 클릭 방지 */
 }
 
 .loginform button:hover {
@@ -46,4 +60,19 @@
 
 @media screen and (max-width:640px) {
     form textarea{height: 150px;}
+}
+
+.available {
+    color: #25ff25;
+    position: relative;
+    top: -10px; /* 원하는 수치로 조절하여 인풋 아래 중앙에 배치합니다. */
+    display: block;
+    text-align: center; /* 텍스트를 가운데 정렬합니다. */
+}
+.duplicate{
+    color: #ff5656;
+    position: relative;
+    top: -10px; /* 원하는 수치로 조절하여 인풋 아래 중앙에 배치합니다. */
+    display: block;
+    text-align: center; /* 텍스트를 가운데 정렬합니다. */
 }
