@@ -22,9 +22,10 @@ public class SignController {
         return new ResponseEntity<>(memberService.login(request), HttpStatus.OK);
     }
 
-    // 유효성 검사후 실패시 실패한 필드와 조건 반환
+    // 유효성 검사후 실패시 MethodArgumentNotValidException 발생
+    // ErrorController 에서 실패한 필드와 조건 가공 후 상태코드 BAD_REQUEST 와 함께 반환
     @PostMapping(value = "/register")
-    public ResponseEntity<?> signup(@Valid @RequestBody SignRequest request) throws Exception {
+    public ResponseEntity<Boolean> signup(@Valid @RequestBody SignRequest request) throws Exception {
         System.out.println(request.toString());
         return new ResponseEntity<>(memberService.register(request), HttpStatus.OK);
     }

@@ -1,6 +1,5 @@
 package com.board.dto.file;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -27,7 +27,6 @@ import java.util.Optional;
 /*
 1.  - 처음 게시글 전체 요청 할 때 시작 인덱스 0, 페이지당 게시글 개수 N 요청후
 	- JPA 내 전체 COUNT 호출 후 결과값과 함께 0,1,2,...,N개 게시글 리턴
-	-> 현재 /board/list 접근시 findAll 호출
 	-> 인자로 pageable 넣게 적절히 변환 필요
 * */
 @RestController
