@@ -38,13 +38,13 @@ public class User {
   private List<Board> boards; // 사용자가 작성한 게시글 목록
 
   /* FetchType fetch() default FetchType.LAZY; */
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   @Builder.Default
   private List<Authority> roles = new ArrayList<>();
 
   public void setRoles(List<Authority> role) {
     this.roles = role;
-    role.forEach(o -> o.setMember(this));
+    role.forEach(o -> o.setUser(this));
   }
 
 }

@@ -51,7 +51,7 @@ public class BoardSpecifications {
 
             if (!keyword.isEmpty()) {
                 // 작성자에 대한 검색어 조건 추가
-            Predicate usernamePredicate = criteriaBuilder.like(root.get("user").get("username"), "%" + keyword + "%");
+                Predicate usernamePredicate = criteriaBuilder.like(root.get("user").get("username"), "%" + keyword + "%");
                 predicate = criteriaBuilder.and(predicate, usernamePredicate);
             }
             query.orderBy(criteriaBuilder.asc(root.get("id")));

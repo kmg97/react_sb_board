@@ -51,11 +51,11 @@ public class SecurityConfig {
                     {
                         request.requestMatchers(HttpMethod.OPTIONS).permitAll()
                                 .requestMatchers(HttpMethod.PATCH, "/").permitAll()
-                                .requestMatchers("/register/**", "/login").permitAll()
+                                .requestMatchers("/api/user/**").permitAll()
                                 // /admin으로 시작하는 요청은 ADMIN 권한이 있는 유저에게만 허용
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 // /user 로 시작하는 요청은 USER 권한이 있는 유저에게만 허용
-                                .requestMatchers("/user/**","/api/board/**", "/api/comment/**").hasRole("USER")
+                                .requestMatchers("/api/board/**", "/api/comment/**").hasRole("USER")
                                 .anyRequest().denyAll();
                                 // JWT 인증 필터 적용
                     })

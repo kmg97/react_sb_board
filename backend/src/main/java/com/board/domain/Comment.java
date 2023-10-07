@@ -25,7 +25,7 @@ import lombok.*;
 public class Comment extends BaseTime {
     // 댓글 작성자 id
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COLUMN_ID")
+    @Column(name = "COMMENT_ID")
     private Long id;
 
     // 게시글

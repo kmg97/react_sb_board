@@ -16,9 +16,6 @@ import java.util.Optional;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long>, JpaSpecificationExecutor<Board> {
-//    @Query("SELECT b FROM Board b JOIN FETCH b.user WHERE b.title LIKE %:title% ORDER BY b.id ASC")
-//    Page<Board> findByTitleContaining(@Param("title") String title, Pageable pageable);
-
     @QueryHints(value = @QueryHint(name = org.hibernate.jpa.QueryHints.HINT_FETCH_SIZE, value = "1"))
     Page<Board> findAll(Specification<Board> spec, Pageable pageable);
 

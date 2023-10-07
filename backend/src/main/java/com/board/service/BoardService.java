@@ -53,11 +53,10 @@ public class BoardService {
     public Board update(Long id, BoardRequest request) throws Exception {
         Board saveBoard=null;
         try {
+            // 업데이트 할 글 조회
             Optional<Board> optionalBoard = boardRepository.findById(id);
-            Optional<User> user = userRepository.findByUsername(request.getUsername());
-            if (optionalBoard.isPresent()&&user.isPresent()) {
+            if (optionalBoard.isPresent()) {
                 Board board = optionalBoard.get();
-                board.setUser(user.get());
                 board.setTitle(request.getTitle());
                 board.setContent(request.getContent());
 
@@ -76,28 +75,6 @@ public class BoardService {
         boardRepository.deleteById(boardId);
     }
 
-    // 제목으로 검색
-//    @Transactional(readOnly = true)
-//    public BoardPageResponse findByTitle(String title, int startIdx, int size) {
-//        PageRequest pageable = PageRequest.of(startIdx, size);
-//        Page<Board> result = boardRepository.findByTitleContaining(title, pageable);
-//        List<BoardResponse> boards = result.getContent()
-//                .stream()
-//                .map(board->{
-//                    BoardResponse boardResponse =  BoardResponse.builder()
-//                             .id(board.getId())
-//                             .username(board.getUser().getUsername())
-//                             .title(board.getTitle())
-//                             .content(board.getContent())
-//                             .createdAt(board.getCreatedAt())
-//                             .modifiedAt(board.getModifiedAt()).build();
-//                    return boardResponse;
-//                })
-//                .collect(Collectors.toList()); // 현재 페이지의 게시물 리스트
-//        long totalSize = result.getTotalElements();
-//        return new BoardPageResponse(boards, totalSize);
-//    }
-    ///////////////////////////////////////////////////////////////////////////
     @Transactional(readOnly = true)
     public BoardPageResponse search(String searchType, String searchKeyword, int startIdx, int size) {
         PageRequest pageable = PageRequest.of(startIdx, size);

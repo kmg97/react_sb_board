@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/user")
 public class SignController {
 
     private final SignService memberService;
 
+    // 회원가입
     @PostMapping(value = "/login")
     public ResponseEntity<SignResponse> signin(@RequestBody SignRequest request) throws Exception {
         return new ResponseEntity<>(memberService.login(request), HttpStatus.OK);
@@ -31,15 +33,5 @@ public class SignController {
     @GetMapping("/register/{username}/exists")
     public ResponseEntity<Boolean> checkUsernameDuplicate(@PathVariable String username){
         return ResponseEntity.ok(memberService.checkUsernameDuplication(username));
-    }
-
-    @GetMapping(value="/user/get")
-    public ResponseEntity<SignResponse> getUser(@RequestParam String username) throws Exception {
-        return new ResponseEntity<>( memberService.getMember(username), HttpStatus.OK);
-    }
-
-    @GetMapping("/admin/get")
-    public ResponseEntity<SignResponse> getUserForAdmin(@RequestParam String account) throws Exception {
-        return new ResponseEntity<>( memberService.getMember(account), HttpStatus.OK);
     }
 }

@@ -39,13 +39,7 @@ public class BoardController {
     private final FileService fileService;
     private final FileUtils fileUtils;
 
-    /* 게시물 전체 조회
-    검색 조건 현재 Like 사용. 변경 필요. */
-//    @GetMapping("/list")
-//    public ResponseEntity<BoardPageResponse> titleSearch(@RequestParam(value = "title", defaultValue = "") String title, @RequestParam ("page") int startIdx, @RequestParam ("pageSize") int size){
-//        BoardPageResponse boardPageResponse = boardService.findByTitle(title, startIdx, size);
-//        return new ResponseEntity<>(boardPageResponse, HttpStatus.OK);
-//    }
+    // 전체 게시물 조회
     @GetMapping("/list")
     public ResponseEntity<BoardPageResponse> titleSearch(@RequestParam(value = "searchType", defaultValue = "title") String searchType,
                                                          @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
@@ -54,39 +48,16 @@ public class BoardController {
         return new ResponseEntity<>(boardPageResponse, HttpStatus.OK);
     }
 
-    /* 게시물 id를 기준으로 상세 조회 -> 게시물과 댓글 함께 조회 */
+    /* 게시물 id를 기준으로 상세 조회 -> 게시물과 댓글 함께 조회,
+    *  게시물 id를 기준으로 file 조회
+    *  dto 변환 후 반환
+    *  */
     @GetMapping("/list/{id}")
     public ResponseEntity<BoardResponse> getDetail(@PathVariable Long id) {
         Optional<BoardResponse> boardDTO = boardService.getBoardDetail(id);
         return boardDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
-
-    /* 게시물 등록 */
-    @PostMapping
-    public ResponseEntity<BoardResponse> board(@RequestBody BoardRequest boardRequest) throws Exception {
-        Board board = boardService.register(boardRequest);
-        BoardResponse boardResponse = BoardResponse.builder()
-                .id(board.getId())
-                .username(board.getUser().getUsername())
-                .title(board.getTitle())
-                .content(board.getContent())
-                .modifiedAt(board.getModifiedAt())
-                .createdAt(board.getCreatedAt())
-                .build();
-        return new ResponseEntity<>(boardResponse, HttpStatus.OK);
-    }
-
-    /* 게시물 업데이트 */
-//    @PutMapping("/edit/{id}")
-//    public ResponseEntity<Boolean> updateBoard(@PathVariable Long id, @RequestBody BoardRequest boardRequest) throws Exception {
-//        boolean isUpdated = boardService.update(id, boardRequest);
-//        if (isUpdated) {
-//            return new ResponseEntity<>(true, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
-//        }
-//    }
 
     /* 게시물 삭제 */
     @DeleteMapping("/delete/{boardId}")
@@ -102,10 +73,10 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    /* 게시물 등록 파일첨부 때문에 MultipartFile을 쓰는걸로 
-    *  게시물 등록시 파일첨부는 선택사항이기에 (required = false) 옵션 줌
-    * */
-    @PostMapping(value="/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    /* 게시물 등록 파일첨부 때문에 MultipartFile을 쓰는걸로
+     *  게시물 등록시 파일첨부는 선택사항이기에 (required = false) 옵션 줌
+     * */
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BoardResponse> createPost(@RequestPart(required = false) MultipartFile[] files,
                                                     @RequestParam("username") String username,
                                                     @RequestParam("title") String title,
@@ -124,24 +95,7 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    /* 게시물 첨부파일 다운로드 */
-    @GetMapping("/{boardId}/files/{fileId}/download")
-    public ResponseEntity<Resource> downloadFile(@PathVariable Long boardId, @PathVariable Long fileId) {
-        FileResponse file = fileService.findFileById(fileId);
-        Resource resource = fileUtils.readFileAsResource(file);
-        try {
-            String filename = URLEncoder.encode(file.getOriginalName(), "UTF-8");
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + filename + "\";")
-                    .header(HttpHeaders.CONTENT_LENGTH, file.getSize() + "")
-                    .body(resource);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("filename encoding failed : " + file.getOriginalName());
-        }
-    }
-
-    //파일 첨부 있는 게시물 업데이트////////////////////////////////////////////////////////////////////////////////
+    // 게시물 업데이트
     @PutMapping(value="/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BoardResponse> updatePost(@PathVariable Long id,
                                                     @RequestPart(required = false) MultipartFile[] changeFiles,
@@ -155,6 +109,7 @@ public class BoardController {
         boardRequest.setUsername(username);
         boardRequest.setContent(content);
         Board register = boardService.update(id, boardRequest);
+
         if(removeItem != null ){
             List<FileResponse> allFileByIds = fileService.findAllFileByIds(removeItem);
             //파일 삭제 (from disk)
@@ -177,5 +132,23 @@ public class BoardController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    /* 게시물 첨부파일 다운로드 */
+    @GetMapping("/files/{fileId}/download")
+    public ResponseEntity<Resource> downloadFile(@PathVariable Long fileId) {
+        FileResponse file = fileService.findFileById(fileId);
+        Resource resource = fileUtils.readFileAsResource(file);
+        try {
+            String filename = URLEncoder.encode(file.getOriginalName(), "UTF-8");
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + filename + "\";")
+                    .header(HttpHeaders.CONTENT_LENGTH, file.getSize() + "")
+                    .body(resource);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("filename encoding failed : " + file.getOriginalName());
+        }
+    }
+
 
 }

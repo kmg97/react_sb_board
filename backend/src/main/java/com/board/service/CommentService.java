@@ -24,7 +24,7 @@ public class CommentService {
     // 댓글 등록
     public boolean register(CommentRequest commentRequest) throws Exception {
         try {
-            // 유저 조회
+            // 댓글 작성자(유저) 조회
             User user = userRepository.findById(commentRequest.getUserId()).get();
             // 게시글 조회
             Board board = boardRepository.findById(commentRequest.getBoardId()).get();
@@ -41,7 +41,6 @@ public class CommentService {
     }
 
     public boolean commentUpdate(Long id,CommentRequest commentRequest) {
-
         Optional<Comment> findComment = commentRepository.findById(id);
         if(findComment.isPresent()) {
             Comment comment = findComment.get();
