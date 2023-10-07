@@ -68,4 +68,10 @@ public class SignService {
         return new SignResponse(user);
     }
 
+    // 아이디 중복 체크
+    @Transactional(readOnly = true)
+    public boolean checkUsernameDuplication(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
 }

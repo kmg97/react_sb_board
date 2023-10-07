@@ -51,7 +51,7 @@ public class SecurityConfig {
                     {
                         request.requestMatchers(HttpMethod.OPTIONS).permitAll()
                                 .requestMatchers(HttpMethod.PATCH, "/").permitAll()
-                                .requestMatchers("/register", "/login").permitAll()
+                                .requestMatchers("/register/**", "/login").permitAll()
                                 // /admin으로 시작하는 요청은 ADMIN 권한이 있는 유저에게만 허용
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 // /user 로 시작하는 요청은 USER 권한이 있는 유저에게만 허용
