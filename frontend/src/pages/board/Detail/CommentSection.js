@@ -53,6 +53,9 @@ const CommentSection = ({ user, boardId, onCommentSubmit, comments }) => {
                 }
             })
                 .then(response => {
+                    if (response.status === 304) {
+                        throw new Error("댓글을 수정하는데 실패하였습니다.")
+                    }
                     if (response.status === 401) {
                         throw new Error("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
                     }

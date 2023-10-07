@@ -75,7 +75,7 @@ const BoardDetail = (props) => {
 
     const downloadFile = (boardId, fileId, originalName) => {
         console.log("파일 다운로드 요청")
-        const url = `http://localhost:8080/api/board/${boardId}/files/${fileId}/download`; // API 엔드포인트의 절대 경로
+        const url = `http://localhost:8080/api/board/files/${fileId}/download`; // API 엔드포인트의 절대 경로
 
         fetch(url, {
             method: 'GET', // GET 요청
