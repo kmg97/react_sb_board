@@ -109,7 +109,7 @@ function Signup(props) {
 
     const handleBlur = (username) => {
         if(username.trim()!=='' && preUsername!==username){
-            fetch(`http://localhost:8080/register/${username}/exists`, {
+            fetch(`http://localhost:8080/api/user/register/${username}/exists`, {
                 method: 'GET', // 예시로 POST 메서드 사용
                 headers: {
                     'Content-Type': 'application/json',

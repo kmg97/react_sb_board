@@ -147,7 +147,7 @@ const CommentSection = ({ user, boardId, onCommentSubmit, comments }) => {
                                 <p>{commentItem.comments}</p>
                             )}
                             <p className="comment-time">작성 시간: {formatDateTime(commentItem.createdAt)}</p>
-                            {user.username === commentItem.username && (
+                            {user !== null && user.username === commentItem.username && (
                                 <div>
                                     {editingCommentId !== commentItem.id ? (
                                         <button className="btn" onClick={e=> handleEditClick(commentItem.id, commentItem.comments)}>
