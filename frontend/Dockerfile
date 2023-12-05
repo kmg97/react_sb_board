@@ -1,5 +1,6 @@
+# 첫 번째 스테이지: Node.js 애플리케이션 빌드
 # 가져올 이미지를 정의
-FROM node:18
+FROM node:18 as build
 
 # 경로 설정하기
 WORKDIR /app
@@ -19,11 +20,24 @@ COPY . .
 # npm install과 COPY . . 를 동시에 수행하면
 # 소스 코드가 조금 달라질때도 항상 npm install을 수행해서 리소스가 낭비된다.
 
-# 3000번 포트 노출
-EXPOSE 3000
+# 애플리케이션 빌드
+RUN npm run build
 
-# npm start 스크립트 실행
-CMD ["npm", "start"]
+# 두 번째 스테이지: Nginx를 사용하여 애플리케이션 실행
+# 가져올 이미지를 정의
+FROM nginx:stable-alpine
 
-# 그리고 Dockerfile로 docker 이미지를 빌드해야한다.
-# $ docker build .
+# 첫 번째 스테이지에서 빌드한 결과물을 /usr/share/nginx/html로 복사
+COPY --from=build /app/build /usr/share/nginx/html
+
+# 기본 nginx 설정 파일 삭제 (custom 설정과 충돌 방지)
+RUN rm /etc/nginx/conf.d/default.conf
+
+# custom 설정 파일을 컨테이너 내부로 복사
+COPY nginx/nginx.conf /etc/nginx/conf.d
+
+# 컨테이너의 80번 포트를 열어줌
+EXPOSE 80
+
+# nginx 서버 실행 및 백그라운드로 동작
+CMD ["nginx", "-g", "daemon off;"]
