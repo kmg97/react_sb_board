@@ -24,4 +24,4 @@ services:
   frontend:
     image: kimmingyu0/frontend:0.0.1-SNAPSHOT
     ports:
-      - "3000:3000"
+      - "3000:80"
