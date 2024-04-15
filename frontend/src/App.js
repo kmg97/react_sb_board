@@ -1,5 +1,5 @@
 import React, {Suspense, useEffect, useState} from "react";
-import "./index.css";
+import "./styles/index.css";
 import Home from "./routes/Home";
 
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom";

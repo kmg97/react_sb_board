@@ -1,4 +1,4 @@
-import "./MainPage.css";
+import "../../styles/MainPage.css";
 
 import React from "react";
 import IntroImg from "../../assets/intro-bg.jpg";

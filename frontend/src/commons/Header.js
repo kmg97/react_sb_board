@@ -1,5 +1,5 @@
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
-import "./Header.css";
+import "../styles/Header.css";
 
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useState } from "react";
@@ -56,9 +56,6 @@ const Header = () => {
         <li>
           <NavLink to="/board/list" className={({ isActive }) => (isActive ? "clicked" : "")}>List</NavLink>
         </li>
-        {/*<li>*/}
-        {/*  <NavLink to="/contact" className={({ isActive }) => (isActive ? "clicked" : "")}>Contact</NavLink>*/}
-        {/*</li>*/}
         <li>
           {user.user!=null ?
               <NavLink onClick={handleLogout} to="">Logout</NavLink>

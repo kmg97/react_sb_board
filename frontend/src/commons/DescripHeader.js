@@ -1,8 +1,8 @@
-import "./HeroImg2Styles.css";
+import "../styles/HeroImg2Styles.css";
 
 import React from "react";
 
-const HeroImg2 = (props) => {
+const DescripHeader = (props) => {
   return (
     <div className="hero-img">
       <div className="heading">
@@ -13,4 +13,4 @@ const HeroImg2 = (props) => {
   );
 };
 
-export default HeroImg2;
+export default DescripHeader;

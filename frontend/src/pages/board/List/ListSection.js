@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import "./ListSection.css";
+import "../../../styles/ListSection.css";
 import {NavLink} from "react-router-dom";
 import Pagination from "./Pagination";
 

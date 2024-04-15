@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../components/Header";
+import Header from "../commons/Header";
 import MainPage from "../pages/main/MainPage";
-import Footer from "../components/Footer";
+import Footer from "../commons/Footer";
 import { useTitle } from "../util/UpdateTitle";
 
 const Home = () => {

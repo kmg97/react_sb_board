@@ -1,4 +1,4 @@
-import "./BoardWrite.css";
+import "../../styles/BoardWrite.css";
 
 import React, {useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
