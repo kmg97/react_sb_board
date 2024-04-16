@@ -173,3 +173,12 @@ input[type="search"] {
     font-weight: bold;
     color: white;
 }
+
+.no-item {
+    height: 200px;
+    border-bottom: 1px solid white;
+}
+
+.no-item p {
+    line-height: 200px;
+}

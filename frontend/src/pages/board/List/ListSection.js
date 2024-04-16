@@ -37,8 +37,8 @@ function ListSection(props) {
                 <div className="container">
                     <div className="search-window">
                         <div className="form-container">
-                            <label htmlFor="search" className="search-label">검색조건</label>
-                            <select id="search" value={type} className="custom-select" onChange={(e) => setType(e.target.value)}>
+                            <label htmlFor="searchType" className="search-label">검색조건</label>
+                            <select id="searchType" value={type} className="custom-select" onChange={(e) => setType(e.target.value)}>
                                 <option value="title">제목</option>
                                 <option value="content">본문</option>
                                 <option value="username">작성자</option>
@@ -113,7 +113,7 @@ function ListSection(props) {
                                     <span>등록일</span>
                                 </div>
                             </div>
-                            <div>
+                            <div className="no-item">
                                 <p>조회된 게시글이 없습니다.</p>
                             </div>
                         </div>
@@ -161,16 +161,16 @@ function ListSection(props) {
                                     </div>
                                 );
                             })}
+                            <Pagination
+                                currentPage={props.currentPage}
+                                totalPages={props.totalPages}
+                                setCurrentPage={props.setCurrentPage}
+                                pageSize={props.pageSize}
+                            />
                         </div>
                     )}
 
                     <div className="button-container">
-                        <Pagination
-                            currentPage={props.currentPage}
-                            totalPages={props.totalPages}
-                            setCurrentPage={props.setCurrentPage}
-                            pageSize={props.pageSize}
-                        />
                         <NavLink to="/Contact">
                             <button className="btn">글쓰기</button>
                         </NavLink>
