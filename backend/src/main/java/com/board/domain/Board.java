@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE board SET IS_DEL = true WHERE BOARD_ID = ?")
 public class Board extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="BOARD_ID")
@@ -47,4 +49,7 @@ public class Board extends BaseTime {
     @JsonIgnore
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<FileEntity> fileEntity;
+
+    @Column(name="IS_DEL")
+    private boolean deleted = Boolean.FALSE; // 삭제 여부 기본값 false
 }

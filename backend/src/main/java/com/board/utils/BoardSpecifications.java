@@ -19,6 +19,8 @@ public class BoardSpecifications {
                 Predicate titlePredicate = criteriaBuilder.like(root.get("title"), "%" + keyword + "%");
                 predicate = criteriaBuilder.and(predicate, titlePredicate);
             }
+
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("deleted"), false));
             query.orderBy(criteriaBuilder.asc(root.get("id")));
             return predicate;
         };
@@ -36,6 +38,9 @@ public class BoardSpecifications {
                 Predicate contentPredicate = criteriaBuilder.like(root.get("content"), "%" + keyword + "%");
                 predicate = criteriaBuilder.and(predicate, contentPredicate);
             }
+
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("deleted"), false));
+
             query.orderBy(criteriaBuilder.asc(root.get("id")));
 
             return predicate;
@@ -54,6 +59,9 @@ public class BoardSpecifications {
                 Predicate usernamePredicate = criteriaBuilder.like(root.get("user").get("username"), "%" + keyword + "%");
                 predicate = criteriaBuilder.and(predicate, usernamePredicate);
             }
+
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("deleted"), false));
+
             query.orderBy(criteriaBuilder.asc(root.get("id")));
 
             return predicate;
