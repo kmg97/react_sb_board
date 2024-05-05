@@ -1,5 +1,6 @@
 package com.board.dto.board;
 
+import com.board.domain.Board;
 import com.board.dto.comment.CommentResponse;
 import com.board.dto.file.FileResponse;
 import lombok.AllArgsConstructor;
@@ -24,4 +25,17 @@ public class BoardResponse {
     private LocalDateTime modifiedAt;
     private List<CommentResponse> comments;
     private List<FileResponse> files;
+
+    public static BoardResponse fromBoard(Board board) {
+        BoardResponse response = new BoardResponse();
+
+        response.id = board.getId();
+        response.username = board.getUser().getUsername();
+        response.title =  board.getTitle();
+        response.content = board.getContent();
+        response.createdAt = board.getCreatedAt();
+        response.modifiedAt = board.getModifiedAt();
+
+        return response;
+    }
 }

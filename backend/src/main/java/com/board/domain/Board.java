@@ -1,5 +1,6 @@
 package com.board.domain;
 
+import com.board.dto.board.BoardRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -52,4 +53,14 @@ public class Board extends BaseTime {
 
     @Column(name="IS_DEL")
     private boolean deleted = Boolean.FALSE; // 삭제 여부 기본값 false
+
+    public static Board fromBoardRequest (User user, BoardRequest request) {
+        Board board = new Board();
+
+        board.setUser(user);
+        board.setTitle(request.getTitle());
+        board.setContent(request.getContent());
+
+        return board;
+    }
 }

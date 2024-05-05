@@ -42,15 +42,7 @@ public class SignService {
 
     public boolean register(SignRequest request) throws Exception {
         try {
-            User user = User.builder()
-                    .username(request.getUsername())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .fullname(request.getFullname())
-                    .street(request.getStreet())
-                    .city(request.getCity())
-                    .phoneNumber(request.getPhoneNumber())
-                    .email(request.getEmail())
-                    .build();
+            User user = User.toSingRequest(request, passwordEncoder.encode(request.getPassword()));
 
             user.setRoles(Collections.singletonList(Authority.builder().name("ROLE_USER").build()));
 
