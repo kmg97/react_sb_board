@@ -1,4 +1,4 @@
-import "../../../styles/BoardList.css";
+import "./BoardList.css";
 import {useEffect, useState} from "react";
 import {useAuth} from "../../../context/AuthProvider";
 import {useNavigate} from "react-router-dom";

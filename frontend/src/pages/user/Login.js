@@ -1,5 +1,5 @@
 import React, { useState} from 'react';
-import "../../styles/LoginFormStyles.css";
+import "./LoginFormStyles.css";
 import {NavLink} from "react-router-dom";
 
 function Login(props) {

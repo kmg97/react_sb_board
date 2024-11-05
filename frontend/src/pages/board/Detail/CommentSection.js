@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import "../../../styles/CommentSection.css";
+import "./CommentSection.css";
 
 const CommentSection = ({ user, boardId, onCommentSubmit, comments }) => {
     const [comment, setComment] = useState('');

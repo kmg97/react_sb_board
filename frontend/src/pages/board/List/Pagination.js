@@ -1,5 +1,5 @@
 import React from "react";
-import "../../../styles/Pagination.css";
+import "./Pagination.css";
 
 function Pagination({ currentPage, totalPages, setCurrentPage, pageSize}) {
     const pages = Math.ceil(totalPages / pageSize ); // 전체 페이지 수 계산

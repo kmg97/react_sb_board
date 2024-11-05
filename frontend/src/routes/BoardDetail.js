@@ -1,6 +1,6 @@
-import Header from "../commons/Header";
-import DescripHeader from "../commons/DescripHeader";
-import Footer from "../commons/Footer";
+import Header from "../components/Header";
+import HeroImg2 from "../components/HeroImg2";
+import Footer from "../components/Footer";
 import {useTitle} from "../util/UpdateTitle";
 import Detail from "../pages/board/Detail/Detail";
 
@@ -10,7 +10,7 @@ const BoardDetail = (props) => {
     return (
         <div>
             <Header />
-            <DescripHeader heading="Detail" text="게시글 상세 조회"/>
+            <HeroImg2 heading="Detail" text="게시글 상세 조회"/>
             <Detail userInfo={props.userInfo}/>
             <Footer />
         </div>

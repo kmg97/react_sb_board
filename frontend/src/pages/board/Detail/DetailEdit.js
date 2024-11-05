@@ -1,4 +1,4 @@
-import "../../../styles/DetailEdit.css";
+import "./DetailEdit.css";
 
 import React, {useState} from "react";
 import {useLocation, useNavigate, useParams} from "react-router-dom";

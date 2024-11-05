@@ -1,7 +1,7 @@
 import React from "react";
 import {useTitle} from "../util/UpdateTitle";
-import Header from "../commons/Header";
-import Footer from "../commons/Footer";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import useLoginCheck from "../util/useLoginCheck";
 import Signup from "../pages/user/Signup";
 

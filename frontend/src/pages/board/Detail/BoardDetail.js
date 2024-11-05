@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../../styles/BoardDetail.css';
+import './BoardDetail.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import CommentSection from './CommentSection';
 

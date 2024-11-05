@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../commons/Header";
-import DescripHeader from "../commons/DescripHeader";
-import Footer from "../commons/Footer";
+import Header from "../components/Header";
+import HeroImg2 from "../components/HeroImg2";
+import Footer from "../components/Footer";
 import BoardWrite from "../pages/board/BoardWrite";
 import { useTitle } from "../util/UpdateTitle";
 
@@ -11,7 +11,7 @@ const Write = (props) => {
   return (
     <div>
       <Header />
-      <DescripHeader heading="Write" text="글쓰기"/>
+      <HeroImg2 heading="Write" text="글쓰기"/>
       <BoardWrite onAddContact={props.onAddContact}/>
       <Footer />
     </div>

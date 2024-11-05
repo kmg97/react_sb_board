@@ -1,10 +1,10 @@
-import "./BoardWrite.css";
+import "../../styles/BoardWrite.css";
 
 import React, {useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/AuthProvider";
 
-const BoardWrite = (props) => {
+const BoardWriteVideo = (props) => {
 
   const user = useAuth().user;
   const navigateFunction = useNavigate();
@@ -105,54 +105,67 @@ const BoardWrite = (props) => {
     }
   }
 
+  const sendVideoChunks = () => {
+    const chunkSize = 1024 * 1024; // 1MB
+    const file = document.getElementById("video-file").files[0];
+    const resultElement = document.getElementById("result");
+
+    // total size 계산
+    const totalChunks = Math.ceil(file.size / chunkSize);
+    let currentChunk = 0;
+
+    // chunk file 전송
+    const sendNextChunk = () => {
+
+      // chunk size 만큼 데이터 분할
+      const start = currentChunk * chunkSize;
+      const end = Math.min(start + chunkSize, file.size);
+
+      const chunk = file.slice(start, end);
+
+      // form data 형식으로 전송
+      const formData = new FormData();
+      formData.append("chunk", chunk, file.name);
+      formData.append("chunkNumber", currentChunk);
+      formData.append("totalChunks", totalChunks);
+
+      fetch("http://localhost:8080/chunk/upload", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Authorization": "Bearer " + props.userInfo.token
+        }
+      }).then(resp => {
+        // 전송 결과가 206이면 다음 파일 조각 전송
+        if (resp.status === 206) {
+          // 진행률 표시
+          resultElement.textContent = Math.round(currentChunk / totalChunks * 100) + "%"
+          currentChunk++;
+          if (currentChunk < totalChunks) {
+            sendNextChunk();
+          }
+          // 마지막 파일까지 전송 되면
+        } else if (resp.status === 200) {
+          resp.text().then(data => resultElement.textContent = data);
+        }
+      }).catch(err => {
+        console.error("Error uploading video chunk");
+      });
+    };
+
+    sendNextChunk();
+  }
+
   return (
     <div className="form">
-      <form onSubmit={submitHandler}>
-        <label>제목</label>
-        <input
-          type="text"
-          ref={titleRef}
-          placeholder="제목을 작성해주세요"
-        ></input>
-        <label>본문</label>
-        <textarea
-          row="6"
-          placeholder="본문을 작성해주세요"
-          ref={ContentRef}
-        />
-        <div className="file_list">
-          {fileList.map((file, index) => (
-              <div key={index}>
-                <div className="file_input">
-                  <input type="text" readOnly value={file ? file.name : ''} />
-                  <label>
-                    선택
-                    <input
-                        type="file"
-                        name="files"
-                        onChange={(event) => selectFile(event, index)}
-                    />
-                  </label>
-                  <label
-                      type="button"
-                      onClick={() => removeFile(index)}
-                      className="btns del_btn"
-                  >삭제
-                  </label>
-                </div>
-              </div>
-          ))}
-        </div>
-        <button type="button" onClick={addFile} className="btns fn_add_btn">
-          <span>파일 추가</span>
-        </button>
-        <div className="two-btn">
-          <button className="btn smbtn">저장</button>
-          <button onClick={cancelHandler} className="btn smbtn" type="button">취소</button>
-        </div>
-      </form>
+    <form>
+      <input id="video-file" type="file" name="file" />
+      <button type="button" onClick={sendVideoChunks}>업로드</button>
+      <div id="result"></div>
+    </form>
+
     </div>
   );
 };
 
-export default BoardWrite;
+export default BoardWriteVideo;
