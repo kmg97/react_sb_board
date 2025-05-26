@@ -1,11 +1,12 @@
 import React, { useState} from 'react';
-import "./LoginFormStyles.css";
+import "../../styles/LoginFormStyles.css";
 import {NavLink} from "react-router-dom";
+import EnterKeyUpAndNullCheck from "../../util/EnterKeyUpAndNullCheck";
 
 function Login(props) {
     const [username, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const handleLogin = async () => {
+    const loginHandler = async () => {
         try {
             props.onLogin({ username, password });
         } catch (error) {
@@ -21,15 +22,29 @@ function Login(props) {
                 placeholder="이메일"
                 value={username}
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyUp={
+                            (e)=>{
+                                if(EnterKeyUpAndNullCheck(e, [username, password])){
+                                    loginHandler();
+                                }
+                            }
+                }
             />
             <input
                 type="password"
                 placeholder="비밀번호"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyUp={
+                    (e)=>{
+                        if(EnterKeyUpAndNullCheck(e, [username, password])){
+                            loginHandler();
+                        }
+                    }
+                }
             />
             <div className="two-btn">
-                <button onClick={handleLogin} className="btn">로그인</button>
+                <button onClick={loginHandler} className="btn">로그인</button>
                 <NavLink to={"/signup"} className="btn">
                         회원가입
                 </NavLink>
