@@ -1,12 +1,13 @@
 package com.board.dto.file;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.board.domain.FileEntity;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
 public class FileResponse {
 
     private Long id;                      // 파일 번호 (PK)
@@ -16,4 +17,17 @@ public class FileResponse {
     private long size;                    // 파일 크기
     private LocalDateTime createdDate;    // 생성일시
     private LocalDateTime modifiedDate;   // 수정일시
+
+    public static FileResponse from (FileEntity fileEntity) {
+
+        return builder()
+                .id(fileEntity.getId())
+                .boardId(fileEntity.getBoard().getId())
+                .originalName(fileEntity.getOriginalName())
+                .saveName(fileEntity.getSaveName())
+                .size(fileEntity.getSize())
+                .createdDate(fileEntity.getCreatedAt())
+                .modifiedDate(fileEntity.getModifiedAt())
+                .build();
+    }
 }

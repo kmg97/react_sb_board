@@ -1,5 +1,6 @@
 package com.board.domain;
 
+import com.board.dto.board.BoardRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,13 +44,23 @@ public class Board extends BaseTime {
         해당 자식 엔티티는 삭제되지 않습니다. 그러나 관계가 끊어지고 나면 해당 자식 엔티티의 부모 참조는
         null이 됩니다.*/
     @JsonIgnore
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL,  orphanRemoval = true)
     private List<Comment> comments;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FileEntity> fileEntity;
 
     @Column(name="IS_DEL")
     private boolean deleted = Boolean.FALSE; // 삭제 여부 기본값 false
+
+    public static Board from (User user, BoardRequest request) {
+        Board board = new Board();
+
+        board.setUser(user);
+        board.setTitle(request.getTitle());
+        board.setContent(request.getContent());
+
+        return board;
+    }
 }

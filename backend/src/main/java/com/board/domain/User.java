@@ -1,5 +1,6 @@
 package com.board.domain;
 
+import com.board.dto.sign.SignRequest;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;
@@ -45,6 +46,18 @@ public class User {
   public void setRoles(List<Authority> role) {
     this.roles = role;
     role.forEach(o -> o.setUser(this));
+  }
+
+  public static User toSingRequest (SignRequest request, String encPw) {
+    User user = new User();
+    user.setUsername(request.getUsername());
+    user.setPassword(encPw);
+    user.setFullname(request.getFullname());
+    user.setStreet(request.getStreet());
+    user.setCity(request.getCity());
+    user.setPhoneNumber(request.getPhoneNumber());
+    user.setEmail(request.getEmail());
+    return user;
   }
 
 }

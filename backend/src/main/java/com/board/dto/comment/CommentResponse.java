@@ -1,5 +1,6 @@
 package com.board.dto.comment;
 
+import com.board.domain.Comment;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,4 +12,17 @@ public class CommentResponse {
     private String comments;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    public static CommentResponse from (Comment comment) {
+        CommentResponse response = new CommentResponse();
+
+        response.id = comment.getId();
+        response.username = comment.getUser().getUsername();
+        response.comments = comment.getComments();
+        response.createdAt = comment.getCreatedAt();
+        response.modifiedAt = comment.getModifiedAt();
+
+        return response;
+
+    }
 }

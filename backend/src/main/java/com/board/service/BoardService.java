@@ -1,6 +1,7 @@
 package com.board.service;
 
 import com.board.domain.Board;
+import com.board.domain.Comment;
 import com.board.utils.BoardSpecifications;
 import com.board.domain.User;
 import com.board.dto.board.BoardPageResponse;
@@ -33,15 +34,10 @@ public class BoardService {
 
     // 게시글 등록
     public Board register(BoardRequest request) throws Exception {
-        Board board = null;
-        User user = userRepository.findByUsername(request.getUsername()).get();
-        try {
-                board = Board.builder()
-                        .user(user)
-                        .title(request.getTitle())
-                        .content(request.getContent())
-                        .build();
+        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(()-> new Exception("로그인 후 이용해주세요."));
 
+        Board board = Board.from(user, request);
+        try {
                 board = boardRepository.save(board);
         } catch (Exception e) {
             throw new Exception("잘못된 요청입니다.");
@@ -83,16 +79,7 @@ public class BoardService {
 
         List<BoardResponse> boards = result.getContent()
                 .stream()
-                .map(board -> {
-                    BoardResponse boardResponse = BoardResponse.builder()
-                            .id(board.getId())
-                            .username(board.getUser().getUsername())
-                            .title(board.getTitle())
-                            .content(board.getContent())
-                            .createdAt(board.getCreatedAt())
-                            .modifiedAt(board.getModifiedAt()).build();
-                    return boardResponse;
-                })
+                .map(BoardResponse::from)
                 .collect(Collectors.toList());
 
         long totalSize = result.getTotalElements();
@@ -107,41 +94,17 @@ public class BoardService {
     }
 
     private BoardResponse getBoardDetailDto(Board board) {
-        BoardResponse dto = new BoardResponse();
-        dto.setId(board.getId());
-        dto.setUsername(board.getUser().getUsername());
-        dto.setTitle(board.getTitle());
-        dto.setContent(board.getContent());
-        dto.setCreatedAt(board.getCreatedAt());
-        dto.setModifiedAt(board.getModifiedAt());
+        BoardResponse dto = BoardResponse.from(board);
 
         // 댓글 정보를 매핑
         List<CommentResponse> commentDTOList = board.getComments().stream()
-                .map(comment -> {
-                    CommentResponse commentDTO = new CommentResponse();
-                    commentDTO.setId(comment.getId());
-                    commentDTO.setUsername(comment.getUser().getUsername());
-                    commentDTO.setComments(comment.getComments());
-                    commentDTO.setCreatedAt(comment.getCreatedAt());
-                    commentDTO.setModifiedAt(comment.getModifiedAt());
-                    return commentDTO;
-                })
+                .map(CommentResponse::from)
                 .collect(Collectors.toList());
         dto.setComments(commentDTOList);
 
         // 파일 정보를 매핑
         List<FileResponse> fileDTOList = board.getFileEntity().stream()
-                .map(file -> {
-                    FileResponse fileDTO = new FileResponse();
-                    fileDTO.setId(file.getId());
-                    fileDTO.setBoardId(file.getBoard().getId());
-                    fileDTO.setOriginalName(file.getOriginalName());
-                    fileDTO.setSaveName(file.getSaveName());
-                    fileDTO.setSize(file.getSize());
-                    fileDTO.setCreatedDate(file.getCreatedAt());
-                    fileDTO.setModifiedDate(file.getModifiedAt());
-                    return fileDTO;
-                })
+                .map(FileResponse::from)
                 .collect(Collectors.toList());
         dto.setFiles(fileDTOList);
 

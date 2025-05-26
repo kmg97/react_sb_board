@@ -1,9 +1,11 @@
 package com.board.domain;
 
+import com.board.dto.file.FileRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "FILE")
@@ -30,5 +32,14 @@ public class FileEntity extends BaseTime {
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 
+    public static FileEntity of (FileRequest fileRequest, Board board) {
+        FileEntity file = new FileEntity();
 
+        file.setOriginalName(fileRequest.getOriginalName());
+        file.setSaveName(fileRequest.getSaveName());
+        file.setSize(fileRequest.getSize());
+        file.setBoard(board);
+
+        return file;
+    }
 }

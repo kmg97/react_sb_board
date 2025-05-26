@@ -27,14 +27,7 @@ public class FileService {
         }
 
         List<FileEntity> fileEntities = files.stream()
-                .map(fileRequest -> {
-                    FileEntity fileEntity = new FileEntity();
-                    fileEntity.setOriginalName(fileRequest.getOriginalName());
-                    fileEntity.setSaveName(fileRequest.getSaveName());
-                    fileEntity.setSize(fileRequest.getSize());
-                    fileEntity.setBoard(board);
-                    return fileEntity;
-                })
+                .map(fileRequest -> FileEntity.of(fileRequest, board))
                 .collect(Collectors.toList());
 
         fileRepository.saveAll(fileEntities);
@@ -46,7 +39,7 @@ public class FileService {
 
         if (fileOptional.isPresent()) {
             FileEntity fileEntity = fileOptional.get();
-            return FileEntityToResponse(fileEntity);
+            return FileResponse.from(fileEntity);
         } else {
             return null;
         }
@@ -60,22 +53,8 @@ public class FileService {
     @Transactional(readOnly = true)
     public List<FileResponse> findAllFileByIds(List<Long> ids) {
         List<FileEntity> findAllForDelete = fileRepository.findAllById(ids);
-        List<FileResponse> deleteFiles = findAllForDelete.stream()
-                .map(this::FileEntityToResponse).toList();
-        return deleteFiles;
-    }
-
-    // DTO 변환 유틸 메서드
-    public FileResponse FileEntityToResponse(FileEntity fileEntity) {
-        FileResponse fileResponse = new FileResponse();
-        fileResponse.setId(fileEntity.getId());
-        fileResponse.setBoardId(fileEntity.getBoard().getId());
-        fileResponse.setOriginalName(fileEntity.getOriginalName());
-        fileResponse.setSaveName(fileEntity.getSaveName());
-        fileResponse.setSize(fileEntity.getSize());
-        fileResponse.setCreatedDate(fileEntity.getCreatedAt());
-        fileResponse.setModifiedDate(fileEntity.getModifiedAt());
-        return fileResponse;
+        return findAllForDelete.stream()
+                .map(FileResponse::from).toList();
     }
 
     public List<FileResponse> findAllFileByBoardId(Long boardId){
@@ -83,7 +62,7 @@ public class FileService {
         System.out.println(allByBoardId.isEmpty());
         if(!allByBoardId.isEmpty()){
             System.out.println("호출됨");
-            return allByBoardId.stream().map(this::FileEntityToResponse).toList();
+            return allByBoardId.stream().map(FileResponse::from).toList();
         }
         return null;
     }

@@ -23,8 +23,4 @@ public class Authority {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
