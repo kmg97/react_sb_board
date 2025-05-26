@@ -13,7 +13,7 @@ public class CommentResponse {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static CommentResponse fromComments (Comment comment) {
+    public static CommentResponse from (Comment comment) {
         CommentResponse response = new CommentResponse();
 
         response.id = comment.getId();

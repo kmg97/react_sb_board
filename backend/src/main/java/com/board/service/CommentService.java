@@ -25,9 +25,9 @@ public class CommentService {
     public boolean register(CommentRequest commentRequest) throws Exception {
         try {
             // 댓글 작성자(유저) 조회
-            User user = userRepository.findById(commentRequest.getUserId()).get();
+            User user = userRepository.findById(commentRequest.getUserId()).orElseThrow(()->new Exception("로그인 후 이용해주세요."));
             // 게시글 조회
-            Board board = boardRepository.findById(commentRequest.getBoardId()).get();
+            Board board = boardRepository.findById(commentRequest.getBoardId()).orElseThrow(()->new Exception("존재하지 않는 게시글입니다."));
             Comment comment = Comment.builder()
                         .user(user)
                         .board(board)

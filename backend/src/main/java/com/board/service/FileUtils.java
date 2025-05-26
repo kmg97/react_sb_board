@@ -122,7 +122,7 @@ public class FileUtils {
         Path filePath = Paths.get(uploadPath, uploadedDate, filename);
         try {
             Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists() == false || resource.isFile() == false) {
+            if (!resource.exists() || !resource.isFile()) {
                 throw new RuntimeException("file not found : " + filePath.toString());
             }
             return resource;
