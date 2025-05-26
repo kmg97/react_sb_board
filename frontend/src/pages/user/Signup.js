@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import "./LoginFormStyles.css";
+import "../../styles/LoginFormStyles.css";
 import {NavLink} from "react-router-dom";
 import useLoginCheck from "../../util/useLoginCheck";
+import EnterKeyUpAndNullCheck from "../../util/EnterKeyUpAndNullCheck";
 
 function Signup(props) {
     // useLoginCheck = Context 내부에 user가 null인지 체크해서 있다면 홈으로 이동
@@ -143,6 +144,11 @@ function Signup(props) {
                 value={username}
                 onChange={handleUsernameChange}
                 onBlur={() => handleBlur(username)}
+                onKeyUp={(e)=>{
+                    if(EnterKeyUpAndNullCheck(e, [username, password, fullname, phoneNumber, street, city, email])) {
+                        singupHandler();
+                    }
+                }}
             />
             {isUsernameAvailable === null ? null : (
                 isUsernameAvailable ? (
@@ -156,6 +162,11 @@ function Signup(props) {
                 placeholder="비밀번호"
                 value={password}
                 onChange={handlePasswordChange}
+                onKeyUp={(e)=>{
+                    if(EnterKeyUpAndNullCheck(e, [username, password, fullname, phoneNumber, street, city, email])) {
+                        singupHandler();
+                    }
+                }}
             />
             {isPasswordValid === null ? null:(
                     isPasswordValid ?(
@@ -172,6 +183,11 @@ function Signup(props) {
                 placeholder="이름"
                 value={fullname}
                 onChange={handleFullnameChange}
+                onKeyUp={(e)=>{
+                    if(EnterKeyUpAndNullCheck(e, [username, password, fullname, phoneNumber, street, city, email])) {
+                        singupHandler();
+                    }
+                }}
             />
             {isFullnameValid === null ? null: (!isFullnameValid && <span className="duplicate">이름을 입력해주세요.</span>)}
             <input
@@ -179,6 +195,11 @@ function Signup(props) {
                 placeholder="전화번호"
                 value={phoneNumber}
                 onChange={handlePhoneNumberChange}
+                onKeyUp={(e)=>{
+                    if(EnterKeyUpAndNullCheck(e, [username, password, fullname, phoneNumber, street, city, email])) {
+                        singupHandler();
+                    }
+                }}
             />
             {isPhoneNumberValid === null ? null: (!isPhoneNumberValid && <span className="duplicate">핸드폰 번호를 입력해주세요.</span>)}
             <input
@@ -186,6 +207,11 @@ function Signup(props) {
                 placeholder="도시"
                 value={city}
                 onChange={handleCityChange}
+                onKeyUp={(e)=>{
+                    if(EnterKeyUpAndNullCheck(e, [username, password, fullname, phoneNumber, street, city, email])) {
+                        singupHandler();
+                    }
+                }}
             />
             {isCityValid === null ? null: (!isCityValid && <span className="duplicate">주소를 입력해주세요.</span>)}
             <input
@@ -193,6 +219,11 @@ function Signup(props) {
                 placeholder="주소"
                 value={street}
                 onChange={handleStreetChange}
+                onKeyUp={(e)=>{
+                    if(EnterKeyUpAndNullCheck(e, [username, password, fullname, phoneNumber, street, city, email])) {
+                        singupHandler();
+                    }
+                }}
             />
             {isStreetValid === null ? null: (!isStreetValid && <span className="duplicate">상세주소를 입력해주세요.</span>)}
             <input
@@ -200,6 +231,12 @@ function Signup(props) {
                 placeholder="이메일"
                 value={email}
                 onChange={handleEmailChange}
+                onKeyUp={(e)=>{
+                    if(EnterKeyUpAndNullCheck(e, [username, password, fullname, phoneNumber, street, city, email])) {
+                        singupHandler();
+                    }
+                }}
+
             />
             {isEmailValid === null ? null: (!isEmailValid && <span className="duplicate">이메일을 입력해주세요.</span>)}
             <div className="pro-btns">
