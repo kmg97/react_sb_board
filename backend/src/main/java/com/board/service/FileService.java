@@ -39,7 +39,7 @@ public class FileService {
 
         if (fileOptional.isPresent()) {
             FileEntity fileEntity = fileOptional.get();
-            return FileResponse.fromFileEntity(fileEntity);
+            return FileResponse.from(fileEntity);
         } else {
             return null;
         }
@@ -53,9 +53,8 @@ public class FileService {
     @Transactional(readOnly = true)
     public List<FileResponse> findAllFileByIds(List<Long> ids) {
         List<FileEntity> findAllForDelete = fileRepository.findAllById(ids);
-        List<FileResponse> deleteFiles = findAllForDelete.stream()
-                .map(FileResponse::fromFileEntity).toList();
-        return deleteFiles;
+        return findAllForDelete.stream()
+                .map(FileResponse::from).toList();
     }
 
     public List<FileResponse> findAllFileByBoardId(Long boardId){
@@ -63,7 +62,7 @@ public class FileService {
         System.out.println(allByBoardId.isEmpty());
         if(!allByBoardId.isEmpty()){
             System.out.println("호출됨");
-            return allByBoardId.stream().map(FileResponse::fromFileEntity).toList();
+            return allByBoardId.stream().map(FileResponse::from).toList();
         }
         return null;
     }

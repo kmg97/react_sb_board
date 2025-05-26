@@ -12,8 +12,8 @@ import java.util.List;
 
 @Getter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class SignResponse {
     private Long userId;
     private String username;

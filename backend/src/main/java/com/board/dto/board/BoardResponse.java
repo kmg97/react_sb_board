@@ -13,7 +13,6 @@ import java.util.List;
 
 // 게시글 조회 후 보낼 객체
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardResponse {
@@ -26,7 +25,7 @@ public class BoardResponse {
     private List<CommentResponse> comments;
     private List<FileResponse> files;
 
-    public static BoardResponse fromBoard(Board board) {
+    public static BoardResponse from(Board board) {
         BoardResponse response = new BoardResponse();
 
         response.id = board.getId();

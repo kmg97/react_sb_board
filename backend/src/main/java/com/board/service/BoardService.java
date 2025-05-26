@@ -34,9 +34,9 @@ public class BoardService {
 
     // 게시글 등록
     public Board register(BoardRequest request) throws Exception {
-        User user = userRepository.findByUsername(request.getUsername()).get();
+        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(()-> new Exception("로그인 후 이용해주세요."));
 
-        Board board = Board.fromBoardRequest(user, request);
+        Board board = Board.from(user, request);
         try {
                 board = boardRepository.save(board);
         } catch (Exception e) {
@@ -79,10 +79,7 @@ public class BoardService {
 
         List<BoardResponse> boards = result.getContent()
                 .stream()
-                .map(board -> {
-                    BoardResponse boardResponse = BoardResponse.fromBoard(board);
-                    return boardResponse;
-                })
+                .map(BoardResponse::from)
                 .collect(Collectors.toList());
 
         long totalSize = result.getTotalElements();
@@ -97,17 +94,17 @@ public class BoardService {
     }
 
     private BoardResponse getBoardDetailDto(Board board) {
-        BoardResponse dto = BoardResponse.fromBoard(board);
+        BoardResponse dto = BoardResponse.from(board);
 
         // 댓글 정보를 매핑
         List<CommentResponse> commentDTOList = board.getComments().stream()
-                .map(CommentResponse::fromComments)
+                .map(CommentResponse::from)
                 .collect(Collectors.toList());
         dto.setComments(commentDTOList);
 
         // 파일 정보를 매핑
         List<FileResponse> fileDTOList = board.getFileEntity().stream()
-                .map(FileResponse::fromFileEntity)
+                .map(FileResponse::from)
                 .collect(Collectors.toList());
         dto.setFiles(fileDTOList);
 
