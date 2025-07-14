@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "../../styles/LoginFormStyles.css";
+import "./LoginFormStyles.css";
 import {NavLink} from "react-router-dom";
 import useLoginCheck from "../../util/useLoginCheck";
 import EnterKeyUpAndNullCheck from "../../util/EnterKeyUpAndNullCheck";
@@ -110,7 +110,7 @@ function Signup(props) {
 
     const handleBlur = (username) => {
         if(username.trim()!=='' && preUsername!==username){
-            fetch(`http://localhost:8080/api/user/register/${username}/exists`, {
+            fetch(`/api/user/register/${username}/exists`, {
                 method: 'GET', // 예시로 POST 메서드 사용
                 headers: {
                     'Content-Type': 'application/json',

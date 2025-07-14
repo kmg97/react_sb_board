@@ -17,7 +17,7 @@ const BoardDetail = (props) => {
         if (props.userInfo && props.userInfo.token != null) {
             const confirm = window.confirm("삭제하시겠습니까?");
             if (confirm) {
-                fetch(`http://localhost:8080/api/board/delete/${boardId}`, {
+                fetch(`/api/board/delete/${boardId}`, {
                     method: "DELETE",
                     headers: {
                         "Authorization": "Bearer " + props.userInfo.token
@@ -46,7 +46,7 @@ const BoardDetail = (props) => {
     const handleCommentSubmit = (newComment) => {
         if (props.userInfo && props.userInfo.token != null) {
 
-            fetch(`http://localhost:8080/api/comment`, {
+            fetch(`/api/comment`, {
                 method: "POST",
                 body: JSON.stringify(newComment),
                 headers: {
@@ -75,7 +75,7 @@ const BoardDetail = (props) => {
 
     const downloadFile = (boardId, fileId, originalName) => {
         console.log("파일 다운로드 요청")
-        const url = `http://localhost:8080/api/board/files/${fileId}/download`; // API 엔드포인트의 절대 경로
+        const url = `/api/board/files/${fileId}/download`; // API 엔드포인트의 절대 경로
 
         fetch(url, {
             method: 'GET', // GET 요청

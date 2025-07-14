@@ -44,7 +44,7 @@ const CommentSection = ({ user, boardId, onCommentSubmit, comments }) => {
         };
 
         if (user && user.token != null) {
-            fetch(`http://localhost:8080/api/comment/update/${idx}`, {
+            fetch(`/api/comment/update/${idx}`, {
                 method: "PUT",
                 body: JSON.stringify(newComment),
                 headers: {
@@ -78,7 +78,7 @@ const CommentSection = ({ user, boardId, onCommentSubmit, comments }) => {
         if ( user && user.token != null) {
             const confirm = window.confirm("해당 댓글을 삭제하시겠습니까?");
             if(confirm){
-                fetch(`http://localhost:8080/api/comment/delete/${idx}`, {
+                fetch(`/api/comment/delete/${idx}`, {
                     method: "DELETE",
                     headers: {
                         "Authorization": "Bearer " + user.token,

@@ -129,7 +129,7 @@ const BoardWriteVideo = (props) => {
       formData.append("chunkNumber", currentChunk);
       formData.append("totalChunks", totalChunks);
 
-      fetch("http://localhost:8080/chunk/upload", {
+      fetch("/api/chunk/upload", {
         method: "POST",
         body: formData,
         headers: {

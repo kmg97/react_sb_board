@@ -15,7 +15,7 @@ const Detail = (props) => {
     const {logout} = useAuth();
     useEffect(()=>{
         if (props.userInfo && props.userInfo.token != null) {
-            fetch(`http://localhost:8080/api/board/list/${idx}`, {
+            fetch(`/api/board/list/${idx}`, {
                 method: "GET",
                 headers: {
                     // jwt 전달

@@ -22,7 +22,7 @@ function App() {
     // 게시글 작성 API
     async function addContactHandler(event) {
         const response = await fetch(
-            "http://localhost:8080/api/board",
+            "/api/board",
             {
                 method: "POST",
                 body: event,
@@ -47,7 +47,7 @@ function App() {
 
     // Login API
     async function loginHandler(event) {
-        const response = await fetch('http://localhost:8080/api/user/login', {
+        const response = await fetch('/api/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ function App() {
     }
 
     async function onSignupHandler (event){
-        const response = await fetch('http://localhost:8080/api/user/register', {
+        const response = await fetch('/api/user/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
