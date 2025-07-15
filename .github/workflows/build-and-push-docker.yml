@@ -89,12 +89,12 @@ jobs:
             echo "최신 이미지 Pull"
             export TAG=${{ env.TAG }}
             docker compose                \
-              -f /home/ubuntu/docker-compose.yml \
+              -f /home/ubuntu/react_sb_board/docker/docker-compose.yml \
               pull                         
 
             echo "컨테이너 재배포"
             docker compose                \
-              -f /home/ubuntu/docker-compose.yml \
+              -f /home/ubuntu/react_sb_board/docker/docker-compose.yml \
               up -d --remove-orphans --wait
 
             echo "배포 완료 on $(date)"
