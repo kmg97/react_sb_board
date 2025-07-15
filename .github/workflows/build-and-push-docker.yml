@@ -1,0 +1,60 @@
+name: build-and-push-docker
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # 1. 소스 체크아웃
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: main
+
+      # 2. JDK 설치
+      - name: Install Java
+        run: sudo apt install -y openjdk-17-jdk
+
+      # 3. Maven 빌드
+      - name: Build with Maven
+        working-directory: backend
+        run: |
+          chmod +x ./mvnw
+          ./mvnw clean package -DskipTests
+
+      # 4. pom.xml 값 추출
+      - name: Extract Docker image info & JAR name
+        id: meta
+        run: |
+          IMAGE=$(./mvnw help:evaluate -Dexpression=docker.image.prefix -q -DforceStdout)/$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+          TAG=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+          JAR=$(./mvnw help:evaluate -Dexpression=project.build.finalName -q -DforceStdout).jar
+          echo "image=${IMAGE}" >> $GITHUB_OUTPUT
+          echo "tag=${TAG}"   >> $GITHUB_OUTPUT
+          echo "jar=${JAR}"   >> $GITHUB_OUTPUT
+
+      # 5. Docker Buildx / 로그인
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 6. 이미지 빌드 & 푸시
+      - name: Build & Push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          build-args: |
+            JAR_FILE=target/${{ steps.meta.outputs.jar }}
+          tags: ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }}
