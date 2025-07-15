@@ -32,6 +32,7 @@ jobs:
       # 4. pom.xml 값 추출
       - name: Extract Docker image info & JAR name
         id: meta
+        working-directory: backend
         run: |
           IMAGE=$(./mvnw help:evaluate -Dexpression=docker.image.prefix -q -DforceStdout)/$(./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
           TAG=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
