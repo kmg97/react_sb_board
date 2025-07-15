@@ -11,6 +11,7 @@ jobs:
       contents: read
       packages: write
 
+
     steps:
       # 1. 소스 체크아웃
       - uses: actions/checkout@v3
@@ -59,3 +60,41 @@ jobs:
           build-args: |
             JAR_FILE=target/${{ steps.meta.outputs.jar }}
           tags: ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }}
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+      image: ${{ steps.meta.outputs.image }}
+  # ------------------------------------------------------------------
+  # 2) 배포 Job – SSH로 EC2 접속해 docker‑compose 무중단 재시작
+  # ------------------------------------------------------------------
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ needs.build-and-push.outputs.tag }}
+      IMAGE: ${{ needs.build-and-push.outputs.image }}
+
+    steps:
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          envs: TAG                           # TAG 값을 서버로 전달
+          script: |
+            set -e
+            echo "Docker Hub 로그인"
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+            echo "최신 이미지 Pull"
+            export TAG=${{ env.TAG }}
+            docker compose                \
+              -f /home/ubuntu/docker-compose.yml \
+              pull                         
+
+            echo "컨테이너 재배포"
+            docker compose                \
+              -f /home/ubuntu/docker-compose.yml \
+              up -d --remove-orphans --wait
+
+            echo "배포 완료 on $(date)"

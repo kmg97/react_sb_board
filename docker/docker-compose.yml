@@ -16,7 +16,7 @@ services:
       retries: 100
 
   backend:
-    image: kimmingyu0/backend:0.0.1-SNAPSHOT
+    image: kimmingyu0/backend:${TAG:-latest}
     ports:
       - "8080:8080"
     depends_on:
@@ -30,4 +30,4 @@ services:
   frontend:
     image: kimmingyu0/frontend:0.0.1-SNAPSHOT
     ports:
-      - "3000:80"
+      - "80:80"
