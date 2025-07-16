@@ -1,4 +1,4 @@
-name: build-and-push-docker
+name: backend-ci
 
 on:
   push:
@@ -68,12 +68,15 @@ jobs:
           build-args: |
             JAR_FILE=target/${{ steps.meta.outputs.jar }}
           tags: ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }}
-      #7. deploy.yml 트리거 호출
-      - name: Trigger deploy workflow
-        uses: peter-evans/workflow-dispatch@v1
+      # 7. deploy.yml 트리거 호출
+      - name: Trigger Deploy
+        if: success()
+        uses: peter-evans/repository-dispatch@v3
         with:
-          workflow: deploy.yml
-          ref: main
-          inputs: |
-            service: backend
-            tag: ${{ steps.meta.outputs.tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: deploy-service
+          client-payload: |
+            {
+              "service": "backend",
+              "tag": "${{ steps.meta.outputs.tag }}"
+            }
