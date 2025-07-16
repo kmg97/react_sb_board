@@ -3,6 +3,8 @@ name: build-and-push-docker
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'backend/**'
 # ------------------------------------------------------------------
 # 1) 빌드 Job – Maven 빌드 후 Docker 이미지 Build & Push
 # ------------------------------------------------------------------
@@ -66,61 +68,12 @@ jobs:
           build-args: |
             JAR_FILE=target/${{ steps.meta.outputs.jar }}
           tags: ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }}
-    outputs:
-      tag: ${{ steps.meta.outputs.tag }}
-      image: ${{ steps.meta.outputs.image }}
-  # ------------------------------------------------------------------
-  # 2) 배포 Job – SSH로 EC2 접속해 docker‑compose 재시작
-  # ------------------------------------------------------------------
-  deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    env:
-      TAG: ${{ needs.build-and-push.outputs.tag }}
-      IMAGE: ${{ needs.build-and-push.outputs.image }}
-
-    steps:
-      # 1. DockerHub 로그인
-      - name: Deploy to EC2 via SSH
-        uses: appleboy/ssh-action@master
+      #7. deploy.yml 트리거 호출
+      - name: Trigger deploy workflow
+        uses: peter-evans/workflow-dispatch@v1
         with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          envs: TAG                           # TAG 값을 서버로 전달
-          script: |
-            set -e
-            echo "Docker Hub 로그인"
-            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-
-            # 2. GitHub Actions에서 전달받은 이미지 태그 설정
-            echo "최신 이미지 Pull"
-            export TAG=${{ env.TAG }}
-
-            # 3. pull 대상 이미지 이름 지정
-            BACKEND_IMAGE="kimmingyu0/backend:${TAG}"
-            FRONTEND_IMAGE="kimmingyu0/frontend:${TAG}"
-
-            # 4. 이미지가 레지스트리에 존재할 때만 pull 하는 함수
-            pull_if_exists() {
-              local image=$1
-            
-              echo "이미지 존재 여부 확인: $image"
-              
-              if docker manifest inspect "$image" > /dev/null 2>&1; then
-                echo "이미지 존재함. Pull 시작: $image"
-                docker pull "$image"
-              else
-                echo "이미지 없음, Pull 생략: $image"
-              fi
-            }
-
-            # 5. 백엔드·프론트엔드 각각 확인 후 필요한 경우에만 다운로드
-            pull_if_exists $BACKEND_IMAGE
-            pull_if_exists $FRONTEND_IMAGE
-
-            # 6. docker‑compose로 서비스 재시작
-            echo "컨테이너 재배포"
-            docker compose -f /home/ubuntu/react_sb_board/docker/docker-compose.yml up -d --remove-orphans --wait
-
-            echo "배포 완료 on $(date)"
+          workflow: deploy.yml
+          ref: main
+          inputs: |
+            service: backend
+            tag: ${{ steps.meta.outputs.tag }}
