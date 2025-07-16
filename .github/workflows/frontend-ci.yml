@@ -1,0 +1,68 @@
+name: frontend-ci
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'frontend/**'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      
+    steps:
+      # 1. 소스 코드 체크아웃
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: main
+
+      # 2. 프론트엔드 버전 및 이름 추출
+      - name: Extract frontend package name & version
+        id: meta
+        working-directory: frontend
+        run: |
+          NAME=$(jq -r .name package.json)
+          VERSION=$(jq -r .version package.json)
+          echo "PACKAGE_NAME=$NAME" >> $GITHUB_ENV
+          echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "tag=${VERSION}-SNAPSHOT" >> $GITHUB_OUTPUT
+
+      # 3. node_modules & npm 캐시
+      - name: Cache node_modules and npm
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            frontend/node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      # 4. 의존성 설치
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      # 5. Docker Buildx 세팅
+      - uses: docker/setup-buildx-action@v3
+
+      # 6. DockerHub 로그인
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 7. 프론트엔드 도커 이미지 빌드 & 푸시
+      - name: Build & Push Frontend Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: kimmingyu0/${{ env.PACKAGE_NAME }}:${{ env.PACKAGE_VERSION }}-SNAPSHOT
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
