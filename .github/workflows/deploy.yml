@@ -18,23 +18,36 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-      
-      - name: Docker Hub 로그인
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-      
-      - name: Pull Docker image
-        run: |
-          IMAGE="kimmingyu0/${SERVICE}:${TAG}"
-          echo "Pulling $IMAGE"
-          docker pull $IMAGE
+          envs: TAG
+          script: |
+            set -e
+            echo "Docker Hub 로그인"
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      - name: Restart container
-        run: |
-          COMPOSE_FILE="/home/ubuntu/react_sb_board/docker/docker-compose.yml"
-          echo "재시작 서비스: $SERVICE"
-          docker compose -f $COMPOSE_FILE up -d $SERVICE --remove-orphans --wait
+            echo "최신 이미지 Pull"
+            export TAG=${{ env.TAG }}
 
-      - name: 배포 완료 로그
-        run: |
-          echo "배포 완료: $SERVICE $TAG"
+            BACKEND_IMAGE="kimmingyu0/backend:${TAG}"
+            FRONTEND_IMAGE="kimmingyu0/frontend:${TAG}"
+
+            pull_if_exists() {
+              local image=$1
+
+              echo "이미지 존재 여부 확인: $image"
+
+              if docker manifest inspect "$image" > /dev/null 2>&1; then
+                echo "이미지 존재함. Pull 시작: $image"
+                docker pull "$image"
+              else
+                echo "이미지 없음, Pull 생략: $image"
+              fi
+            }
+
+            pull_if_exists $BACKEND_IMAGE
+            pull_if_exists $FRONTEND_IMAGE
+
+            echo "컨테이너 재배포"
+            docker compose -f /home/ubuntu/react_sb_board/docker/docker-compose.yml up -d --remove-orphans --wait
+
+            echo "배포 완료 on $(date)"
         
