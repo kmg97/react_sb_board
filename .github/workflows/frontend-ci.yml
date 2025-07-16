@@ -71,7 +71,8 @@ jobs:
         if: success()
         uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          repository: kmg97/react_sb_board
           event-type: deploy-service
           client-payload: |
             {
