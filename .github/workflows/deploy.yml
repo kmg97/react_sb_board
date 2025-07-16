@@ -1,15 +1,8 @@
 name: deploy
 
 on:
-  workflow_dispatch:
-    inputs:
-      service:
-        description: 'Service to deploy (backend or frontend)'
-        required: true
-        default: 'backend'
-      tag:
-        description: 'Docker image tag'
-        required: true
+  repository_dispatch:
+    types: [deploy-service]
 
 jobs:
   deploy:
