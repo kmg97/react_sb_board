@@ -3,14 +3,15 @@ name: build-and-push-docker
 on:
   push:
     branches: [ main ]
-
+# ------------------------------------------------------------------
+# 1) 빌드 Job – Maven 빌드 후 Docker 이미지 Build & Push
+# ------------------------------------------------------------------
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
 
     steps:
       # 1. 소스 체크아웃
@@ -19,9 +20,13 @@ jobs:
           fetch-depth: 0
           ref: main
 
-      # 2. JDK 설치
-      - name: Install Java
-        run: sudo apt install -y openjdk-17-jdk
+      # 2. JDK 설치 + Maven 로컬 레포지토리 캐싱
+      - name: Set up JDK 17 & cache
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
 
       # 3. Maven 빌드
       - name: Build with Maven
@@ -64,7 +69,7 @@ jobs:
       tag: ${{ steps.meta.outputs.tag }}
       image: ${{ steps.meta.outputs.image }}
   # ------------------------------------------------------------------
-  # 2) 배포 Job – SSH로 EC2 접속해 docker‑compose 무중단 재시작
+  # 2) 배포 Job – SSH로 EC2 접속해 docker‑compose 재시작
   # ------------------------------------------------------------------
   deploy:
     needs: build-and-push
@@ -74,6 +79,7 @@ jobs:
       IMAGE: ${{ needs.build-and-push.outputs.image }}
 
     steps:
+      # 1. DockerHub 로그인
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@master
         with:
@@ -86,12 +92,15 @@ jobs:
             echo "Docker Hub 로그인"
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
+            # 2. GitHub Actions에서 전달받은 이미지 태그 설정
             echo "최신 이미지 Pull"
             export TAG=${{ env.TAG }}
-            
+
+            # 3. pull 대상 이미지 이름 지정
             BACKEND_IMAGE="kimmingyu0/backend:${TAG}"
             FRONTEND_IMAGE="kimmingyu0/frontend:${TAG}"
-  
+
+            # 4. 이미지가 레지스트리에 존재할 때만 pull 하는 함수
             pull_if_exists() {
               local image=$1
             
@@ -104,10 +113,12 @@ jobs:
                 echo "이미지 없음, Pull 생략: $image"
               fi
             }
-            
+
+            # 5. 백엔드·프론트엔드 각각 확인 후 필요한 경우에만 다운로드
             pull_if_exists $BACKEND_IMAGE
             pull_if_exists $FRONTEND_IMAGE
 
+            # 6. docker‑compose로 서비스 재시작
             echo "컨테이너 재배포"
             docker compose -f /home/ubuntu/react_sb_board/docker/docker-compose.yml up -d --remove-orphans --wait
 
