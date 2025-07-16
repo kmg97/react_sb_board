@@ -1,0 +1,40 @@
+name: deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: 'Service to deploy (backend or frontend)'
+        required: true
+        default: 'backend'
+      tag:
+        description: 'Docker image tag'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SERVICE: ${{ github.event.inputs.service }}
+      TAG: ${{ github.event.inputs.tag }}
+
+    steps:
+      - name: Docker Hub 로그인
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Pull Docker image
+        run: |
+          IMAGE="kimmingyu0/${SERVICE}:${TAG}"
+          echo "Pulling $IMAGE"
+          docker pull $IMAGE
+
+      - name: Restart container
+        run: |
+          COMPOSE_FILE="/home/ubuntu/react_sb_board/docker/docker-compose.yml"
+          echo "재시작 서비스: $SERVICE"
+          docker compose -f $COMPOSE_FILE up -d $SERVICE --remove-orphans --wait
+
+      - name: 배포 완료 로그
+        run: |
+          echo "배포 완료: $SERVICE $TAG"
+        
