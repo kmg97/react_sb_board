@@ -64,5 +64,13 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: kimmingyu0/${{ env.PACKAGE_NAME }}:${{ env.PACKAGE_VERSION }}-SNAPSHOT
-    outputs:
-      tag: ${{ steps.meta.outputs.tag }}
+      
+      # 8. deploy.yml 트리거 호출
+      - name: Trigger deploy workflow
+        uses: peter-evans/workflow-dispatch@v1
+        with:
+          workflow: deploy.yml
+          ref: main
+          inputs: |
+            service: frontend
+            tag: ${{ steps.meta.outputs.tag }}
