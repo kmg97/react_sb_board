@@ -66,11 +66,14 @@ jobs:
           tags: kimmingyu0/${{ env.PACKAGE_NAME }}:${{ env.PACKAGE_VERSION }}-SNAPSHOT
       
       # 8. deploy.yml 트리거 호출
-      - name: Trigger deploy workflow
-        uses: peter-evans/workflow-dispatch@v1
+      - name: Trigger Deploy
+        if: success()
+        uses: peter-evans/repository-dispatch@v3
         with:
-          workflow: deploy.yml
-          ref: main
-          inputs: |
-            service: frontend
-            tag: ${{ steps.meta.outputs.tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: deploy-service
+          client-payload: |
+            {
+              "service": "frontend",
+              "tag": "${{ env.PACKAGE_VERSION }}-SNAPSHOT"
+            }
