@@ -9,7 +9,7 @@ spring:
             auto-commit: false
             connection-test-query: SELECT 1
             minimum-idle: 10
-            maximum-pool-size: 50
+            maximum-pool-size: 30
             pool-name: pool-reactboard_db
 
     jpa:
