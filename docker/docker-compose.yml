@@ -16,7 +16,7 @@ services:
       retries: 100
 
   backend:
-    image: kimmingyu0/backend:${TAG:-latest}
+    image: kimmingyu0/backend:0.0.1-SNAPSHOT
     ports:
       - "8080:8080"
     depends_on:
@@ -26,8 +26,16 @@ services:
       - .env
     environment:
       - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: [ 'CMD-SHELL', 'curl -f http://localhost:8080/actuator/health' ]
+      interval: 10s
+      timeout: 2s
+      retries: 100
 
   frontend:
     image: kimmingyu0/frontend:0.0.1-SNAPSHOT
     ports:
       - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
