@@ -17,7 +17,7 @@ const BoardDetail = (props) => {
         if (props.userInfo && props.userInfo.token != null) {
             const confirm = window.confirm("삭제하시겠습니까?");
             if (confirm) {
-                fetch(`/api/board/delete/${boardId}`, {
+                fetch(`/api/board/posts/${boardId}`, {
                     method: "DELETE",
                     headers: {
                         "Authorization": "Bearer " + props.userInfo.token
@@ -31,7 +31,7 @@ const BoardDetail = (props) => {
                             throw new Error("접근 권한이 없습니다.");
                         }
                         alert("삭제되었습니다.")
-                        navigate(-1)
+                        navigate("/board/posts");
                     })
                     .catch(error => {
                         alert(error.message);
@@ -157,7 +157,7 @@ const BoardDetail = (props) => {
                     <button className="btn" onClick={()=>deleteHandler(props.id)}>삭제</button>
                     </div>
                 )}
-                <NavLink to="/board/list">
+                <NavLink to="/board/posts">
                     <button className="btn">목록</button>
                 </NavLink>
             </div>

@@ -147,7 +147,7 @@ function ListSection(props) {
                                         </div>
                                         <div className="board-title">
                                             <span>
-                                                <a href={"/board/item/" + noticeItem.id}>
+                                                <a href={"/board/posts/" + noticeItem.id}>
                                                     {textLengthOverCut(noticeItem.title, 14, "...")}
                                                 </a>
                                             </span>

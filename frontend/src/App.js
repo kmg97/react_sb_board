@@ -22,7 +22,7 @@ function App() {
     // 게시글 작성 API
     async function addContactHandler(event) {
         const response = await fetch(
-            "/api/board",
+            "/api/board/posts",
             {
                 method: "POST",
                 body: event,
@@ -102,14 +102,14 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Navigate replace to="/home"/>}/>
                     <Route path="/home" element={<Home/>}/>
-                    <Route path="/board/list" element={<Project userInfo={user}/>}/>
+                    <Route path="/board/posts" element={<Project userInfo={user}/>}/>
                     <Route
                         path="/contact"
                         element={<Contact onAddContact={addContactHandler}/>}
                     />
                     <Route path="/login" element={<LoginRoute onLogin={loginHandler}/>}/>
                     <Route path="/signup" element={<SignUpRoute onSignup={onSignupHandler}/>}/>
-                    <Route path="/board/item/:idx" element={<BoardDetail userInfo={user}/>}/>
+                    <Route path="/board/posts/:idx" element={<BoardDetail userInfo={user}/>}/>
                     <Route path="/board/edit/:idx" element={<BoardEdit userInfo={user}/>}/>
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>

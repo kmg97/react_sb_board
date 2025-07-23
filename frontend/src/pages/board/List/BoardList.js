@@ -18,7 +18,7 @@ const BoardList = (props) => {
     // 데이터를 불러오는 함수
     const fetchData = () => {
         if (props.userInfo && props.userInfo.token != null) {
-            fetch(`/api/board/list?searchType=${type}&searchKeyword=${keyword}&page=${currentPage}&pageSize=${pageSize}`, {
+            fetch(`/api/board/posts?searchType=${type}&searchKeyword=${keyword}&page=${currentPage}&pageSize=${pageSize}`, {
                 method: "GET",
                 headers: {
                     "Authorization": "Bearer " + props.userInfo.token,

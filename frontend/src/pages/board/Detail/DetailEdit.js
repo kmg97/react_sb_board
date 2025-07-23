@@ -172,7 +172,7 @@ const DetailEdit = (props) => {
     // }
 
     if (props.userInfo && props.userInfo.token != null) {
-      fetch(`/api/board/edit/${idx}`, {
+      fetch(`/api/board/posts/${idx}`, {
             method: "PUT",
             body: formData,
             headers: {

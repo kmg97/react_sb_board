@@ -1,6 +1,6 @@
 # 첫 번째 스테이지: Node.js 애플리케이션 빌드
 # 가져올 이미지를 정의
-FROM node:18 as build
+FROM node:18 AS build
 
 # 경로 설정하기
 WORKDIR /app
