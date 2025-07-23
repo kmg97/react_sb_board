@@ -39,7 +39,7 @@ public class BoardController {
     private final FileUtils fileUtils;
 
     // 전체 게시물 조회
-    @GetMapping("/list")
+    @GetMapping("/posts")
     public ResponseEntity<BoardPageResponse> titleSearch(@RequestParam(value = "searchType", defaultValue = "title") String searchType,
                                                          @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
                                                          @RequestParam("page") int startIdx, @RequestParam("pageSize") int size) {
@@ -51,7 +51,7 @@ public class BoardController {
     *  게시물 id를 기준으로 file 조회
     *  dto 변환 후 반환
     *  */
-    @GetMapping("/list/{id}")
+    @GetMapping("/posts/{id}")
     public ResponseEntity<BoardResponse> getDetail(@PathVariable Long id) {
         Optional<BoardResponse> boardDTO = boardService.getBoardDetail(id);
         return boardDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
@@ -59,15 +59,15 @@ public class BoardController {
     }
 
     /* 게시물 삭제 */
-    @DeleteMapping("/delete/{boardId}")
-    public ResponseEntity<Long> delete(@PathVariable Long boardId) {
+    @DeleteMapping("/posts/{id}")
+    public ResponseEntity<Long> delete(@PathVariable Long id) {
         // 삭제할 파일 조회
-        List<FileResponse> allFileByIds = fileService.findAllFileByBoardId(boardId);
+        List<FileResponse> allFileByIds = fileService.findAllFileByBoardId(id);
 
         //파일 삭제 (from disk)
         fileUtils.deleteFiles(allFileByIds);
         //파일 삭제 (from database)
-        boardService.delete(boardId);
+        boardService.delete(id);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -75,7 +75,7 @@ public class BoardController {
     /* 게시물 등록 파일첨부 때문에 MultipartFile을 쓰는걸로
      *  게시물 등록시 파일첨부는 선택사항이기에 (required = false) 옵션 줌
      * */
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BoardResponse> createPost(@RequestPart(required = false) MultipartFile[] files,
                                                     @RequestParam("username") String username,
                                                     @RequestParam("title") String title,
@@ -95,7 +95,7 @@ public class BoardController {
     }
 
     // 게시물 업데이트
-    @PutMapping(value="/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value="/posts/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BoardResponse> updatePost(@PathVariable Long id,
                                                     @RequestPart(required = false) MultipartFile[] changeFiles,
                                                     @RequestPart(required = false) MultipartFile[] newFiles,
